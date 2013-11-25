@@ -1,1 +1,2 @@
 splinter==0.5.4
+fabric==1.8.0
