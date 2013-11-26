@@ -1,0 +1,92 @@
+# -*- coding: utf-8 -*-
+
+import sys, os
+
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+sys.path.insert(0, os.path.abspath('..'))
+
+# -- General configuration -----------------------------------------------------
+
+# Add any Sphinx extension module names here, as strings. They can be extensions
+# coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+
+# Add any paths that contain templates here, relative to this directory.
+templates_path = ['_templates']
+
+# The suffix of source filenames.
+source_suffix = '.rst'
+
+# The master toctree document.
+master_doc = 'index'
+
+# General information about the project.
+project = u'bok-choy'
+copyright = u'2013, EdX'
+
+# The version info for the project you're documenting, acts as replacement for
+# |version| and |release|, also used in various other places throughout the
+# built documents.
+#
+# The short X.Y version.
+version = '0.0.1'
+# The full version, including alpha/beta/rc tags.
+release = '0.0.1'
+
+# List of patterns, relative to source directory, that match files and
+# directories to ignore when looking for source files.
+exclude_patterns = ['_build']
+
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = 'sphinx'
+
+
+# -- Options for HTML output ---------------------------------------------------
+
+# The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+html_theme = 'default'
+
+# Add any paths that contain custom static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin static files,
+# so a file named "default.css" will overwrite the builtin "default.css".
+html_static_path = ['_static']
+
+# Output file base name for HTML help builder.
+htmlhelp_basename = 'bok-choydoc'
+
+
+# -- Options for LaTeX output --------------------------------------------------
+
+latex_elements = {}
+
+# Grouping the document tree into LaTeX files. List of tuples
+# (source start file, target name, title, author, documentclass [howto/manual]).
+latex_documents = [
+  ('index', 'bok-choy.tex', u'bok-choy Documentation',
+   u'EdX', 'manual'),
+]
+
+
+# -- Options for manual page output --------------------------------------------
+
+# One entry per manual page. List of tuples
+# (source start file, name, description, authors, manual section).
+man_pages = [
+    ('index', 'bok-choy', u'bok-choy Documentation',
+     [u'EdX'], 1)
+]
+
+
+# -- Options for Texinfo output ------------------------------------------------
+
+# Grouping the document tree into Texinfo files. List of tuples
+# (source start file, target name, title, author,
+#  dir menu entry, description, category)
+texinfo_documents = [
+  ('index', 'bok-choy', u'bok-choy Documentation',
+   u'EdX', 'bok-choy', 'One line description of project.',
+   'Miscellaneous'),
+]

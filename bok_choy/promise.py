@@ -156,7 +156,7 @@ def fulfill_before(promise):
 @contextmanager
 def fulfill_after(promise):
     """
-    After the block executes, block until the `promise` is fulfilled.
+    After the `with` block executes, wait until the `promise` is fulfilled.
     In this case, any output from the promise is discarded.
     """
 
