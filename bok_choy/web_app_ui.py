@@ -125,6 +125,8 @@ class WebAppUI(Mapping):
         Once you've visited a page, you should interact with it
         using bracket syntax:
 
+        .. code:: python
+
             # `ui` is a WebAppUI instance
             ui['foo_page'].bar()
 

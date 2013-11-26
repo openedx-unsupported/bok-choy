@@ -47,28 +47,25 @@ def browser(tags):
 
     There are two cases:
 
-    #1: Local browsers
-    No environment variables set (default to Firefox locally)
-    `SELENIUM_BROWSER` set (use that browser locally)
+    1. Local browsers: No environment variables set (default to Firefox locally) or `SELENIUM_BROWSER` set (use that browser locally)
 
-    #2: SauceLabs
-    Set all of the following environment variables:
+    2. SauceLabs: Set all of the following environment variables:
 
-        SELENIUM_BROWSER
-        SELENIUM_VERSION
-        SELENIUM_PLATFORM
-        SELENIUM_HOST
-        SELENIUM_PORT
-        SAUCE_USER_NAME
-        SAUCE_API_KEY
+        * SELENIUM_BROWSER
+        * SELENIUM_VERSION
+        * SELENIUM_PLATFORM
+        * SELENIUM_HOST
+        * SELENIUM_PORT
+        * SAUCE_USER_NAME
+        * SAUCE_API_KEY
 
-    NOTE: these are the environment variables set by the SauceLabs
+    **NOTE:** these are the environment variables set by the SauceLabs
     Jenkins plugin.
 
     Optionally provide Jenkins info, used to identify jobs to Sauce:
 
-        JOB_NAME
-        BUILD_NUMBER
+        * JOB_NAME
+        * BUILD_NUMBER
 
     Raises a `BrowserConfigError` if environment variables are missing.
     Returns a `splinter.Browser` object.
