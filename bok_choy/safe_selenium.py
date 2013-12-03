@@ -15,8 +15,12 @@ Note that these methods should NOT themselves make assertions;
 that's the job of the test.  They can, however, raise exceptions
 if an operation cannot be performed.
 """
+from textwrap import dedent
+from contextlib import contextmanager
 from .promise import Promise, fulfill_before, fulfill
-from selenium.common.exceptions import WebDriverException, StaleElementReferenceException
+from selenium.common.exceptions import (
+    WebDriverException, StaleElementReferenceException, NoAlertPresentException
+)
 from splinter.exceptions import ElementDoesNotExist
 
 
@@ -149,6 +153,43 @@ class SafeSelenium(object):
 
         with fulfill_before(fill_promise):
             return fulfill(check_fill_promise)
+
+    @contextmanager
+    def handle_alert(self, confirm=True):
+        """
+        Ensure that alerts are dismissed in a way that works across browsers.
+
+        `ok` indicates whether to confirm or cancel the alert.
+
+        Example usage:
+
+            with self.handle_alert():
+                self.css_click('input.submit-button')
+        """
+
+        # Before executing the `with` block, stub the confirm/alert functions
+        script = dedent("""
+            window.confirm = function() {{ return {0}; }};
+            window.alert = function() {{ return; }};
+        """.format("true" if confirm else "false")).strip()
+        self.browser.execute_script(script)
+
+        # Execute the `with` block
+        yield
+
+        # If for some reason the above did not work, confirm the alert manually
+        # This is supported only in some browsers
+        try:
+            alert = self.browser.get_alert()
+
+            if confirm:
+                alert.accept()
+
+            else:
+                alert.dismiss()
+
+        except NoAlertPresentException:
+            pass
 
     def js_var_truthy(self, variable):
         # TODO
