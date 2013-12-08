@@ -29,6 +29,22 @@ class PageObject(SafeSelenium):
 
     __metaclass__ = ABCMeta
 
+    def __init__(self, ui, browser):
+        """
+        Initialize the page object to use `ui` (a `WebAppUI` instance)
+        and `browser` (a `Browser` instance).
+        """
+        super(PageObject, self).__init__(browser)
+        self._ui = ui
+
+    @property
+    def ui(self):
+        """
+        The `WebAppUI` instance associated with this page.
+        Pages can use this to reference other pages.
+        """
+        return self._ui
+
     @abstractproperty
     def name(self):
         """
@@ -38,26 +54,6 @@ class PageObject(SafeSelenium):
         access them.
         """
         return ""
-
-    @abstractproperty
-    def requirejs(self):
-        """
-        Return a `list` of RequireJS dependencies to wait for
-        when calling `wait_for_js()`.  The list can change based
-        on the state of the page.  For example, you might load
-        different dependencies based on the page title or URL.
-        """
-        return list()
-
-    @abstractproperty
-    def js_globals(self):
-        """
-        Return a `list` of JavaScript globals to wait for
-        when calling `wait_for_js()`.  The list can change based
-        on the state of the page.  For example, you might load
-        different dependencies based on the page title or URL.
-        """
-        return list()
 
     @abstractmethod
     def is_browser_on_page(self):
@@ -92,17 +88,6 @@ class PageObject(SafeSelenium):
         can't directly visit the page object.
         """
         raise NotImplemented
-
-    def wait_for_js(self):
-        """
-        Wait for the page's JavaScript dependencies to load.
-        Pages define their dependencies using `requirejs` and `js_globals` properties.
-        """
-        if self.requirejs:
-            self.wait_for_requirejs(self.requirejs)
-
-        if self.js_globals:
-            self.wait_for_js_variable_truthy(self.js_globals)
 
     def warning(self, msg):
         """

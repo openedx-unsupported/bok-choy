@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alert</title>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("button#alert").click(function(theEvent) {
+                alert("Alert!");
+                $("div#output").html("Alert closed");
+            });
+            $("button#confirm").click(function(theEvent) {
+                var html = confirm("Confirm?") ? "confirmed" : "cancelled";
+                $("div#output").html(html);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="fixture">
+        <button id="alert">Alert</button>
+        <button id="confirm">Confirm</button>
+    </div>
+    <div id="output"><div>
+</body>
+</html>

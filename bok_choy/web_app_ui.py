@@ -83,8 +83,7 @@ class WebAppUI(Mapping):
 
                 # Instantiate a new page object instance
                 # and configure it reference this object (the WebAppUI)
-                # It will get the browser from the WebAppUI instance.
-                page = clz(self._browser)
+                page = clz(self, self._browser)
 
                 if page.name in self._page_object_dict:
                     msg = "Duplicate page object name: {0}".format(page.name)
@@ -165,9 +164,6 @@ class WebAppUI(Mapping):
         1) Does the page object think it's on the correct page?
         (If not, raise a `WrongPageError`)
 
-        2) Wait for the page object's JavaScript dependencies to load.
-        (If this times out, raise a `selenium.common.exceptions.TimeoutException`)
-
         Since these are the kind of sanity checks you generally
         want to perform before interacting with a page,
         it's best to call page object methods like this:
@@ -187,11 +183,6 @@ class WebAppUI(Mapping):
 
         # Raise an error if we're on the wrong page
         self._verify_page(page)
-
-        # Implicit wait for JavaScript to load
-        # This will raise a selenium.common.exceptions.TimeoutException
-        # if we wait too long.
-        page.wait_for_js()
 
         # Basic sanity checks passed; the tests can now interact
         # with the web app using the page object.

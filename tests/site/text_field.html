@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Field</title>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#fixture input").on('input', function(theEvent) {
+                var html = $("#fixture input").val();
+                $("#output").html(html);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="fixture">
+        <input type="text" value="Default"></input>
+    </div>
+    <div id="output"></div>
+</body>
+</html>

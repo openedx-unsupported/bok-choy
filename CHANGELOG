@@ -1,0 +1,3 @@
+
+Pages now can reference other pages using `self.ui`
+Added tests for page interactions

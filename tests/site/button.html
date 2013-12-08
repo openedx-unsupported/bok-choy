@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Button</title>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#fixture input").click(function(theEvent) {
+                $("#output").html("button was clicked");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="fixture">
+        <input type="button" value="Button"></input>
+    </div>
+    <div id="output"><div>
+</body>
+</html>
