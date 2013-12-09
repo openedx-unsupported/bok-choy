@@ -159,10 +159,7 @@ class WebAppUI(Mapping):
     def __getitem__(self, key):
         """
         Return the page object with the name `key`.
-        Also does some sanity checks and implicit waits:
-
-        1) Does the page object think it's on the correct page?
-        (If not, raise a `WrongPageError`)
+        Also asks the page object to verify that it is on the correct page.
 
         Since these are the kind of sanity checks you generally
         want to perform before interacting with a page,

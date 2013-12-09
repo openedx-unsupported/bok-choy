@@ -5,6 +5,7 @@ Page objects for interacting with the test site.
 import os
 from bok_choy.page_object import PageObject
 from bok_choy.promise import EmptyPromise, fulfill_before, fulfill_after, fulfill
+from bok_choy.javascript import js_defined, requirejs, wait_for_js
 
 
 class SitePage(PageObject):
@@ -189,3 +190,42 @@ class DelayPage(SitePage):
         )
 
         return fulfill(bad_promise)
+
+
+@js_defined('test_var1', 'test_var2')
+class JavaScriptPage(SitePage):
+    """
+    Page for testing asynchronous JavaScript.
+    """
+
+    NAME = "javascript"
+
+    @wait_for_js
+    def trigger_output(self):
+        """
+        Click a button which will only work once RequireJS finishes loading.
+        """
+        self.css_click('div#fixture button')
+
+    @wait_for_js
+    def reload_and_trigger_output(self):
+        """
+        Reload the page, wait for JS, then trigger the output.
+        """
+        self.browser.reload()
+        self.wait_for_js()
+        self.css_click('div#fixture button')
+
+
+@requirejs('main')
+class RequireJSPage(SitePage):
+    """
+    Page for testing asynchronous JavaScript loaded with RequireJS.
+    """
+
+    NAME = "requirejs"
+
+    @property
+    @wait_for_js
+    def output(self):
+        return super(RequireJSPage, self).output
