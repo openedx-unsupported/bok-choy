@@ -2,6 +2,7 @@
 Web application user interface.
 Encapsulates tests from interacting directly with Selenium.
 """
+import os
 import socket
 from collections import Mapping
 import splinter
@@ -214,6 +215,22 @@ class WebAppUI(Mapping):
         page objects in this web app UI!
         """
         self._browser.quit()
+
+    def save_screenshot(self, name):
+        """
+        Save a screenshot of the browser.
+
+        The location of the screenshot can be configured
+        by the environment variable `SCREENSHOT_DIR`.  If not set,
+        this defaults to the current working directory.
+
+        `name` is a name for the screenshot, which will be used
+        in the output file name.
+        """
+        image_name = os.path.join(
+            os.environ.get('SCREENSHOT_DIR', ''), name + '.png'
+        )
+        self._browser.driver.save_screenshot(image_name)
 
     def _get_page_or_error(self, page_name):
         """

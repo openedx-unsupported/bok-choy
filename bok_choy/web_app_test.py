@@ -1,6 +1,7 @@
 """
 Base class for testing a web application.
 """
+import sys
 import time
 from unittest import TestCase
 from abc import ABCMeta, abstractproperty
@@ -40,7 +41,11 @@ class WebAppTest(TestCase):
         # Set up the page objects
         # This will start the browser, so add a cleanup
         self.ui = WebAppUI(self.page_object_classes, tags)
+
+        # Cleanups are executed in LIFO order.
+        # This ensures that the screenshot is taken BEFORE the browser quits.
         self.addCleanup(self.ui.quit_browser)
+        self.addCleanup(self._screenshot)
 
     @abstractproperty
     def page_object_classes(self):
@@ -67,3 +72,19 @@ class WebAppTest(TestCase):
         Helper method to return a uuid.
         """
         return str(uuid4().int)
+
+    def _screenshot(self):
+        """
+        Take a screenshot on failure or error.
+        """
+        # Determine whether the test case succeeded or failed
+        result = sys.exc_info()
+
+        # If it failed, take a screenshot
+        # The exception info will either be an assertion error (on failure)
+        # or an actual exception (on error)
+        if result != (None, None, None):
+            try:
+                self.ui.save_screenshot(self.id())
+            except:
+                pass
