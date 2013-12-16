@@ -2,6 +2,9 @@
 Unit tests for WebAppUI.
 """
 
+import os
+import tempfile
+import shutil
 from unittest import TestCase
 from nose.tools import assert_true, assert_equal
 from bok_choy.web_app_ui import WebAppUI, WebAppUIConfigError, PageLoadError, WrongPageError
@@ -32,6 +35,7 @@ class WebAppUITest(TestCase):
 
         # Create a UI with two pages
         ui = WebAppUI([ButtonPage, TextFieldPage], [])
+        self.addCleanup(ui.quit_browser)
 
         # Go to the button page
         ui.visit('button')
@@ -51,6 +55,7 @@ class WebAppUITest(TestCase):
 
         # Create a UI with one page
         ui = WebAppUI([ButtonPage], [])
+        self.addCleanup(ui.quit_browser)
 
         # Try accessing a page object that doesn't exist
         config_error_raised = False
@@ -86,6 +91,7 @@ class WebAppUITest(TestCase):
         load_error_raised = False
         try:
             ui = WebAppUI([InvalidURLPage], [])
+            self.addCleanup(ui.quit_browser)
             ui.visit('unavailable')
 
         except PageLoadError:
@@ -98,7 +104,31 @@ class WebAppUITest(TestCase):
         # Create a UI with two page objects
         pages = [ButtonPage, TextFieldPage]
         ui = WebAppUI(pages, [])
+        self.addCleanup(ui.quit_browser)
 
         # Check that we can treat it as an iterator
         assert_equal(['button', 'text_field'], [p for p in ui])
         assert_equal(len(pages), len(ui))
+
+    def test_save_screenshot(self):
+
+        # Create a temp directory to save the screenshot to
+        tempdir_path = tempfile.mkdtemp()
+        self.addCleanup(lambda: shutil.rmtree(tempdir_path))
+
+        # Configure the screenshot directory using an environment variable
+        os.environ['SCREENSHOT_DIR'] = tempdir_path
+
+        # Take a screenshot of a page
+        ui = WebAppUI([ButtonPage, TextFieldPage], [])
+        self.addCleanup(ui.quit_browser)
+
+        ui.visit('button')
+        ui.save_screenshot('button_page')
+
+        # Check that the file was created
+        expected_file = os.path.join(tempdir_path, 'button_page.png')
+        self.assertTrue(os.path.isfile(expected_file))
+
+        # Check that the file is not empty
+        self.assertGreater(os.stat(expected_file).st_size, 100)

@@ -37,3 +37,6 @@ nosetests.xml
 
 # Sphinx
 docs/_build
+
+# Screenshots
+screenshots
