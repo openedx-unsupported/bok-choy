@@ -6,6 +6,7 @@ import os
 import socket
 from collections import Mapping
 import splinter
+from .promise import EmptyPromise, fulfill
 
 import logging
 LOGGER = logging.getLogger(__name__)
@@ -156,6 +157,23 @@ class WebAppUI(Mapping):
 
         # Ask the page object to verify that the correct page loaded
         self._verify_page(page)
+
+    def wait_for_page(self, page_name, timeout=30):
+        """
+        Block until the page named `page_name` loads.
+
+        Useful for ensuring that we navigate successfully from the current
+        page to the next page.
+
+        Raises a `WebAppUIConfigError` if the page object doesn't exist.
+        Raises a `BrokenPromise` exception if the page fails to load within `timeout` seconds.
+        """
+        next_page = self._get_page_or_error(page_name)
+        return fulfill(
+            EmptyPromise(
+                next_page.is_browser_on_page,
+                "loaded page '{0}'".format(page_name)
+        ))
 
     def __getitem__(self, key):
         """

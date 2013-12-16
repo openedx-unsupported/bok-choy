@@ -3,6 +3,7 @@ Page objects for interacting with the test site.
 """
 
 import os
+import time
 from bok_choy.page_object import PageObject
 from bok_choy.promise import EmptyPromise, fulfill_before, fulfill_after, fulfill
 from bok_choy.javascript import js_defined, requirejs, wait_for_js
@@ -190,6 +191,20 @@ class DelayPage(SitePage):
         )
 
         return fulfill(bad_promise)
+
+
+class NextPage(SitePage):
+    """
+    Page that loads another page after a delay.
+    """
+    NAME = "next_page"
+
+    def load_next(self, page_name, delay_sec):
+        """
+        Load the page named `page_name` after waiting for `delay_sec`.
+        """
+        time.sleep(delay_sec)
+        self.ui.visit(page_name)
 
 
 @js_defined('test_var1', 'test_var2')
