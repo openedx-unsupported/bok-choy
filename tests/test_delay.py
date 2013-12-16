@@ -8,7 +8,7 @@ from nose.tools import assert_equal, assert_true
 from .pages import DelayPage
 
 
-class InputTest(WebAppTest):
+class DelayTest(WebAppTest):
     """
     Test waiting for elements to appear after a delay.
     """
