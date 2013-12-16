@@ -18,9 +18,7 @@ if an operation cannot be performed.
 from textwrap import dedent
 from contextlib import contextmanager
 from .promise import Promise, fulfill_before, fulfill
-from selenium.common.exceptions import (
-    WebDriverException, StaleElementReferenceException, NoAlertPresentException
-)
+from selenium.common.exceptions import WebDriverException, StaleElementReferenceException
 from splinter.exceptions import ElementDoesNotExist
 
 
@@ -131,7 +129,7 @@ class SafeSelenium(object):
         self.css_click(css_selector)
 
         check_select_promise = Promise(
-            no_error(self._css_find(select_css).first.value == value),
+            no_error(lambda: self._css_find(select_css).first.value == value),
             "select '{0}' in '{1}'".format(value, name)
         )
         return fulfill(check_select_promise)
@@ -177,41 +175,12 @@ class SafeSelenium(object):
         # Execute the `with` block
         yield
 
-        # If for some reason the above did not work, confirm the alert manually
-        # This is supported only in some browsers
-        try:
-            alert = self.browser.get_alert()
-
-            if confirm:
-                alert.accept()
-
-            else:
-                alert.dismiss()
-
-        except NoAlertPresentException:
-            pass
-
-    def js_var_truthy(self, variable):
-        # TODO
-        return Promise(
-            lambda: (True, None),
-            "JavaScript variable '{0}' is truthy".format(variable)
-        )
-
-    def requirejs_loaded(self, dependencies):
-        # TODO
-        return Promise(
-            lambda: (True, None),
-            "RequireJS dependencies ['{0}'] are loaded".format(", ".join(dependencies))
-        )
-
     def disable_jquery_animations(self):
         """
         Disable JQuery animations on the page.  Any state changes
         will occur immediately to the final state.
         """
-        with fulfill_before(self.js_var_truthy("jQuery")):
-            self.browser.execute_script("jQuery.fx.off = true;")
+        self.browser.execute_script("jQuery.fx.off = true;")
 
     def _css_find(self, css_selector):
         """

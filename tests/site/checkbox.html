@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkbox</title>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#fixture input").click(function(theEvent) {
+                var checked = [];
+
+                if ($("#red").is(":checked")) {
+                    checked.push("red");
+                }
+
+                if ($("#blue").is(":checked")) {
+                    checked.push("blue");
+                }
+
+                var html = checked.join(", ");
+                $("#output").html(html);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="fixture">
+        <input id="red" type="checkbox" name="pill" value="red">Take the red pill</input><br />
+        <input id="blue" type="checkbox" name="pill" value="blue">Take the blue pill</input>
+    </div>
+    <div id="output"></div>
+</body>
+</html>

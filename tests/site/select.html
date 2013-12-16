@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select</title>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#fixture select").change(function(theEvent) {
+                var html = "";
+                $("#fixture option:selected").each(function() {
+                    html += "<p>" + $(this).text() + "</p>";
+                });
+                $("#output").html(html);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="fixture">
+        <select name="cars">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="fiat">Fiat</option>
+            <option value="audi">Audi</option>
+        </select>
+    </div>
+    <div id="output">
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript</title>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            window.setTimeout(function() {
+                $("#fixture button").click(function(theEvent) {
+                    $("#output").html("Done");
+                });
+
+                // The first variable is set immediately once the click
+                // handler is installed.
+                window.test_var1 = true;
+
+                // The second variable a half second later.
+                window.setTimeout(function() { window.test_var2 = true; }, 500);
+            }, 2000);
+        });
+    </script>
+</head>
+<body>
+    <div id="fixture">
+        <button>Button</button>
+    </div>
+    <div id="output"></div>
+</body>
+</html>
