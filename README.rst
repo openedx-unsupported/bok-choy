@@ -1,7 +1,9 @@
 bok-choy
 ========
 
-UI-level acceptance test framework.
+UI-level acceptance test framework.  `Full documentation available on ReadTheDocs`__.
+
+__ http://bok-choy.readthedocs.org/en/latest/
 
 
 Overview
