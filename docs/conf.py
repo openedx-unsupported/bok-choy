@@ -19,6 +19,13 @@ templates_path = ['_templates']
 # The suffix of source filenames.
 source_suffix = '.rst'
 
+# Substitutions for all pages
+rst_epilog = """
+.. _Bok Choy: https://github.com/edx/bok-choy
+.. _Selenium: http://www.seleniumhq.org
+.. _Python: http://python.org
+"""
+
 # The master toctree document.
 master_doc = 'index'
 
