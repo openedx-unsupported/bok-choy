@@ -18,12 +18,25 @@ class DuplicatePage(SitePage):
     NAME = "button"
 
 
-class InvalidURLPage(SitePage):
+class UnavailableURLPage(SitePage):
     """
     Create a page that will return a 404, since the test site
     does not serve it.
     """
     NAME = "unavailable"
+
+
+class InvalidURLPage(SitePage):
+    """
+    Create a page that will return a malformed URL.
+    """
+    NAME = "invalid"
+
+    def url(self, **kwargs):
+        """
+        Allow the caller to control the returned URL using `ui.visit()` kwargs.
+        """
+        return kwargs.get('url')
 
 
 class WebAppUITest(TestCase):
@@ -84,13 +97,13 @@ class WebAppUITest(TestCase):
 
         assert_true(config_error_raised)
 
-    def test_invalid_url(self):
+    def test_unavailable_url(self):
         """
         Check error handling for unavailable URL.
         """
         load_error_raised = False
         try:
-            ui = WebAppUI([InvalidURLPage], [])
+            ui = WebAppUI([UnavailableURLPage], [])
             self.addCleanup(ui.quit_browser)
             ui.visit('unavailable')
 
@@ -98,6 +111,24 @@ class WebAppUITest(TestCase):
             load_error_raised = True
 
         assert_true(load_error_raised)
+
+    def test_invalid_url(self):
+        """
+        Check error handling for malformed url.
+        URLs must have a protocol and host; if a port is specified,
+        it must use the correct syntax.
+        """
+        for url in ["invalid", "/invalid", "http://localhost:/invalid", "://localhost/invalid"]:
+            load_error_raised = False
+            try:
+                ui = WebAppUI([InvalidURLPage], [])
+                self.addCleanup(ui.quit_browser)
+                ui.visit('invalid', url=url)
+
+            except PageLoadError:
+                load_error_raised = True
+
+            assert_true(load_error_raised)
 
     def test_page_iterator(self):
 
