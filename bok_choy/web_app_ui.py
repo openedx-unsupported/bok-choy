@@ -4,6 +4,7 @@ Encapsulates tests from interacting directly with Selenium.
 """
 import os
 import socket
+import urlparse
 from collections import Mapping
 import splinter
 from .promise import EmptyPromise, fulfill
@@ -142,6 +143,10 @@ class WebAppUI(Mapping):
         # if the page isn't reachable from a specific URL
         url = page.url(**kwargs)
 
+        # Validate the URL
+        if not self._validate_url(url):
+            raise PageLoadError("Invalid URL: '{0}'".format(url))
+
         # Visit the URL
         try:
             self._browser.visit(url)
@@ -270,3 +275,22 @@ class WebAppUI(Mapping):
         if not page_object.is_browser_on_page():
             msg = "Not on the correct page to use '{}'".format(page_object.name)
             raise WrongPageError(msg)
+
+    def _validate_url(self, url):
+        """
+        Return a boolean indicating whether the URL has a protocol and hostname.
+        If a port is specified, ensure it is an integer.
+        """
+        result = urlparse.urlsplit(url)
+
+        # Check that we have a protocol and hostname
+        if not result.scheme or not result.netloc:
+            return False
+
+        # Check that the port is an integer
+        try:
+            int(result.port)
+        except ValueError:
+            return False
+        else:
+            return True
