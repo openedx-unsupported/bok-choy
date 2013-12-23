@@ -184,7 +184,7 @@ Improve the page definition
 .. tip:: A Best Practice for Bok Choy tests is to use css locators to identify objects.
 
 .. hint:: Get to know how to use the developer tools for your favorite browser.
-    Here are links to articles to get you started with Chrome_ and FireFox_.
+    Here are links to articles to get you started with Chrome_ and Firefox_.
 
 .. _Chrome: https://developers.google.com/chrome-developer-tools/docs/dom-and-styles
 .. _FireFox: https://developer.mozilla.org/en-US/docs/Tools/Page_Inspector
