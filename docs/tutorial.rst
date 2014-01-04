@@ -282,7 +282,7 @@ So we add the search results page definition to pages.py:
         def is_browser_on_page(self):
             # This should be something like: u'Search · foo bar · GitHub'
             title = self.browser.title
-            matches = re.match(u'^Search .+ GitHub$', title)
+            matches = re.match(u'^Search .+$', title)
             return matches is not None
 
 
@@ -297,7 +297,7 @@ that does just that.
 Let's see how the method definition for pressing the search button would look.
 
 .. code-block:: python
-   :emphasize-lines: 20-40
+   :emphasize-lines: 26-40
 
     # -*- coding: utf-8 -*-
     from bok_choy.page_object import PageObject
@@ -521,11 +521,11 @@ search results. And not only that, but also that it was the first result.
 Modify the test.py file to do these assertions:
 
 .. code-block:: python
-   :emphasize-lines: 26-27
+   :emphasize-lines: 3, 12, 26-27
 
     import unittest
     from bok_choy.web_app_test import WebAppTest
-    from pages import GitHubSearchPage
+    from pages import GitHubSearchPage, GitHubSearchResultsPage
 
     class TestGitHub(WebAppTest):
         """
@@ -534,7 +534,7 @@ Modify the test.py file to do these assertions:
 
         @property
         def page_object_classes(self):
-            return [GitHubSearchPage]
+            return [GitHubSearchPage, GitHubSearchResultsPage]
 
         def test_page_existence(self):
             """
