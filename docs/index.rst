@@ -8,8 +8,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   api_reference
    tutorial
+   api_reference
 
 
 
