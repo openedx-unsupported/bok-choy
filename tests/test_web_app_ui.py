@@ -6,7 +6,7 @@ import os
 import tempfile
 import shutil
 from unittest import TestCase
-from nose.tools import assert_true, assert_equal
+from nose.tools import assert_true, assert_equal, assert_raises
 from bok_choy.web_app_ui import WebAppUI, WebAppUIConfigError, PageLoadError, WrongPageError
 from .pages import SitePage, ButtonPage, TextFieldPage
 
@@ -36,7 +36,7 @@ class InvalidURLPage(SitePage):
         """
         Allow the caller to control the returned URL using `ui.visit()` kwargs.
         """
-        return kwargs.get('url')
+        return "http://localhost:/invalid"
 
 
 class WebAppUITest(TestCase):
@@ -53,16 +53,8 @@ class WebAppUITest(TestCase):
         # Go to the button page
         ui.visit('button')
 
-        # Try using the text field page
-        # Expect that an exception gets raised
-        wrong_page_raised = False
-        try:
-            ui['text_field'].enter_text('Lorem ipsum')
-
-        except WrongPageError:
-            wrong_page_raised = True
-
-        assert_true(wrong_page_raised)
+        # Expect an exception
+        assert_raises(WrongPageError, ui.__getitem__, 'text_field')
 
     def test_no_page_object(self):
 
@@ -70,65 +62,45 @@ class WebAppUITest(TestCase):
         ui = WebAppUI([ButtonPage], [])
         self.addCleanup(ui.quit_browser)
 
-        # Try accessing a page object that doesn't exist
-        config_error_raised = False
-        try:
-            ui['no_such_page'].is_browser_on_page()
-
-        # Expect that an error is raised
-        except WebAppUIConfigError:
-            config_error_raised = True
-
-        assert_true(config_error_raised)
+        # Expect an exception because we are not on the page
+        assert_raises(WebAppUIConfigError, ui.__getitem__, 'no_such_page')
 
     def test_duplicate_page_error(self):
         """
         Check that we get an error when creating a web app UI
         with duplicate page names.
         """
-
-        config_error_raised = False
-
-        try:
-            WebAppUI([ButtonPage, DuplicatePage], [])
-
-        except WebAppUIConfigError:
-            config_error_raised = True
-
-        assert_true(config_error_raised)
+        assert_raises(WebAppUIConfigError, WebAppUI, [ButtonPage, DuplicatePage], [])
 
     def test_unavailable_url(self):
         """
         Check error handling for unavailable URL.
         """
-        load_error_raised = False
-        try:
-            ui = WebAppUI([UnavailableURLPage], [])
-            self.addCleanup(ui.quit_browser)
-            ui.visit('unavailable')
+        ui = WebAppUI([UnavailableURLPage], [])
+        self.addCleanup(ui.quit_browser)
+        assert_raises(PageLoadError, ui.visit, 'unavailable')
 
-        except PageLoadError:
-            load_error_raised = True
+    def test_invalid_url_exception(self):
+        ui = WebAppUI([InvalidURLPage], [])
+        self.addCleanup(ui.quit_browser)
+        assert_raises(PageLoadError, ui.visit, 'invalid')
 
-        assert_true(load_error_raised)
-
-    def test_invalid_url(self):
+    def test_validate_url(self):
         """
         Check error handling for malformed url.
         URLs must have a protocol and host; if a port is specified,
         it must use the correct syntax.
         """
-        for url in ["invalid", "/invalid", "http://localhost:/invalid", "://localhost/invalid"]:
-            load_error_raised = False
-            try:
-                ui = WebAppUI([InvalidURLPage], [])
-                self.addCleanup(ui.quit_browser)
-                ui.visit('invalid', url=url)
+        ui = WebAppUI([], [])
+        self.addCleanup(ui.quit_browser)
 
-            except PageLoadError:
-                load_error_raised = True
-
-            assert_true(load_error_raised)
+        for url, is_valid in [
+            ("", False), ("invalid", False), ("/invalid", False),
+            ("http://localhost:/invalid", False), ("://localhost/invalid", False),
+            ("http://localhost", True), ("http://localhost/test", True),
+            ("http://localhost:8080", True), ("http://localhost:8080/test", True)
+        ]:
+            assert_equal(ui.validate_url(url), is_valid)
 
     def test_page_iterator(self):
 
