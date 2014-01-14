@@ -14,9 +14,7 @@ class NextPageTest(WebAppTest):
     Test wait for next page to load.
     """
 
-    @property
-    def page_object_classes(self):
-        return [NextPage, ButtonPage]
+    page_object_classes = [NextPage, ButtonPage]
 
     def test_wait_for_next_page(self):
         self.ui.visit('next_page')

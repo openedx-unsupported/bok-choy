@@ -11,10 +11,7 @@ class AlertTest(WebAppTest):
     """
     Test handling of alerts.
     """
-
-    @property
-    def page_object_classes(self):
-        return [AlertPage]
+    page_object_classes = [AlertPage]
 
     def test_confirm(self):
         self.ui.visit('alert')

@@ -12,9 +12,7 @@ class SelectorTest(WebAppTest):
     Test retrieving values by CSS selector.
     """
 
-    @property
-    def page_object_classes(self):
-        return [SelectorPage]
+    page_object_classes = [SelectorPage]
 
     def test_count(self):
         self.ui.visit('selector')
