@@ -18,19 +18,12 @@ class SitePage(PageObject):
     # (set by the test runner script)
     SERVER_PORT = os.environ.get("SERVER_PORT", 8003)
 
-    # Subclasses override this
-    NAME = None
-
     def is_browser_on_page(self):
-        title = self.NAME.lower().replace('_', ' ')
+        title = self.name.lower().replace('_', ' ')
         return title in self.browser.title.lower()
 
     def url(self, **kwargs):
-        return "http://localhost:{0}/{1}".format(self.SERVER_PORT, self.NAME + ".html")
-
-    @property
-    def name(self):
-        return self.NAME
+        return "http://localhost:{0}/{1}".format(self.SERVER_PORT, self.name + ".html")
 
     @property
     def output(self):
@@ -51,7 +44,7 @@ class ButtonPage(SitePage):
     """
     Page for testing button interactions.
     """
-    NAME = "button"
+    name = "button"
 
     def click_button(self):
         """
@@ -65,7 +58,7 @@ class TextFieldPage(SitePage):
     """
     Page for testing text field interactions.
     """
-    NAME = "text_field"
+    name = "text_field"
 
     def enter_text(self, text):
         """
@@ -78,7 +71,7 @@ class SelectPage(SitePage):
     """
     Page for testing select input interactions.
     """
-    NAME = "select"
+    name = "select"
 
     def select_car(self, car_value):
         """
@@ -91,7 +84,7 @@ class CheckboxPage(SitePage):
     """
     Page for testing checkbox interactions.
     """
-    NAME = "checkbox"
+    name = "checkbox"
 
     def toggle_pill(self, pill_name):
         """
@@ -104,7 +97,7 @@ class AlertPage(SitePage):
     """
     Page for testing alert handling.
     """
-    NAME = "alert"
+    name = "alert"
 
     def confirm(self):
         with self.handle_alert(confirm=True):
@@ -124,7 +117,7 @@ class SelectorPage(SitePage):
     Page for testing retrieval of information by CSS selectors.
     """
 
-    NAME = "selector"
+    name = "selector"
 
     @property
     def num_divs(self):
@@ -159,7 +152,7 @@ class DelayPage(SitePage):
     """
     Page for testing elements that appear after a delay.
     """
-    NAME = "delay"
+    name = "delay"
 
     def trigger_output(self):
         """
@@ -197,7 +190,7 @@ class NextPage(SitePage):
     """
     Page that loads another page after a delay.
     """
-    NAME = "next_page"
+    name = "next_page"
 
     def load_next(self, page_name, delay_sec):
         """
@@ -213,7 +206,7 @@ class JavaScriptPage(SitePage):
     Page for testing asynchronous JavaScript.
     """
 
-    NAME = "javascript"
+    name = "javascript"
 
     @wait_for_js
     def trigger_output(self):
@@ -238,7 +231,7 @@ class RequireJSPage(SitePage):
     Page for testing asynchronous JavaScript loaded with RequireJS.
     """
 
-    NAME = "requirejs"
+    name = "requirejs"
 
     @property
     @wait_for_js

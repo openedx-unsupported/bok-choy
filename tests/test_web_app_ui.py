@@ -15,7 +15,7 @@ class DuplicatePage(SitePage):
     """
     Create a page with the same name as another page in the test site.
     """
-    NAME = "button"
+    name = "button"
 
 
 class UnavailableURLPage(SitePage):
@@ -23,14 +23,14 @@ class UnavailableURLPage(SitePage):
     Create a page that will return a 404, since the test site
     does not serve it.
     """
-    NAME = "unavailable"
+    name = "unavailable"
 
 
 class InvalidURLPage(SitePage):
     """
     Create a page that will return a malformed URL.
     """
-    NAME = "invalid"
+    name = "invalid"
 
     def url(self, **kwargs):
         """

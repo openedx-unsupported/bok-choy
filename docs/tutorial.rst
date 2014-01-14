@@ -89,9 +89,7 @@ as follows:
         GitHub's search page
         """
 
-        @property
-        def name(self):
-            return 'github_search'
+        name = 'github_search'
 
         def url(self):
             return 'http://www.github.com/search'
@@ -127,9 +125,7 @@ Create a file named test_search.py in your project folder and use it to visit th
         Tests for the GitHub site.
         """
 
-        @property
-        def page_object_classes(self):
-            return [GitHubSearchPage]
+        page_object_classes = [GitHubSearchPage]
 
         def test_page_existence(self):
             """
@@ -212,9 +208,7 @@ Add a method for filling in the search term to the page object definition like t
         GitHub's search page
         """
 
-        @property
-        def name(self):
-            return 'github_search'
+        name = 'github_search'
 
         def url(self):
             return 'http://www.github.com/search'
@@ -269,9 +263,7 @@ So we add the search results page definition to pages.py:
         GitHub's search results page
         """
 
-        @property
-        def name(self):
-            return 'github_search_results'
+        name = 'github_search_results
 
         def url(self, **kwargs):
             """
@@ -308,9 +300,7 @@ Let's see how the method definition for pressing the search button would look.
         GitHub's search page
         """
 
-        @property
-        def name(self):
-            return 'github_search'
+        name = 'github_search'
 
         def url(self):
             return 'http://www.github.com/search'
@@ -346,9 +336,7 @@ Let's see how the method definition for pressing the search button would look.
         GitHub's search results page
         """
 
-        @property
-        def name(self):
-            return 'github_search_results'
+        name = 'github_search_results'
 
         def url(self, **kwargs):
             """
@@ -380,9 +368,7 @@ Now let's add the new test to test_search.py:
         Tests for the GitHub site.
         """
 
-        @property
-        def page_object_classes(self):
-            return [GitHubSearchPage]
+        page_object_classes = [GitHubSearchPage]
 
         def test_page_existence(self):
             """
@@ -450,9 +436,7 @@ results returned to the page object for the search results page.
         GitHub's search page
         """
 
-        @property
-        def name(self):
-            return 'github_search'
+        name = 'github_search'
 
         def url(self):
             return 'http://www.github.com/search'
@@ -488,9 +472,7 @@ results returned to the page object for the search results page.
         GitHub's search results page
         """
 
-        @property
-        def name(self):
-            return 'github_search_results'
+        name = 'github_search_results'
 
         def url(self, **kwargs):
             """
@@ -509,8 +491,7 @@ results returned to the page object for the search results page.
             """
             Return a list of results returned from a search
             """
-            results = self.css_text('ul.repolist > li > h3.repolist-name > a')
-            return results
+            return self.css_text('ul.repolist > li > h3.repolist-name > a')
 
 
 Improve the search test
@@ -532,9 +513,7 @@ Modify the test.py file to do these assertions:
         Tests for the GitHub site.
         """
 
-        @property
-        def page_object_classes(self):
-            return [GitHubSearchPage, GitHubSearchResultsPage]
+        page_object_classes = [GitHubSearchPage, GitHubSearchResultsPage]
 
         def test_page_existence(self):
             """

@@ -13,9 +13,7 @@ class DelayTest(WebAppTest):
     Test waiting for elements to appear after a delay.
     """
 
-    @property
-    def page_object_classes(self):
-        return [DelayPage]
+    page_object_classes = [DelayPage]
 
     def test_delay(self):
         """

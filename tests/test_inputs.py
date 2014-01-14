@@ -12,9 +12,7 @@ class InputTest(WebAppTest):
     Test basic HTML form input interactions.
     """
 
-    @property
-    def page_object_classes(self):
-        return [ButtonPage, TextFieldPage, SelectPage, CheckboxPage]
+    page_object_classes = [ButtonPage, TextFieldPage, SelectPage, CheckboxPage]
 
     def test_button(self):
         self.ui.visit('button')

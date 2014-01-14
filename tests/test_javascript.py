@@ -12,9 +12,7 @@ class JavaScriptTest(WebAppTest):
     Test JavaScript synchronization.
     """
 
-    @property
-    def page_object_classes(self):
-        return [JavaScriptPage, RequireJSPage]
+    page_object_classes = [JavaScriptPage, RequireJSPage]
 
     def test_wait_for_defined(self):
         self.ui.visit('javascript')
