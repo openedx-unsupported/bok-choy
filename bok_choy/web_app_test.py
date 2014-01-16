@@ -40,21 +40,12 @@ class WebAppTest(TestCase):
 
         # Set up the page objects
         # This will start the browser, so add a cleanup
-        self.ui = WebAppUI(self.page_object_classes, tags)
+        self.ui = WebAppUI(tags)
 
         # Cleanups are executed in LIFO order.
         # This ensures that the screenshot is taken BEFORE the browser quits.
         self.addCleanup(self.ui.quit_browser)
         self.addCleanup(self._screenshot)
-
-    @abstractproperty
-    def page_object_classes(self):
-        """
-        Subclasses override this to return a list
-        of `PageObject` subclasses to visit
-        during the test.
-        """
-        return []
 
     @property
     def fixtures(self):

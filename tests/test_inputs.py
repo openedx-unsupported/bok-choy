@@ -12,24 +12,26 @@ class InputTest(WebAppTest):
     Test basic HTML form input interactions.
     """
 
-    page_object_classes = [ButtonPage, TextFieldPage, SelectPage, CheckboxPage]
-
     def test_button(self):
-        self.ui.visit('button')
-        self.ui['button'].click_button()
-        assert_equal(self.ui['button'].output, 'button was clicked')
+        button = ButtonPage(self.ui)
+        button.visit()
+        button.click_button()
+        assert_equal(button.output, 'button was clicked')
 
     def test_textfield(self):
-        self.ui.visit('text_field')
-        self.ui['text_field'].enter_text('Lorem ipsum')
-        assert_equal(self.ui['text_field'].output, 'Lorem ipsum')
+        text_field = TextFieldPage(self.ui)
+        text_field.visit()
+        text_field.enter_text('Lorem ipsum')
+        assert_equal(text_field.output, 'Lorem ipsum')
 
     def test_select(self):
-        self.ui.visit('select')
-        self.ui['select'].select_car('fiat')
-        assert_equal(self.ui['select'].output, 'Fiat')
+        select = SelectPage(self.ui)
+        select.visit()
+        select.select_car('fiat')
+        assert_equal(select.output, 'Fiat')
 
     def test_checkbox(self):
-        self.ui.visit('checkbox')
-        self.ui['checkbox'].toggle_pill('red')
-        assert_equal(self.ui['checkbox'].output, 'red')
+        checkbox = CheckboxPage(self.ui)
+        checkbox.visit()
+        checkbox.toggle_pill('red')
+        assert_equal(checkbox.output, 'red')

@@ -12,24 +12,23 @@ class DelayTest(WebAppTest):
     """
     Test waiting for elements to appear after a delay.
     """
-
-    page_object_classes = [DelayPage]
+    def setUp(self):
+        super(DelayTest, self).setUp()
+        self.delay = DelayPage(self.ui)
+        self.delay.visit()
 
     def test_delay(self):
         """
         Test retrieving a value from the DOM that does not appear
         until after a delay.
         """
-        self.ui.visit('delay')
-        self.ui['delay'].trigger_output()
-        assert_equal(self.ui['delay'].output, "Done")
+        self.delay.trigger_output()
+        assert_equal(self.delay.output, "Done")
 
     def test_broken_promise(self):
-        self.ui.visit('delay')
-
         broken_promise_raised = False
         try:
-            self.ui['delay'].make_broken_promise()
+            self.delay.make_broken_promise()
         except BrokenPromise:
             broken_promise_raised = True
 

@@ -11,19 +11,19 @@ class AlertTest(WebAppTest):
     """
     Test handling of alerts.
     """
-    page_object_classes = [AlertPage]
+    def setUp(self):
+        super(AlertTest, self).setUp()
+        self.alert = AlertPage(self.ui)
+        self.alert.visit()
 
     def test_confirm(self):
-        self.ui.visit('alert')
-        self.ui['alert'].confirm()
-        assert_equal(self.ui['alert'].output, "confirmed")
+        self.alert.confirm()
+        assert_equal(self.alert.output, "confirmed")
 
     def test_cancel(self):
-        self.ui.visit('alert')
-        self.ui['alert'].cancel()
-        assert_equal(self.ui['alert'].output, "cancelled")
+        self.alert.cancel()
+        assert_equal(self.alert.output, "cancelled")
 
     def test_dismiss(self):
-        self.ui.visit('alert')
-        self.ui['alert'].dismiss()
-        assert_equal(self.ui['alert'].output, "Alert closed")
+        self.alert.dismiss()
+        assert_equal(self.alert.output, "Alert closed")
