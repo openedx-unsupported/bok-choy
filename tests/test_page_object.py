@@ -1,6 +1,5 @@
 from mock import Mock
 from unittest import TestCase
-from nose.tools import assert_equal, assert_raises, assert_false
 
 from bok_choy.page_object import PageObject, PageLoadError, unguarded, WrongPageError
 from .pages import SitePage
@@ -43,7 +42,7 @@ class NeverOnPage(SitePage):
 
 class PageObjectTest(TestCase):
     def test_invalid_url_exception(self):
-        with assert_raises(PageLoadError):
+        with self.assertRaises(PageLoadError):
             InvalidURLPage(Mock()).visit()
 
     def test_validate_url(self):
@@ -58,18 +57,18 @@ class PageObjectTest(TestCase):
             ("http://localhost", True), ("http://localhost/test", True),
             ("http://localhost:8080", True), ("http://localhost:8080/test", True)
         ]:
-            assert_equal(PageObject.validate_url(url), is_valid)
+            self.assertEquals(PageObject.validate_url(url), is_valid)
 
     def test_guarded_methods(self):
         never_on = NeverOnPage(Mock())
 
-        assert_false(never_on.is_browser_on_page())
+        self.assertFalse(never_on.is_browser_on_page())
         never_on.url
         never_on.unguarded_method()
         never_on._private_method()
         never_on.unguarded_property
 
-        with assert_raises(WrongPageError):
+        with self.assertRaises(WrongPageError):
             never_on.guarded_method()
 
         with self.assertRaises(WrongPageError):

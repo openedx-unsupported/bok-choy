@@ -6,7 +6,6 @@ import os
 import tempfile
 import shutil
 from unittest import TestCase
-from nose.tools import assert_true, assert_equal, assert_raises
 from bok_choy.web_app_ui import WebAppUI, WebAppUIConfigError
 from bok_choy.page_object import PageLoadError, WrongPageError
 from .pages import SitePage, ButtonPage, TextFieldPage
@@ -35,7 +34,7 @@ class WebAppUITest(TestCase):
         ButtonPage(ui).visit()
 
         # Expect an exception
-        with assert_raises(WrongPageError):
+        with self.assertRaises(WrongPageError):
             TextFieldPage(ui).enter_text('foo')
 
     def test_unavailable_url(self):
@@ -45,7 +44,7 @@ class WebAppUITest(TestCase):
         ui = WebAppUI([])
         self.addCleanup(ui.quit_browser)
 
-        with assert_raises(PageLoadError):
+        with self.assertRaises(PageLoadError):
             UnavailableURLPage(ui).visit()
 
     def test_save_screenshot(self):

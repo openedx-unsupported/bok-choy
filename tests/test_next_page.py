@@ -2,7 +2,6 @@
 Test wait until next page loads.
 """
 
-from nose.tools import assert_raises
 from bok_choy.web_app_test import WebAppTest
 from bok_choy.web_app_ui import WebAppUIConfigError
 from bok_choy.promise import BrokenPromise
@@ -24,5 +23,5 @@ class NextPageTest(WebAppTest):
 
     def test_next_page_does_not_load(self):
         ButtonPage(self.ui).visit()
-        with assert_raises(BrokenPromise):
+        with self.assertRaises(BrokenPromise):
             self.next_page.wait_for_page(timeout=0.1)

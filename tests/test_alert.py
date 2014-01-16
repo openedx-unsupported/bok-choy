@@ -3,7 +3,6 @@ Test handling of alerts.
 """
 
 from bok_choy.web_app_test import WebAppTest
-from nose.tools import assert_equal, assert_true
 from .pages import AlertPage
 
 
@@ -18,12 +17,12 @@ class AlertTest(WebAppTest):
 
     def test_confirm(self):
         self.alert.confirm()
-        assert_equal(self.alert.output, "confirmed")
+        self.assertEquals(self.alert.output, "confirmed")
 
     def test_cancel(self):
         self.alert.cancel()
-        assert_equal(self.alert.output, "cancelled")
+        self.assertEquals(self.alert.output, "cancelled")
 
     def test_dismiss(self):
         self.alert.dismiss()
-        assert_equal(self.alert.output, "Alert closed")
+        self.assertEquals(self.alert.output, "Alert closed")
