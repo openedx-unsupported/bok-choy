@@ -14,7 +14,7 @@ class SelectorTest(WebAppTest):
     def setUp(self):
         super(SelectorTest, self).setUp()
 
-        self.selector = SelectorPage(self.ui)
+        self.selector = SelectorPage(self.browser)
         self.selector.visit()
 
     def test_count(self):

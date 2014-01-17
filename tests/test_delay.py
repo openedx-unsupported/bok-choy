@@ -13,7 +13,7 @@ class DelayTest(WebAppTest):
     """
     def setUp(self):
         super(DelayTest, self).setUp()
-        self.delay = DelayPage(self.ui)
+        self.delay = DelayPage(self.browser)
         self.delay.visit()
 
     def test_delay(self):

@@ -37,6 +37,23 @@ class BrowserConfigError(Exception):
     pass
 
 
+def save_screenshot(browser, name):
+    """
+    Save a screenshot of the browser.
+
+    The location of the screenshot can be configured
+    by the environment variable `SCREENSHOT_DIR`.  If not set,
+    this defaults to the current working directory.
+
+    `name` is a name for the screenshot, which will be used
+    in the output file name.
+    """
+    image_name = os.path.join(
+        os.environ.get('SCREENSHOT_DIR', ''), name + '.png'
+    )
+    browser.driver.save_screenshot(image_name)
+
+
 def browser(tags=None):
     """
     Interpret environment variables to configure Selenium.

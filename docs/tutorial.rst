@@ -128,7 +128,7 @@ Create a file named test_search.py in your project folder and use it to visit th
             """
             Make sure that the page is accessible.
             """
-            GitHubSearchPage(self.ui).visit()
+            GitHubSearchPage(self.browser).visit()
 
 
     if __name__ == '__main__':
@@ -319,7 +319,7 @@ Let's see how the method definition for pressing the search button would look.
             results page to be displayed
             """
             self.css_click('button.button')
-            results = GitHubSearchResultsPage(self.ui, self.INPUT_SELECTOR)
+            results = GitHubSearchResultsPage(self.browser, self.INPUT_SELECTOR)
             results.wait_for_page()
             return results
 
@@ -374,7 +374,7 @@ Now let's add the new test to test_search.py:
 
         def setUp(self):
             super(TestGitHub, self).setUp()
-            self.github_search = GitHubSearchPage(self.ui)
+            self.github_search = GitHubSearchPage(self.browser)
 
         def test_page_existence(self):
             """
@@ -462,7 +462,7 @@ results returned to the page object for the search results page.
             results page to be displayed
             """
             self.css_click('button.button')
-            results = GitHubSearchResultsPage(self.ui, self.INPUT_SELECTOR)
+            results = GitHubSearchResultsPage(self.browser, self.INPUT_SELECTOR)
             results.wait_for_page()
             return results
 
@@ -526,7 +526,7 @@ Modify the test.py file to do these assertions:
 
         def setUp(self):
             super(TestGitHub, self).setUp()
-            self.github_search = GitHubSearchPage(self.ui)
+            self.github_search = GitHubSearchPage(self.browser)
 
         def test_page_existence(self):
             """

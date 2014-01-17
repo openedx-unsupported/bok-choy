@@ -12,25 +12,25 @@ class InputTest(WebAppTest):
     """
 
     def test_button(self):
-        button = ButtonPage(self.ui)
+        button = ButtonPage(self.browser)
         button.visit()
         button.click_button()
         self.assertEquals(button.output, 'button was clicked')
 
     def test_textfield(self):
-        text_field = TextFieldPage(self.ui)
+        text_field = TextFieldPage(self.browser)
         text_field.visit()
         text_field.enter_text('Lorem ipsum')
         self.assertEquals(text_field.output, 'Lorem ipsum')
 
     def test_select(self):
-        select = SelectPage(self.ui)
+        select = SelectPage(self.browser)
         select.visit()
         select.select_car('fiat')
         self.assertEquals(select.output, 'Fiat')
 
     def test_checkbox(self):
-        checkbox = CheckboxPage(self.ui)
+        checkbox = CheckboxPage(self.browser)
         checkbox.visit()
         checkbox.toggle_pill('red')
         self.assertEquals(checkbox.output, 'red')

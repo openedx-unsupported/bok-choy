@@ -12,18 +12,18 @@ class JavaScriptTest(WebAppTest):
     """
 
     def test_wait_for_defined(self):
-        javascript = JavaScriptPage(self.ui)
+        javascript = JavaScriptPage(self.browser)
         javascript.visit()
         javascript.trigger_output()
         self.assertEquals(javascript.output, "Done")
 
     def test_wait_for_defined_with_reload(self):
-        javascript = JavaScriptPage(self.ui)
+        javascript = JavaScriptPage(self.browser)
         javascript.visit()
         javascript.reload_and_trigger_output()
         self.assertEquals(javascript.output, "Done")
 
     def test_wait_for_requirejs(self):
-        requirejs = RequireJSPage(self.ui)
+        requirejs = RequireJSPage(self.browser)
         requirejs.visit()
         self.assertEquals(requirejs.output, "Done")

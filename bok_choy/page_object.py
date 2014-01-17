@@ -137,22 +137,6 @@ class PageObject(SafeSelenium):
 
     __metaclass__ = _PageObjectMetaclass
 
-    def __init__(self, ui):
-        """
-        Initialize the page object to use `ui` (a `WebAppUI` instance).
-        """
-        super(PageObject, self).__init__(ui.browser)
-        self._ui = ui
-
-    @property
-    @unguarded
-    def ui(self):
-        """
-        The `WebAppUI` instance associated with this page.
-        Pages can use this to reference other pages.
-        """
-        return self._ui
-
     @abstractmethod
     def is_browser_on_page(self):
         """

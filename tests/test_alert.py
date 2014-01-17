@@ -12,7 +12,7 @@ class AlertTest(WebAppTest):
     """
     def setUp(self):
         super(AlertTest, self).setUp()
-        self.alert = AlertPage(self.ui)
+        self.alert = AlertPage(self.browser)
         self.alert.visit()
 
     def test_confirm(self):
