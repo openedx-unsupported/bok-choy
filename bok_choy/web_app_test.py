@@ -6,7 +6,7 @@ import time
 from unittest import TestCase
 from abc import ABCMeta, abstractproperty
 from uuid import uuid4
-from .web_app_ui import WebAppUI
+from .browser import browser, save_screenshot
 
 
 class TimeoutError(Exception):
@@ -40,21 +40,12 @@ class WebAppTest(TestCase):
 
         # Set up the page objects
         # This will start the browser, so add a cleanup
-        self.ui = WebAppUI(self.page_object_classes, tags)
+        self.browser = browser(tags)
 
         # Cleanups are executed in LIFO order.
         # This ensures that the screenshot is taken BEFORE the browser quits.
-        self.addCleanup(self.ui.quit_browser)
+        self.addCleanup(self.browser.quit)
         self.addCleanup(self._screenshot)
-
-    @abstractproperty
-    def page_object_classes(self):
-        """
-        Subclasses override this to return a list
-        of `PageObject` subclasses to visit
-        during the test.
-        """
-        return []
 
     @property
     def fixtures(self):
@@ -85,6 +76,6 @@ class WebAppTest(TestCase):
         # or an actual exception (on error)
         if result != (None, None, None):
             try:
-                self.ui.save_screenshot(self.id())
+                save_screenshot(self.browser, self.id())
             except:
                 pass

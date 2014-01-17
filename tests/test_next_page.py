@@ -2,9 +2,7 @@
 Test wait until next page loads.
 """
 
-from nose.tools import assert_raises
 from bok_choy.web_app_test import WebAppTest
-from bok_choy.web_app_ui import WebAppUIConfigError
 from bok_choy.promise import BrokenPromise
 from .pages import ButtonPage, NextPage
 
@@ -14,15 +12,15 @@ class NextPageTest(WebAppTest):
     Test wait for next page to load.
     """
 
-    page_object_classes = [NextPage, ButtonPage]
+    def setUp(self):
+        super(NextPageTest, self).setUp()
+        self.next_page = NextPage(self.browser)
 
     def test_wait_for_next_page(self):
-        self.ui.visit('next_page')
-        self.ui['next_page'].load_next('button', 1)
-
-    def test_no_page_defined(self):
-        assert_raises(WebAppUIConfigError, self.ui.wait_for_page, 'not_a_page')
+        self.next_page.visit()
+        self.next_page.load_next(ButtonPage(self.browser), 1)
 
     def test_next_page_does_not_load(self):
-        self.ui.visit('button')
-        assert_raises(BrokenPromise, self.ui.wait_for_page, 'next_page', timeout=0.1)
+        ButtonPage(self.browser).visit()
+        with self.assertRaises(BrokenPromise):
+            self.next_page.wait_for_page(timeout=0.1)

@@ -37,7 +37,24 @@ class BrowserConfigError(Exception):
     pass
 
 
-def browser(tags):
+def save_screenshot(browser, name):
+    """
+    Save a screenshot of the browser.
+
+    The location of the screenshot can be configured
+    by the environment variable `SCREENSHOT_DIR`.  If not set,
+    this defaults to the current working directory.
+
+    `name` is a name for the screenshot, which will be used
+    in the output file name.
+    """
+    image_name = os.path.join(
+        os.environ.get('SCREENSHOT_DIR', ''), name + '.png'
+    )
+    browser.driver.save_screenshot(image_name)
+
+
+def browser(tags=None):
     """
     Interpret environment variables to configure Selenium.
     Performs validation, logging, and sensible defaults.
@@ -70,6 +87,8 @@ def browser(tags):
     Raises a `BrowserConfigError` if environment variables are missing.
     Returns a `splinter.Browser` object.
     """
+    if tags is None:
+        tags = []
 
     if _use_local_browser():
         browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')

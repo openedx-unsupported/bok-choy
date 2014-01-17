@@ -7,7 +7,7 @@ browser
    :members:
 
 javascript
--------
+----------
 .. automodule:: bok_choy.javascript
    :members:
 
@@ -34,9 +34,4 @@ web_app_fixture
 web_app_test
 ------------
 .. automodule:: bok_choy.web_app_test
-   :members:
-
-web_app_ui
-----------
-.. automodule:: bok_choy.web_app_ui
    :members:

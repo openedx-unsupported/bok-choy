@@ -89,8 +89,7 @@ as follows:
         GitHub's search page
         """
 
-        name = 'github_search'
-
+        @property
         def url(self):
             return 'http://www.github.com/search'
 
@@ -125,13 +124,11 @@ Create a file named test_search.py in your project folder and use it to visit th
         Tests for the GitHub site.
         """
 
-        page_object_classes = [GitHubSearchPage]
-
         def test_page_existence(self):
             """
             Make sure that the page is accessible.
             """
-            self.ui.visit('github_search')
+            GitHubSearchPage(self.browser).visit()
 
 
     if __name__ == '__main__':
@@ -208,8 +205,7 @@ Add a method for filling in the search term to the page object definition like t
         GitHub's search page
         """
 
-        name = 'github_search'
-
+        @property
         def url(self):
             return 'http://www.github.com/search'
 
@@ -242,7 +238,7 @@ search for "foo bar" it will be:
 
 .. code-block:: xml
 
-    <title>Search · foo bar · GitHub</title>
+    <title>Search · foo bar</title>
 
 
 Add another page's definition
@@ -263,18 +259,21 @@ So we add the search results page definition to pages.py:
         GitHub's search results page
         """
 
-        name = 'github_search_results
+        def __init__(self, search_phrase):
+            super(GitHubSearchResultsPage, self).__init__(ui)
+            self.search_phrase = search_phrase
 
-        def url(self, **kwargs):
+        @property
+        def url(self):
             """
             You do not navigate here directly
             """
             raise NotImplemented
 
         def is_browser_on_page(self):
-            # This should be something like: u'Search · foo bar · GitHub'
+            # This should be something like: u'Search · foo bar'
             title = self.browser.title
-            matches = re.match(u'^Search .+$', title)
+            matches = re.match(u'^Search · {}'.format(self.search_phrase), title)
             return matches is not None
 
 
@@ -299,9 +298,9 @@ Let's see how the method definition for pressing the search button would look.
         """
         GitHub's search page
         """
+        INPUT_SELECTOR = 'input#js-command-bar-field'
 
-        name = 'github_search'
-
+        @property
         def url(self):
             return 'http://www.github.com/search'
 
@@ -312,7 +311,7 @@ Let's see how the method definition for pressing the search button would look.
             """
             Fill the text into the input field
             """
-            self.css_fill('input#js-command-bar-field', text)
+            self.css_fill(self.INPUT_SELECTOR, text)
 
         def search(self):
             """
@@ -320,7 +319,9 @@ Let's see how the method definition for pressing the search button would look.
             results page to be displayed
             """
             self.css_click('button.button')
-            self.ui.wait_for_page('github_search_results')
+            results = GitHubSearchResultsPage(self.browser, self.INPUT_SELECTOR)
+            results.wait_for_page()
+            return results
 
         def search_for_terms(self, text):
             """
@@ -328,7 +329,7 @@ Let's see how the method definition for pressing the search button would look.
             Search button
             """
             self.enter_search_terms(text)
-            self.search()
+            return self.search()
 
 
     class GitHubSearchResultsPage(PageObject):
@@ -336,18 +337,21 @@ Let's see how the method definition for pressing the search button would look.
         GitHub's search results page
         """
 
-        name = 'github_search_results'
+        def __init__(self, search_phrase):
+            super(GitHubSearchResultsPage, self).__init__(ui)
+            self.search_phrase = search_phrase
 
-        def url(self, **kwargs):
+        @property
+        def url(self):
             """
             You do not navigate here directly
             """
             raise NotImplemented
 
         def is_browser_on_page(self):
-            # This should be something like: u'Search · foo bar · GitHub'
+            # This should be something like: u'Search · foo bar'
             title = self.browser.title
-            matches = re.match(u'^Search .+ GitHub$', title)
+            matches = re.match(u'^Search · {}'.format(self.search_phrase), title)
             return matches is not None
 
 
@@ -368,20 +372,22 @@ Now let's add the new test to test_search.py:
         Tests for the GitHub site.
         """
 
-        page_object_classes = [GitHubSearchPage]
+        def setUp(self):
+            super(TestGitHub, self).setUp()
+            self.github_search = GitHubSearchPage(self.browser)
 
         def test_page_existence(self):
             """
             Make sure that the page is accessible.
             """
-            self.ui.visit('github_search')
+            self.github_search.visit()
 
         def test_search(self):
             """
             Make sure that you can search for something.
             """
-            self.ui.visit('github_search')
-            self.ui['github_search'].search_for_terms('user:edx repo:edx-platform')
+            self.github_search.visit()
+            self.github_search.search_for_terms('user:edx repo:edx-platform')
 
 
     if __name__ == '__main__':
@@ -435,9 +441,9 @@ results returned to the page object for the search results page.
         """
         GitHub's search page
         """
+        INPUT_SELECTOR = 'input#js-command-bar-field'
 
-        name = 'github_search'
-
+        @property
         def url(self):
             return 'http://www.github.com/search'
 
@@ -448,7 +454,7 @@ results returned to the page object for the search results page.
             """
             Fill the text into the input field
             """
-            self.css_fill('input#js-command-bar-field', text)
+            self.css_fill(self.INPUT_SELECTOR, text)
 
         def search(self):
             """
@@ -456,7 +462,9 @@ results returned to the page object for the search results page.
             results page to be displayed
             """
             self.css_click('button.button')
-            self.ui.wait_for_page('github_search_results')
+            results = GitHubSearchResultsPage(self.browser, self.INPUT_SELECTOR)
+            results.wait_for_page()
+            return results
 
         def search_for_terms(self, text):
             """
@@ -464,7 +472,7 @@ results returned to the page object for the search results page.
             Search button
             """
             self.enter_search_terms(text)
-            self.search()
+            return self.search()
 
 
     class GitHubSearchResultsPage(PageObject):
@@ -472,18 +480,21 @@ results returned to the page object for the search results page.
         GitHub's search results page
         """
 
-        name = 'github_search_results'
+        def __init__(self, ui, search_phrase):
+            super(GitHubSearchResultsPage, self).__init__(ui)
+            self.search_phrase = search_phrase
 
-        def url(self, **kwargs):
+        @property
+        def url(self):
             """
             You do not navigate here directly
             """
             raise NotImplemented
 
         def is_browser_on_page(self):
-            # This should be something like: u'Search · foo bar · GitHub'
+            # This should be something like: u'Search · foo bar'
             title = self.browser.title
-            matches = re.match(u'^Search .+ GitHub$', title)
+            matches = re.match(u'^Search · {}'.format(self.search_phrase), title)
             return matches is not None
 
         @property
@@ -513,21 +524,23 @@ Modify the test.py file to do these assertions:
         Tests for the GitHub site.
         """
 
-        page_object_classes = [GitHubSearchPage, GitHubSearchResultsPage]
+        def setUp(self):
+            super(TestGitHub, self).setUp()
+            self.github_search = GitHubSearchPage(self.browser)
 
         def test_page_existence(self):
             """
             Make sure that the page is accessible.
             """
-            self.ui.visit('github_search')
+            self.github_search.visit()
 
         def test_search(self):
             """
             Make sure that you can search for something.
             """
-            self.ui.visit('github_search')
-            self.ui['github_search'].search_for_terms('user:edx repo:edx-platform')
-            search_results = self.ui['github_search_results'].search_results
+            self.github_search.visit()
+            search_results_page = self.github_search.search_for_terms('user:edx repo:edx-platform')
+            search_results = search_results_page.search_results
             assert 'edx/edx-platform' in search_results
             assert search_results[0] == 'edx/edx-platform'
 
