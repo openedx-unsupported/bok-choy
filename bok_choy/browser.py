@@ -37,7 +37,7 @@ class BrowserConfigError(Exception):
     pass
 
 
-def browser(tags):
+def browser(tags=None):
     """
     Interpret environment variables to configure Selenium.
     Performs validation, logging, and sensible defaults.
@@ -70,6 +70,8 @@ def browser(tags):
     Raises a `BrowserConfigError` if environment variables are missing.
     Returns a `splinter.Browser` object.
     """
+    if tags is None:
+        tags = []
 
     if _use_local_browser():
         browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')
