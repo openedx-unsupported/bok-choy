@@ -7,7 +7,7 @@ browser
    :members:
 
 javascript
--------
+----------
 .. automodule:: bok_choy.javascript
    :members:
 
