@@ -105,7 +105,7 @@ class SafeSelenium(object):
         (you can use CSS `:nth-of-type` if there is more than one match)
         """
         return fulfill(Promise(
-            no_error(lambda: self._css_find(css_selector).first.click()),
+            no_error(self._css_find(css_selector).first.click),
             "click '{0}'".format(css_selector), try_limit=5
         ))
 

@@ -13,6 +13,9 @@ class InvalidURLPage(SitePage):
 
 
 class NeverOnPage(SitePage):
+
+    url = "http://localhost/never_on"
+
     def is_browser_on_page(self):
         return False
 
@@ -27,10 +30,6 @@ class NeverOnPage(SitePage):
         pass
 
     @property
-    def url(self):
-        return "http://localhost/never_on"
-
-    @property
     def guarded_property(self):
         pass
 
@@ -38,6 +37,14 @@ class NeverOnPage(SitePage):
     @unguarded
     def unguarded_property(self):
         pass
+
+
+class NoUrlProvidedPage(SitePage):
+    """
+    Page that you can't directly navigate to, because
+    no URL is provided.
+    """
+    url = None
 
 
 class PageObjectTest(TestCase):
@@ -74,3 +81,8 @@ class PageObjectTest(TestCase):
         with self.assertRaises(WrongPageError):
             never_on.guarded_property
 
+    def test_visit_no_url(self):
+
+        # Can't visit a page with no URL specified
+        with self.assertRaises(NotImplementedError):
+            NoUrlProvidedPage(Mock()).visit()

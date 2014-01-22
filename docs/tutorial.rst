@@ -79,22 +79,9 @@ as follows:
         - pages.py
 
 
-.. code-block:: python
+.. literalinclude:: code/round_1/pages.py
+    :language: python
 
-    # -*- coding: utf-8 -*-
-    from bok_choy.page_object import PageObject
-
-    class GitHubSearchPage(PageObject):
-        """
-        GitHub's search page
-        """
-
-        @property
-        def url(self):
-            return 'http://www.github.com/search'
-
-        def is_browser_on_page(self):
-            return 'code search' in self.browser.title.lower()
 
 
 Write a test for the page
@@ -113,26 +100,9 @@ Create a file named test_search.py in your project folder and use it to visit th
         - test_search.py
 
 
-.. code-block:: python
+.. literalinclude:: code/round_1/test_search.py
+    :language: python
 
-    import unittest
-    from bok_choy.web_app_test import WebAppTest
-    from pages import GitHubSearchPage
-
-    class TestGitHub(WebAppTest):
-        """
-        Tests for the GitHub site.
-        """
-
-        def test_page_existence(self):
-            """
-            Make sure that the page is accessible.
-            """
-            GitHubSearchPage(self.browser).visit()
-
-
-    if __name__ == '__main__':
-        unittest.main()
 
 
 Execute the test
@@ -194,29 +164,10 @@ by its type (input) and id (js-command-bar-field), so its css locator would be "
 
 Add a method for filling in the search term to the page object definition like this:
 
-.. code-block:: python
-   :emphasize-lines: 19-23
 
-    # -*- coding: utf-8 -*-
-    from bok_choy.page_object import PageObject
-
-    class GitHubSearchPage(PageObject):
-        """
-        GitHub's search page
-        """
-
-        @property
-        def url(self):
-            return 'http://www.github.com/search'
-
-        def is_browser_on_page(self):
-            return 'code search' in self.browser.title.lower()
-
-        def enter_search_terms(self, text):
-            """
-            Fill the text into the input field
-            """
-            self.css_fill('input#js-command-bar-field', text)
+.. literalinclude:: code/round_2/pages.py
+    :language: python
+    :lines: 31-35
 
 
 What's next? I see that type (button) and class (button) are good way to identify the search button.
@@ -246,35 +197,9 @@ Add another page's definition
 
 So we add the search results page definition to pages.py:
 
-.. code-block:: python
-
-    # -*- coding: utf-8 -*-
-    from bok_choy.page_object import PageObject
-    import re
-
-    [...]
-
-    class GitHubSearchResultsPage(PageObject):
-        """
-        GitHub's search results page
-        """
-
-        def __init__(self, search_phrase):
-            super(GitHubSearchResultsPage, self).__init__(ui)
-            self.search_phrase = search_phrase
-
-        @property
-        def url(self):
-            """
-            You do not navigate here directly
-            """
-            raise NotImplemented
-
-        def is_browser_on_page(self):
-            # This should be something like: u'Search · foo bar'
-            title = self.browser.title
-            matches = re.match(u'^Search · {}'.format(self.search_phrase), title)
-            return matches is not None
+.. literalinclude:: code/round_2/pages.py
+    :language: python
+    :lines: 6-18
 
 
 Define the search method
@@ -282,77 +207,15 @@ Define the search method
 
 Back to defining a method for pressing the button and knowing that you have arrived at the
 results page: We want to press the button, then wait and make sure that you have arrived at
-the results page before continuing on. Page objects in Bok Choy have a wait_for_page method
+the results page before continuing on. Page objects in Bok Choy have a ``wait_for_page`` method
 that does just that.
 
 Let's see how the method definition for pressing the search button would look.
 
-.. code-block:: python
-   :emphasize-lines: 26-40
+.. literalinclude:: code/round_2/pages.py
+    :language: python
+    :lines: 21-51
 
-    # -*- coding: utf-8 -*-
-    from bok_choy.page_object import PageObject
-    import re
-
-    class GitHubSearchPage(PageObject):
-        """
-        GitHub's search page
-        """
-        INPUT_SELECTOR = 'input#js-command-bar-field'
-
-        @property
-        def url(self):
-            return 'http://www.github.com/search'
-
-        def is_browser_on_page(self):
-            return 'code search' in self.browser.title.lower()
-
-        def enter_search_terms(self, text):
-            """
-            Fill the text into the input field
-            """
-            self.css_fill(self.INPUT_SELECTOR, text)
-
-        def search(self):
-            """
-            Click on the Search button and wait for the
-            results page to be displayed
-            """
-            self.css_click('button.button')
-            results = GitHubSearchResultsPage(self.browser, self.INPUT_SELECTOR)
-            results.wait_for_page()
-            return results
-
-        def search_for_terms(self, text):
-            """
-            Fill in the search terms and click the
-            Search button
-            """
-            self.enter_search_terms(text)
-            return self.search()
-
-
-    class GitHubSearchResultsPage(PageObject):
-        """
-        GitHub's search results page
-        """
-
-        def __init__(self, search_phrase):
-            super(GitHubSearchResultsPage, self).__init__(ui)
-            self.search_phrase = search_phrase
-
-        @property
-        def url(self):
-            """
-            You do not navigate here directly
-            """
-            raise NotImplemented
-
-        def is_browser_on_page(self):
-            # This should be something like: u'Search · foo bar'
-            title = self.browser.title
-            matches = re.match(u'^Search · {}'.format(self.search_phrase), title)
-            return matches is not None
 
 
 Add the new test
@@ -360,38 +223,9 @@ Add the new test
 
 Now let's add the new test to test_search.py:
 
-.. code-block:: python
-   :emphasize-lines: 20-25
+.. literalinclude:: code/round_2/test_search.py
+    :language: python
 
-    import unittest
-    from bok_choy.web_app_test import WebAppTest
-    from pages import GitHubSearchPage
-
-    class TestGitHub(WebAppTest):
-        """
-        Tests for the GitHub site.
-        """
-
-        def setUp(self):
-            super(TestGitHub, self).setUp()
-            self.github_search = GitHubSearchPage(self.browser)
-
-        def test_page_existence(self):
-            """
-            Make sure that the page is accessible.
-            """
-            self.github_search.visit()
-
-        def test_search(self):
-            """
-            Make sure that you can search for something.
-            """
-            self.github_search.visit()
-            self.github_search.search_for_terms('user:edx repo:edx-platform')
-
-
-    if __name__ == '__main__':
-        unittest.main()
 
 Run it!
 -------
@@ -430,79 +264,9 @@ Improve the page definition
 Since we want to verify the results of the search, we need to add a property for the
 results returned to the page object for the search results page.
 
-.. code-block:: python
-   :emphasize-lines: 64-70
-
-    # -*- coding: utf-8 -*-
-    from bok_choy.page_object import PageObject
-    import re
-
-    class GitHubSearchPage(PageObject):
-        """
-        GitHub's search page
-        """
-        INPUT_SELECTOR = 'input#js-command-bar-field'
-
-        @property
-        def url(self):
-            return 'http://www.github.com/search'
-
-        def is_browser_on_page(self):
-            return 'code search' in self.browser.title.lower()
-
-        def enter_search_terms(self, text):
-            """
-            Fill the text into the input field
-            """
-            self.css_fill(self.INPUT_SELECTOR, text)
-
-        def search(self):
-            """
-            Click on the Search button and wait for the
-            results page to be displayed
-            """
-            self.css_click('button.button')
-            results = GitHubSearchResultsPage(self.browser, self.INPUT_SELECTOR)
-            results.wait_for_page()
-            return results
-
-        def search_for_terms(self, text):
-            """
-            Fill in the search terms and click the
-            Search button
-            """
-            self.enter_search_terms(text)
-            return self.search()
-
-
-    class GitHubSearchResultsPage(PageObject):
-        """
-        GitHub's search results page
-        """
-
-        def __init__(self, ui, search_phrase):
-            super(GitHubSearchResultsPage, self).__init__(ui)
-            self.search_phrase = search_phrase
-
-        @property
-        def url(self):
-            """
-            You do not navigate here directly
-            """
-            raise NotImplemented
-
-        def is_browser_on_page(self):
-            # This should be something like: u'Search · foo bar'
-            title = self.browser.title
-            matches = re.match(u'^Search · {}'.format(self.search_phrase), title)
-            return matches is not None
-
-        @property
-        def search_results(self):
-            """
-            Return a list of results returned from a search
-            """
-            return self.css_text('ul.repolist > li > h3.repolist-name > a')
+.. literalinclude:: code/round_3/pages.py
+    :language: python
+    :lines: 6-24
 
 
 Improve the search test
@@ -512,41 +276,9 @@ Now we want to verify that edx-platform repo for the EdX account was returned in
 search results. And not only that, but also that it was the first result.
 Modify the test.py file to do these assertions:
 
-.. code-block:: python
-   :emphasize-lines: 3, 12, 26-27
+.. literalinclude:: code/round_3/test_search.py
+    :language: python
 
-    import unittest
-    from bok_choy.web_app_test import WebAppTest
-    from pages import GitHubSearchPage, GitHubSearchResultsPage
-
-    class TestGitHub(WebAppTest):
-        """
-        Tests for the GitHub site.
-        """
-
-        def setUp(self):
-            super(TestGitHub, self).setUp()
-            self.github_search = GitHubSearchPage(self.browser)
-
-        def test_page_existence(self):
-            """
-            Make sure that the page is accessible.
-            """
-            self.github_search.visit()
-
-        def test_search(self):
-            """
-            Make sure that you can search for something.
-            """
-            self.github_search.visit()
-            search_results_page = self.github_search.search_for_terms('user:edx repo:edx-platform')
-            search_results = search_results_page.search_results
-            assert 'edx/edx-platform' in search_results
-            assert search_results[0] == 'edx/edx-platform'
-
-
-    if __name__ == '__main__':
-        unittest.main()
 
 Run it!
 -------
@@ -571,6 +303,7 @@ What just happened?
 Both tests ran. We verified that we could get to the GitHub search page, then
 we searched for the EdX user's edx-platform repo and verified that it was the
 first result returned.
+
 
 ******************
 Take it from here!

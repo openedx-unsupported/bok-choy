@@ -2,9 +2,8 @@
 Base class for testing a web application.
 """
 import sys
-import time
 from unittest import TestCase
-from abc import ABCMeta, abstractproperty
+from abc import ABCMeta
 from uuid import uuid4
 from .browser import browser, save_screenshot
 

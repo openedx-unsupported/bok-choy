@@ -37,7 +37,7 @@ class BrowserConfigError(Exception):
     pass
 
 
-def save_screenshot(browser, name):
+def save_screenshot(browser_obj, name):
     """
     Save a screenshot of the browser.
 
@@ -51,7 +51,7 @@ def save_screenshot(browser, name):
     image_name = os.path.join(
         os.environ.get('SCREENSHOT_DIR', ''), name + '.png'
     )
-    browser.driver.save_screenshot(image_name)
+    browser_obj.driver.save_screenshot(image_name)
 
 
 def browser(tags=None):

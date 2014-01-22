@@ -156,20 +156,17 @@ class PageObject(SafeSelenium):
     @abstractproperty
     def url(self):
         """
-        Return the URL of the page.
-
-        Pages may need different parameters to figure out
-        which URL to load; they can access those parameters
-        from the `kwargs` dict.
+        Return the URL of the page.  This may be dynamic,
+        determined by configuration options passed to the
+        page object's constructor.
 
         Some pages may not be directly accessible:
         perhaps the page object represents a "navigation"
         component that occurs on multiple pages.
-        If this is the case, subclasses can raise a
-        `NotImplemented` error to indicate that you
-        can't directly visit the page object.
+        If this is the case, subclasses can return `None`
+        to indicate that you can't directly visit the page object.
         """
-        raise NotImplementedError
+        return None
 
     @unguarded
     def warning(self, msg):
@@ -195,9 +192,12 @@ class PageObject(SafeSelenium):
         Raises a `WrongPageError` if after visiting the page, the page object
         says it's not on the right page.
 
-        Some page objects may not implement the `url()` method;
-        in that case, a `NotImplementedError` will be raised.
+        Some page objects may not provide a URL, in which case
+        a `NotImplementedError` will be raised.
         """
+        if self.url is None:
+            raise NotImplementedError
+
         # Validate the URL
         if not self.validate_url(self.url):
             raise PageLoadError("Invalid URL: '{}'".format(self.url))
@@ -252,18 +252,16 @@ class PageObject(SafeSelenium):
     @unguarded
     def wait_for_page(self, timeout=30):
         """
-        Block until the page named `page_name` loads.
+        Block until the page loads.
 
-        Useful for ensuring that we navigate successfully from the current
-        page to the next page.
+        Useful for ensuring that we navigate successfully to a particular page.
 
         Raises a `WebAppUIConfigError` if the page object doesn't exist.
         Raises a `BrokenPromise` exception if the page fails to load within `timeout` seconds.
         """
         return fulfill(
             EmptyPromise(
-                self.is_browser_on_page,
-                "loaded page {!r}".format(self),
+                self.is_browser_on_page, "loaded page {!r}".format(self),
                 timeout=timeout
             )
         )
