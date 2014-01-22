@@ -26,11 +26,6 @@ safe_selenium
 .. automodule:: bok_choy.safe_selenium
    :members:
 
-web_app_fixture
----------------
-.. automodule:: bok_choy.web_app_fixture
-   :members:
-
 web_app_test
 ------------
 .. automodule:: bok_choy.web_app_test

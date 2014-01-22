@@ -29,12 +29,6 @@ class WebAppTest(TestCase):
 
     def setUp(self):
 
-        # Install fixtures provided by the concrete subclasses
-        # By the time this loop exits, all the test pre-conditions
-        # should be satisfied.
-        for fix in self.fixtures:
-            fix.install()
-
         # If using SauceLabs, tag the job with test info
         tags = [self.id()]
 
@@ -53,16 +47,6 @@ class WebAppTest(TestCase):
         Subclasses override this to return a list
         of `PageObject` subclasses to visit
         during the test.
-        """
-        return []
-
-    @property
-    def fixtures(self):
-        """
-        Return a list of `WebAppFixture` subclasses
-        defining the pre-conditions for running the test.
-
-        Fixtures will be installed in the order provided.
         """
         return []
 
