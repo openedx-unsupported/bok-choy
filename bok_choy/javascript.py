@@ -8,7 +8,7 @@ from selenium.common.exceptions import TimeoutException
 from .promise import EmptyPromise, fulfill
 
 
-def js_defined(*args, **kwargs):
+def js_defined(*args):
     """
     Class decorator that ensures the JavaScript variables
     in `args` are defined in the browser.
@@ -19,7 +19,7 @@ def js_defined(*args, **kwargs):
     return _decorator('_js_vars', args)
 
 
-def requirejs(*args, **kwargs):
+def requirejs(*args):
     """
     Class decorator that ensures all RequireJS modules
     in `args` are loaded in the browser.
@@ -67,18 +67,18 @@ def _decorator(store_name, store_values):
     2) Defines a new class list variable, `store_name` and adds
         `store_values` to the list.
     """
-    def decorator(Class):
+    def decorator(clz):
 
         # Add a `wait_for_js` method to the class
-        if not hasattr(Class, 'wait_for_js'):
-            setattr(Class, 'wait_for_js', _wait_for_js)
+        if not hasattr(clz, 'wait_for_js'):
+            setattr(clz, 'wait_for_js', _wait_for_js)
 
         # Store the RequireJS module names in the class
-        if not hasattr(Class, store_name):
-            setattr(Class, store_name, set())
+        if not hasattr(clz, store_name):
+            setattr(clz, store_name, set())
 
-        getattr(Class, store_name).update(store_values)
-        return Class
+        getattr(clz, store_name).update(store_values)
+        return clz
 
     return decorator
 

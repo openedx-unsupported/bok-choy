@@ -3,15 +3,33 @@ from bok_choy.page_object import PageObject
 import re
 
 
+class GitHubSearchResultsPage(PageObject):
+    """
+    GitHub's search results page
+    """
+
+    url = None
+
+    def is_browser_on_page(self):
+        # This should be something like: u'Search · foo bar · GitHub'
+        title = self.browser.title
+        matches = re.match(u'^Search .+ GitHub$', title)
+        return matches is not None
+
+    @property
+    def search_results(self):
+        """
+        Return a list of results returned from a search
+        """
+        return self.css_text('ul.repolist > li > h3.repolist-name > a')
+
+
 class GitHubSearchPage(PageObject):
     """
     GitHub's search page
     """
 
-    name = 'github_search'
-
-    def url(self):
-        return 'http://www.github.com/search'
+    url = 'http://www.github.com/search'
 
     def is_browser_on_page(self):
         return 'code search' in self.browser.title.lower()
@@ -28,7 +46,7 @@ class GitHubSearchPage(PageObject):
         results page to be displayed
         """
         self.css_click('button.button')
-        self.ui.wait_for_page('github_search_results')
+        GitHubSearchResultsPage(self.browser).wait_for_page()
 
     def search_for_terms(self, text):
         """
@@ -39,28 +57,3 @@ class GitHubSearchPage(PageObject):
         self.search()
 
 
-class GitHubSearchResultsPage(PageObject):
-    """
-    GitHub's search results page
-    """
-
-    name = 'github_search_results'
-
-    def url(self, **kwargs):
-        """
-        You do not navigate here directly
-        """
-        raise NotImplemented
-
-    def is_browser_on_page(self):
-        # This should be something like: u'Search · foo bar · GitHub'
-        title = self.browser.title
-        matches = re.match(u'^Search .+ GitHub$', title)
-        return matches is not None
-
-    @property
-    def search_results(self):
-        """
-        Return a list of results returned from a search
-        """
-        return self.css_text('ul.repolist > li > h3.repolist-name > a')

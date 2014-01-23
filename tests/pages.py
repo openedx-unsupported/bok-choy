@@ -22,7 +22,8 @@ class SitePage(PageObject):
         title = self.name.lower().replace('_', ' ')
         return title in self.browser.title.lower()
 
-    def url(self, **kwargs):
+    @property
+    def url(self):
         return "http://localhost:{0}/{1}".format(self.SERVER_PORT, self.name + ".html")
 
     @property
@@ -192,12 +193,12 @@ class NextPage(SitePage):
     """
     name = "next_page"
 
-    def load_next(self, page_name, delay_sec):
+    def load_next(self, page, delay_sec):
         """
         Load the page named `page_name` after waiting for `delay_sec`.
         """
         time.sleep(delay_sec)
-        self.ui.visit(page_name)
+        page.visit()
 
 
 @js_defined('test_var1', 'test_var2')

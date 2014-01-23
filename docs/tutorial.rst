@@ -167,8 +167,7 @@ Add a method for filling in the search term to the page object definition like t
 
 .. literalinclude:: code/round_2/pages.py
     :language: python
-    :emphasize-lines: 19-23
-    :lines: 1-21
+    :lines: 31-35
 
 
 What's next? I see that type (button) and class (button) are good way to identify the search button.
@@ -190,7 +189,7 @@ search for "foo bar" it will be:
 
 .. code-block:: xml
 
-    <title>Search · foo bar · GitHub</title>
+    <title>Search · foo bar</title>
 
 
 Add another page's definition
@@ -200,7 +199,7 @@ So we add the search results page definition to pages.py:
 
 .. literalinclude:: code/round_2/pages.py
     :language: python
-    :lines: 40-57
+    :lines: 6-18
 
 
 Define the search method
@@ -215,7 +214,7 @@ Let's see how the method definition for pressing the search button would look.
 
 .. literalinclude:: code/round_2/pages.py
     :language: python
-    :lines: 25-39
+    :lines: 21-51
 
 
 
@@ -226,7 +225,6 @@ Now let's add the new test to test_search.py:
 
 .. literalinclude:: code/round_2/test_search.py
     :language: python
-    :emphasize-lines: 3, 10, 18-23
 
 
 Run it!
@@ -268,8 +266,7 @@ results returned to the page object for the search results page.
 
 .. literalinclude:: code/round_3/pages.py
     :language: python
-    :lines: 42-66
-    :emphasize-lines: 20-25
+    :lines: 6-24
 
 
 Improve the search test
@@ -281,8 +278,6 @@ Modify the test.py file to do these assertions:
 
 .. literalinclude:: code/round_3/test_search.py
     :language: python
-    :lines: 18-26
-    :emphasize-lines: 8-9
 
 
 Run it!

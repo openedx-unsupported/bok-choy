@@ -30,8 +30,3 @@ web_app_test
 ------------
 .. automodule:: bok_choy.web_app_test
    :members:
-
-web_app_ui
-----------
-.. automodule:: bok_choy.web_app_ui
-   :members:
