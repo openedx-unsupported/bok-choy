@@ -1,3 +1,8 @@
+
+
+v 0.1.0 (1/23/14)
+
+* Added tests for documentation examples
 * Removed WebAppUI
 * Refocused design on PageObjects, rather than on the WebAppUI
 * Pages now can reference other pages using `self.ui`
