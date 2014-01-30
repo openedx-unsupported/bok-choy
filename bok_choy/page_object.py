@@ -196,7 +196,7 @@ class PageObject(SafeSelenium):
         a `NotImplementedError` will be raised.
         """
         if self.url is None:
-            raise NotImplementedError
+            raise NotImplementedError("Page {} does not provide a URL to visit.".format(self))
 
         # Validate the URL
         if not self.validate_url(self.url):
