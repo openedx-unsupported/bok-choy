@@ -252,16 +252,17 @@ class PageObject(SafeSelenium):
     @unguarded
     def wait_for_page(self, timeout=30):
         """
-        Block until the page loads.
+        Block until the page loads, then returns the page.
 
         Useful for ensuring that we navigate successfully to a particular page.
 
         Raises a `WebAppUIConfigError` if the page object doesn't exist.
         Raises a `BrokenPromise` exception if the page fails to load within `timeout` seconds.
         """
-        return fulfill(
-            EmptyPromise(
-                self.is_browser_on_page, "loaded page {!r}".format(self),
-                timeout=timeout
-            )
+        is_on_page_promise = EmptyPromise(
+            self.is_browser_on_page, "loaded page {!r}".format(self),
+            timeout=timeout
         )
+
+        with fulfill_before(is_on_page_promise):
+            return self
