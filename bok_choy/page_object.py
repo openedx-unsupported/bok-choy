@@ -11,7 +11,7 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 from collections import defaultdict
 from functools import wraps
 
-from .promise import EmptyPromise, fulfill
+from .promise import EmptyPromise, fulfill_before
 from .safe_selenium import SafeSelenium
 
 

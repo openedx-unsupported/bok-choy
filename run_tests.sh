@@ -6,6 +6,8 @@
 #  Run all tests:               ./run_tests.sh
 #  Run the input tests only:    ./run_tests.sh test_inputs.py
 
+set -e
+
 function echo_task {
     echo $'\n'
     echo "====== $1"
