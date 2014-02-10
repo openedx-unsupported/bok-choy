@@ -194,6 +194,8 @@ class PageObject(SafeSelenium):
 
         Some page objects may not provide a URL, in which case
         a `NotImplementedError` will be raised.
+
+        On success, return the page object.
         """
         if self.url is None:
             raise NotImplementedError("Page {} does not provide a URL to visit.".format(self))
@@ -217,6 +219,10 @@ class PageObject(SafeSelenium):
 
         # Ask the page object to verify that the correct page loaded
         self._verify_page()
+
+        # Return the page object, so that the caller can chain the call with an action:
+        # Example: FooPage.visit().do_something()
+        return self
 
     @classmethod
     @unguarded
