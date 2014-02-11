@@ -69,7 +69,7 @@ class Query(Sequence):
         clone.transforms = list(clone.transforms)
         for key, value in kwargs.items():
             if not hasattr(clone, key):
-                raise TypeError('replace() got an unexpecetd keyword argument {!r}'.format(key))
+                raise TypeError('replace() got an unexpected keyword argument {!r}'.format(key))
 
             setattr(clone, key, value)
         return clone
