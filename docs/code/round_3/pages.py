@@ -38,14 +38,14 @@ class GitHubSearchPage(PageObject):
         """
         Fill the text into the input field
         """
-        self.css_fill('input#js-command-bar-field', text)
+        self.q(css='input#js-command-bar-field').fill(text)
 
     def search(self):
         """
         Click on the Search button and wait for the
         results page to be displayed
         """
-        self.css_click('button.button')
+        self.q(css='button.button').click()
         GitHubSearchResultsPage(self.browser).wait_for_page()
 
     def search_for_terms(self, text):

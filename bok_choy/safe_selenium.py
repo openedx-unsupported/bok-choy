@@ -17,38 +17,11 @@ if an operation cannot be performed.
 """
 from textwrap import dedent
 from contextlib import contextmanager
-from .promise import Promise, fulfill_before, fulfill
 from selenium.common.exceptions import WebDriverException, StaleElementReferenceException
 from splinter.exceptions import ElementDoesNotExist
 
-
-class KeepWaiting(Exception):
-    """
-    Dummy exception to indicate that a check function wants to continue waiting.
-    """
-    pass
-
-
-RETRY_EXCEPTIONS = (
-    WebDriverException, StaleElementReferenceException,
-    ElementDoesNotExist, KeepWaiting
-)
-
-
-def no_error(func):
-    """
-    Decorator to create a `Promise` check function that is satisfied
-    only when `func()` executes successfully.
-    """
-    def _inner():
-        try:
-            return_val = func()
-        except RETRY_EXCEPTIONS:
-            return (False, None)
-        else:
-            return (True, return_val)
-
-    return _inner
+from bok_choy.promise import Promise, fulfill_before, fulfill
+from bok_choy.query import BrowserQuery, no_error
 
 
 class SafeSelenium(object):
@@ -64,6 +37,9 @@ class SafeSelenium(object):
         """
         self.browser = browser
 
+    def q(self, **kwargs):
+        return BrowserQuery(self.browser, **kwargs)
+
     def is_css_present(self, css_selector):
         """
         Return a boolean indicating whether the css is present on the page.
@@ -78,46 +54,36 @@ class SafeSelenium(object):
         `map_func(el)` is a function that maps an element to a value.
         Returns a list of such mapped values, one for each element.
         """
-        return fulfill(Promise(
-            no_error(lambda: [map_func(el) for el in self._css_find(css_selector)]),
-            "Get query elements that match '{0}'".format(css_selector),
-            try_limit=5
-        ))
+        return self.q(css=css_selector).map(map_func).results
 
     def css_count(self, css_selector):
         """
         Return the number of elements that match `css_selector`
         """
-        return len(self._css_find(css_selector))
+        return len(self.q(css=css_selector))
 
     def css_text(self, css_selector):
-        return self.css_map(css_selector, lambda el: el.text)
+        return self.q(css=css_selector).text
 
     def css_value(self, css_selector):
-        return self.css_map(css_selector, lambda el: el.value)
+        return self.q(css=css_selector).value
 
     def css_html(self, css_selector):
-        return self.css_map(css_selector, lambda el: el.html)
+        return self.q(css=css_selector).html
 
     def css_click(self, css_selector):
         """
         Click the first element matched by `css_selector`
         (you can use CSS `:nth-of-type` if there is more than one match)
         """
-        return fulfill(Promise(
-            no_error(self._css_find(css_selector).first.click),
-            "click '{0}'".format(css_selector), try_limit=5
-        ))
+        self.q(css=css_selector).first.click()
 
     def css_check(self, css_selector):
         """
         Check the radio or checkbox matched by `css_selector`.
         """
         self.css_click(css_selector)
-        return fulfill(Promise(
-            no_error(lambda: self._css_find(css_selector).first.selected),
-            "check '{0}'".format(css_selector)
-        ))
+        return self.q(css=css_selector).first.selected[0]
 
     def select_option(self, name, value):
         """
@@ -127,12 +93,7 @@ class SafeSelenium(object):
         css_selector = "{0} option[value='{1}']".format(select_css, value)
 
         self.css_click(css_selector)
-
-        check_select_promise = Promise(
-            no_error(lambda: self._css_find(select_css).first.value == value),
-            "select '{0}' in '{1}'".format(value, name)
-        )
-        return fulfill(check_select_promise)
+        return self.q(css=select_css).first.filter(value=value).present
 
     def css_fill(self, css_selector, text):
         """
