@@ -318,3 +318,7 @@ class SubQuery(Query):
             return getattr(elem, 'find_by_{}'.format(self.query_name))(self.query_value)
 
         return self.replace(seed_fn=seed_fn, msg_base='SubQuery({})').results
+
+    @property
+    def __name__(self):
+        return repr(self)
