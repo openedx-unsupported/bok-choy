@@ -130,7 +130,7 @@ class Query(Sequence):
                     in kwargs.items()
                 )
 
-            msg = u", ".join([u"{}={!r}" for key, value in kwargs.items()])
+            msg = u", ".join([u"{}={!r}".format(key, value) for key, value in kwargs.items()])
 
         if msg is None:
             msg = filter_fn.__name__

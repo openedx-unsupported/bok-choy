@@ -105,6 +105,10 @@ class TestQuery(TestCase):
             u"Query(<lambda>).transform(<lambda>)",
             repr(self.query.transform(lambda xs: iter(xs).next(0)))
         )
+        self.assertEquals(
+            u"Query(<lambda>).filter(text='foo')",
+            repr(self.query.filter(text='foo'))
+        )
 
 
 class TestBrowserQuery(TestCase):
