@@ -63,11 +63,22 @@ class _PageObjectMetaclass(ABCMeta):
 
     def __new__(mcs, cls_name, cls_bases, cls_attrs):
         for name, attr in cls_attrs.items():
-            is_unguarded = getattr(attr, '_unguarded', False) or name in mcs.ALWAYS_UNGUARDED
-            is_private = name.startswith('_')
+            # Skip methods marked as unguarded
+            if getattr(attr, '_unguarded', False) or name in mcs.ALWAYS_UNGUARDED:
+                continue
+
+            # Skip private methods
+            if name.startswith('_'):
+                continue
+
+            # Skip class attributes that are classes themselves
+            if isinstance(attr, type):
+                continue
+
             is_property = isinstance(attr, property)
-            is_callable = callable(attr) or is_property
-            if (is_unguarded or is_private or not is_callable):
+
+            # Skip non-callable attributes
+            if not (callable(attr) or is_property):
                 continue
 
             if is_property:

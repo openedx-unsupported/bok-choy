@@ -164,3 +164,8 @@ class TestSubQuery(TestCase):
     def test_repr(self):
         self.assertEquals(u"SubQuery(css='foo')", repr(SubQuery(css='foo')))
         self.assertEquals(u"SubQuery(text='foo')", repr(SubQuery(text='foo')))
+
+        self.assertEquals(
+            u"BrowserQuery(css='foo').map(SubQuery(css='bar'))",
+            repr(BrowserQuery(Mock(), css='foo').map(SubQuery(css='bar')))
+        )
