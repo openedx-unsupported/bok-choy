@@ -20,6 +20,10 @@ class NextPageTest(WebAppTest):
         self.next_page.visit()
         self.next_page.load_next(ButtonPage(self.browser), 1)
 
+    def test_wait_for_next_page_result(self):
+        self.next_page.visit()
+        self.assertEqual(self.next_page, self.next_page.wait_for_page())
+
     def test_next_page_does_not_load(self):
         ButtonPage(self.browser).visit()
         with self.assertRaises(BrokenPromise):

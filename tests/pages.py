@@ -5,7 +5,7 @@ Page objects for interacting with the test site.
 import os
 import time
 from bok_choy.page_object import PageObject
-from bok_choy.promise import EmptyPromise, fulfill_before, fulfill_after, fulfill
+from bok_choy.promise import EmptyPromise
 from bok_choy.javascript import js_defined, requirejs, wait_for_js
 
 
@@ -33,7 +33,7 @@ class SitePage(PageObject):
         The fixtures are configured to update this div when the user
         interacts with the page.
         """
-        text_list = self.css_text('#output')
+        text_list = self.q(css='#output').text
 
         if len(text_list) < 1:
             return None
@@ -52,7 +52,7 @@ class ButtonPage(SitePage):
         Click the button on the page, which should cause the JavaScript
         to update the #output div.
         """
-        self.css_click('div#fixture input')
+        self.q(css='div#fixture input').first.click()
 
 
 class TextFieldPage(SitePage):
@@ -65,7 +65,7 @@ class TextFieldPage(SitePage):
         """
         Input `text` into the text field on the page.
         """
-        self.css_fill('#fixture input', text)
+        self.q(css='#fixture input').fill(text)
 
 
 class SelectPage(SitePage):
@@ -78,7 +78,10 @@ class SelectPage(SitePage):
         """
         Select the car with `value` in the drop-down list.
         """
-        self.select_option('cars', car_value)
+        self.q(css='select[name="cars"] option[value="{}"]'.format(car_value)).first.click()
+
+    def is_car_selected(self, car):
+        return self.q(css='select[name="cars"] option[value="{}"]'.format(car)).selected
 
 
 class CheckboxPage(SitePage):
@@ -91,7 +94,7 @@ class CheckboxPage(SitePage):
         """
         Toggle the box for the pill with `pill_name` (red or blue).
         """
-        self.css_check('#fixture input#{0}'.format(pill_name))
+        self.q(css="#fixture input#{}".format(pill_name)).first.click()
 
 
 class AlertPage(SitePage):
@@ -102,15 +105,15 @@ class AlertPage(SitePage):
 
     def confirm(self):
         with self.handle_alert(confirm=True):
-            self.css_click('button#confirm')
+            self.q(css='button#confirm').first.click()
 
     def cancel(self):
         with self.handle_alert(confirm=False):
-            self.css_click('button#confirm')
+            self.q(css='button#confirm').first.click()
 
     def dismiss(self):
         with self.handle_alert():
-            self.css_click('button#alert')
+            self.q(css='button#alert').first.click()
 
 
 class SelectorPage(SitePage):
@@ -125,28 +128,28 @@ class SelectorPage(SitePage):
         """
         Count the number of div.test elements.
         """
-        return self.css_count('div.test')
+        return len(self.q(css='div.test').results)
 
     @property
     def div_text_list(self):
         """
         Return list of text for each div.test element.
         """
-        return self.css_text('div.test')
+        return self.q(css='div.test').text
 
     @property
     def div_value_list(self):
         """
         Return list of values for each div.test element.
         """
-        return self.css_value('div.test')
+        return self.q(css='div.test').attrs('value')
 
     @property
     def div_html_list(self):
         """
         Return list of html for each div.test element.
         """
-        return self.css_html('div.test')
+        return self.q(css='div.test').html
 
 
 class DelayPage(SitePage):
@@ -162,29 +165,19 @@ class DelayPage(SitePage):
         after a delay.
         """
 
-        click_ready = EmptyPromise(
-            lambda: self.is_css_present('div#ready'), "Click ready"
-        )
-
-        output_ready = EmptyPromise(
-            lambda: self.is_css_present('div#output'), "Output available"
-        )
-
-        with fulfill_after(output_ready):
-            with fulfill_before(click_ready):
-                self.css_click('div#fixture button')
+        EmptyPromise(self.q(css='div#ready').is_present, "Click ready").fulfill()
+        self.q(css='div#fixture button').first.click()
+        EmptyPromise(self.q(css='div#output').is_present, "Output available").fulfill()
 
     def make_broken_promise(self):
         """
         Make a promise that will not be fulfilled.
         Should raise a `BrokenPromise` exception.
         """
-        bad_promise = EmptyPromise(
-            lambda: self.is_css_present('div#not_present'), "Invalid div appeared",
+        return EmptyPromise(
+            self.q(css='div#not_present').is_present, "Invalid div appeared",
             try_limit=3, try_interval=0.01
-        )
-
-        return fulfill(bad_promise)
+        ).fulfill()
 
 
 class NextPage(SitePage):
@@ -201,6 +194,19 @@ class NextPage(SitePage):
         page.visit()
 
 
+class VisiblePage(SitePage):
+    """
+    Page that has some elements visible and others invisible.
+    """
+    name = "visible"
+
+    def is_visible(self, name):
+        """
+        Return a boolean indicating whether the given item is visible.
+        """
+        return self.q(css="div.{}".format(name)).first.visible
+
+
 @js_defined('test_var1', 'test_var2')
 class JavaScriptPage(SitePage):
     """
@@ -214,16 +220,16 @@ class JavaScriptPage(SitePage):
         """
         Click a button which will only work once RequireJS finishes loading.
         """
-        self.css_click('div#fixture button')
+        self.q(css='div#fixture button').first.click()
 
     @wait_for_js
     def reload_and_trigger_output(self):
         """
         Reload the page, wait for JS, then trigger the output.
         """
-        self.browser.reload()
+        self.browser.refresh()
         self.wait_for_js()
-        self.css_click('div#fixture button')
+        self.q(css='div#fixture button').first.click()
 
 
 @requirejs('main')

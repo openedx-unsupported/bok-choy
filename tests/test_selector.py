@@ -39,5 +39,5 @@ class SelectorTest(WebAppTest):
         )
 
     def test_is_present(self):
-        self.assertTrue(self.selector.is_css_present('div#fixture'))
-        self.assertFalse(self.selector.is_css_present('div#not_present'))
+        self.assertTrue(self.selector.q(css='div#fixture').present)
+        self.assertFalse(self.selector.q(css='div#not_present').present)

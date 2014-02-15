@@ -4,11 +4,11 @@ For use with SauceLabs (via SauceConnect) or local browsers.
 """
 
 import os
-import splinter
-
 import logging
-LOGGER = logging.getLogger(__name__)
+from selenium import webdriver
 
+
+LOGGER = logging.getLogger(__name__)
 
 EXPECTED_ENV_VARS = [
     'SELENIUM_BROWSER',
@@ -27,7 +27,12 @@ OPTIONAL_ENV_VARS = [
 ]
 
 
-BROWSERS = ['chrome', 'firefox', 'internet explorer', 'safari']
+BROWSERS = {
+    'firefox': webdriver.Firefox,
+    'chrome': webdriver.Chrome,
+    'internet explorer': webdriver.Ie,
+    'safari': webdriver.Safari,
+}
 
 
 class BrowserConfigError(Exception):
@@ -37,7 +42,7 @@ class BrowserConfigError(Exception):
     pass
 
 
-def save_screenshot(browser_obj, name):
+def save_screenshot(driver, name):
     """
     Save a screenshot of the browser.
 
@@ -45,22 +50,28 @@ def save_screenshot(browser_obj, name):
     by the environment variable `SCREENSHOT_DIR`.  If not set,
     this defaults to the current working directory.
 
-    `name` is a name for the screenshot, which will be used
-    in the output file name.
+    Args:
+        driver (selenium.webdriver): The Selenium-controlled browser.
+        name (str): A name for the screenshot, which will be used in the output file name.
+
+    Returns:
+        None
     """
-    image_name = os.path.join(
-        os.environ.get('SCREENSHOT_DIR', ''), name + '.png'
-    )
-    browser_obj.driver.save_screenshot(image_name)
+    if hasattr(driver, 'save_screenshot'):
+        image_name = os.path.join(
+            os.environ.get('SCREENSHOT_DIR', ''), name + '.png'
+        )
+        driver.save_screenshot(image_name)
+
+    else:
+        msg = "Browser does not support screenshots.  Could not save screenshot '{name}'".format(name)
+        LOGGER.warning(msg)
 
 
 def browser(tags=None):
     """
     Interpret environment variables to configure Selenium.
     Performs validation, logging, and sensible defaults.
-
-    `tags` is a list of string tags to apply to the SauceLabs
-    job.  If not using SauceLabs, these will be ignored.
 
     There are two cases:
 
@@ -84,8 +95,17 @@ def browser(tags=None):
         * JOB_NAME
         * BUILD_NUMBER
 
-    Raises a `BrowserConfigError` if environment variables are missing.
-    Returns a `splinter.Browser` object.
+    `tags` is a list of string tags to apply to the SauceLabs
+    job.  If not using SauceLabs, these will be ignored.
+
+    Keyword Args:
+        tags (list of str): Tags to apply to the SauceLabs job.  If not using SauceLabs, these will be ignored.
+
+    Returns:
+        selenium.webdriver: The configured browser object used to drive tests
+
+    Raises:
+        BrowserConfigError: The environment variables are not correctly specified.
     """
     if tags is None:
         tags = []
@@ -93,7 +113,14 @@ def browser(tags=None):
     if _use_local_browser():
         browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')
         LOGGER.info("Using local browser: {0} [Default is firefox]".format(browser_name))
-        return splinter.Browser(browser_name)
+
+        browser_class = BROWSERS.get(browser_name)
+        if browser_class is None:
+            raise BrowserConfigError(
+                "Invalid browser name {name}.  Options are: {options}".format(
+                    name=browser_name, options=", ".join(BROWSERS.keys())))
+
+        return browser_class()
 
     else:
 
@@ -111,7 +138,7 @@ def browser(tags=None):
         # Create and return a new Browser
         # We assume that the WebDriver end-point is running locally (e.g. using SauceConnect)
         url = "http://{0}:{1}/wd/hub".format(envs['SELENIUM_HOST'], envs['SELENIUM_PORT'])
-        return splinter.Browser(driver_name="remote", url=url, **caps)
+        return webdriver.Remote(command_executor=url, desired_capabilities=caps)
 
 
 def _use_local_browser():

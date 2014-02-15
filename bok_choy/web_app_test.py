@@ -8,10 +8,6 @@ from uuid import uuid4
 from .browser import browser, save_screenshot
 
 
-class TimeoutError(Exception):
-    pass
-
-
 class WebAppTest(TestCase):
     """
     Base class for testing a web application.
@@ -22,11 +18,14 @@ class WebAppTest(TestCase):
     # Execute tests in parallel!
     _multiprocess_can_split_ = True
 
-    # Subclasses can use this property
-    # to access the `WebAppUI` object under test
-    ui = None
-
     def setUp(self):
+        """
+        Start the browser for use by the test.
+        You *must* call this in the `setUp` method of any subclasses before using the browser!
+
+        Returns:
+            None
+        """
 
         # If using SauceLabs, tag the job with test info
         tags = [self.id()]
@@ -44,6 +43,9 @@ class WebAppTest(TestCase):
     def unique_id(self):
         """
         Helper method to return a uuid.
+
+        Returns:
+            39-char UUID string
         """
         return str(uuid4().int)
 

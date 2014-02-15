@@ -21,9 +21,9 @@ promise
 .. automodule:: bok_choy.promise
    :members:
 
-safe_selenium
--------------
-.. automodule:: bok_choy.safe_selenium
+query
+-----
+.. automodule:: bok_choy.query
    :members:
 
 web_app_test

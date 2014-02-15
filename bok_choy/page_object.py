@@ -5,14 +5,16 @@ See https://code.google.com/p/selenium/wiki/PageObjects
 
 import logging
 import socket
-import splinter
 import urlparse
 from abc import ABCMeta, abstractmethod, abstractproperty
 from collections import defaultdict
 from functools import wraps
+from contextlib import contextmanager
+from textwrap import dedent
+from selenium.common.exceptions import WebDriverException
 
-from .promise import EmptyPromise, fulfill_before
-from .safe_selenium import SafeSelenium
+from .query import BrowserQuery
+from .promise import Promise
 
 
 class WrongPageError(Exception):
@@ -35,6 +37,12 @@ def unguarded(method):
 
     Unguarded methods don't verify that the PageObject is
     on the current browser page before they execute
+
+    Args:
+        method (callable): The method to decorate.
+
+    Returns:
+        Decorated method
     """
     method._unguarded = True
     return method
@@ -43,6 +51,12 @@ def unguarded(method):
 def pre_verify(method):
     """
     Decorator that calls self._verify_page() before executing the decorated method
+
+    Args:
+        method (callable): The method to decorate.
+
+    Returns:
+        Decorated method
     """
     @wraps(method)
     def wrapper(self, *args, **kwargs):
@@ -99,7 +113,7 @@ class _PageObjectMetaclass(ABCMeta):
         return super(_PageObjectMetaclass, mcs).__new__(mcs, cls_name, cls_bases, cls_attrs)
 
 
-class PageObject(SafeSelenium):
+class PageObject(object):
     """
     Encapsulates user interactions with a specific part
     of a web application.
@@ -148,6 +162,18 @@ class PageObject(SafeSelenium):
 
     __metaclass__ = _PageObjectMetaclass
 
+    def __init__(self, browser):
+        """
+        Initialize the page object to use the specified browser instance.
+
+        Args:
+            browser (selenium.webdriver): The Selenium-controlled browser.
+
+        Returns:
+            PageObject
+        """
+        self.browser = browser
+
     @abstractmethod
     def is_browser_on_page(self):
         """
@@ -159,8 +185,8 @@ class PageObject(SafeSelenium):
             2) page title
             3) page headings
 
-        Return a `bool` indicating whether the browser is on
-        the correct page.
+        Returns:
+            A `bool` indicating whether the browser is on the correct page.
         """
         return False
 
@@ -188,6 +214,12 @@ class PageObject(SafeSelenium):
         Page objects themselves should never make assertions or
         raise exceptions, but they can issue warnings to make
         tests easier to debug.
+
+        Args:
+            msg (str): The message to log as a warning.
+
+        Returns:
+            None
         """
         log = logging.getLogger(self.__class__.__name__)
         log.warning(msg)
@@ -197,16 +229,16 @@ class PageObject(SafeSelenium):
         """
         Open the page containing this page object in the browser.
 
-        Raises a `PageLoadError` if an HTTP error occurred while accessing
-        the page.
-
-        Raises a `WrongPageError` if after visiting the page, the page object
-        says it's not on the right page.
-
         Some page objects may not provide a URL, in which case
         a `NotImplementedError` will be raised.
 
-        On success, return the page object.
+        Raises:
+            PageLoadError: The page did not load successfully.
+            WrongPageError: The browser is not on the correct page.
+            NotImplementedError: The page object does not provide a URL to visit.
+
+        Returns:
+            PageObject
         """
         if self.url is None:
             raise NotImplementedError("Page {} does not provide a URL to visit.".format(self))
@@ -217,13 +249,8 @@ class PageObject(SafeSelenium):
 
         # Visit the URL
         try:
-            self.browser.visit(self.url)
-        except splinter.request_handler.status_code.HttpResponseError as ex:
-            msg = "Could not load page {!r} at URL '{}'.  Status code {}, '{}'".format(
-                self, self.url, ex.status_code, ex.reason
-            )
-            raise PageLoadError(msg)
-        except socket.gaierror:
+            self.browser.get(self.url)
+        except (WebDriverException, socket.gaierror):
             raise PageLoadError("Could not load page '{!r}' at URL '{}'".format(
                 self, self.url
             ))
@@ -241,6 +268,12 @@ class PageObject(SafeSelenium):
         """
         Return a boolean indicating whether the URL has a protocol and hostname.
         If a port is specified, ensure it is an integer.
+
+        Arguments:
+            url (str): The URL to check.
+
+        Returns:
+            Boolean indicating whether the URL has a protocol and hostname.
         """
         result = urlparse.urlsplit(url)
 
@@ -270,16 +303,64 @@ class PageObject(SafeSelenium):
     def wait_for_page(self, timeout=30):
         """
         Block until the page loads, then returns the page.
-
         Useful for ensuring that we navigate successfully to a particular page.
 
-        Raises a `WebAppUIConfigError` if the page object doesn't exist.
-        Raises a `BrokenPromise` exception if the page fails to load within `timeout` seconds.
-        """
-        is_on_page_promise = EmptyPromise(
-            self.is_browser_on_page, "loaded page {!r}".format(self),
-            timeout=timeout
-        )
+        Keyword Args:
+            timeout (int): The number of seconds to wait for the page before timing out with an exception.
 
-        with fulfill_before(is_on_page_promise):
-            return self
+        Raises:
+            BrokenPromise: The timeout is exceeded without the page loading successfully.
+        """
+        return Promise(
+            lambda: (self.is_browser_on_page(), self), "loaded page {!r}".format(self),
+            timeout=timeout
+        ).fulfill()
+
+    def q(self, **kwargs):
+        """
+        Construct a query on the browser.
+
+        Example usages:
+
+        .. code:: python
+
+            self.q(css="div.foo").first.click()
+            self.q(xpath="/foo/bar").text
+
+        Keyword Args:
+            css: A CSS selector.
+            xpath: An XPath selector.
+
+        Returns:
+            BrowserQuery
+        """
+        return BrowserQuery(self.browser, **kwargs)
+
+    @contextmanager
+    def handle_alert(self, confirm=True):
+        """
+        Context manager that ensures alerts are dismissed.
+
+        Example usage:
+
+        .. code:: python
+
+            with self.handle_alert():
+                self.q(css='input.submit-button').first.click()
+
+        Keyword Args:
+            confirm (bool): Whether to confirm or cancel the alert.
+
+        Returns:
+            None
+        """
+
+        # Before executing the `with` block, stub the confirm/alert functions
+        script = dedent("""
+            window.confirm = function() {{ return {0}; }};
+            window.alert = function() {{ return; }};
+        """.format("true" if confirm else "false")).strip()
+        self.browser.execute_script(script)
+
+        # Execute the `with` block
+        yield
