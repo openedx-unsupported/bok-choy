@@ -56,7 +56,6 @@ class Query(Sequence):
         self.transforms = []
         self.msg_stack = []
         self.msg_base = msg_base
-        self._results = None
 
     def replace(self, **kwargs):
         """
@@ -64,7 +63,6 @@ class Query(Sequence):
         as keyword arguments replaced by the keyword values.
         """
         clone = copy(self)
-        clone.reset()
 
         clone.transforms = list(clone.transforms)
         for key, value in kwargs.items():
@@ -165,15 +163,7 @@ class Query(Sequence):
         """
         A list of the results of the query. Will be cached.
         """
-        if self._results is None:
-            self._results = self.execute()
-        return self._results
-
-    def reset(self):
-        """
-        Reset the cache of query results.
-        """
-        self._results = None
+        return self.execute()
 
     def __getitem__(self, key):
         return self.results[key]

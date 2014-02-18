@@ -24,23 +24,6 @@ class TestQuery(TestCase):
         with self.assertRaises(TypeError):
             self.query.replace(foo='bar')
 
-    def test_results_cache(self):
-        seeds = (range(i) for i in range(10))
-        query = Query(seeds.next)
-        self.assertEquals([], query.results)
-        self.assertEquals([], query.results)
-
-        query.reset()
-
-        self.assertEquals([0], query.results)
-
-    def test_replace_resets(self):
-        seeds = (range(i) for i in range(10))
-        query = Query(seeds.next)
-        query2 = query.replace(transforms=[lambda xs: (x + 1 for x in xs)])
-        self.assertEquals([], query.results)
-        self.assertEquals([1], query2.results)
-
     def test_transform(self):
         transformed = self.query.transform(lambda xs: (x + 1 for x in xs))
         self.assertNotEquals(id(transformed), id(self.query))
