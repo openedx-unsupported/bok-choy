@@ -1,3 +1,14 @@
+v0.3.0 (2/19/14)
+
+* Deprecated css_* methods in favor of queries
+* Deprecated fulfill_before and fulfill_after in favor of Promise.fulfill()
+* Replaced Splinter dependency direct Selenium calls
+* Deprecate SubQuery in favor of XPath queries.
+* Added query methods to check element visibility.
+* Added query method for retrieving the "nth" element.
+* Updated API documentation, using Sphinx keywords for all public methods.
+
+
 v 0.2.1 (2/12/14)
 
 * Bugfix: Make SubQueries inside Queries work with the repr function
