@@ -1,7 +1,9 @@
 from mock import Mock
 from unittest import TestCase
+from selenium.common.exceptions import WebDriverException
 
-from bok_choy.query import Query, BrowserQuery, SubQuery
+from bok_choy.query import Query, BrowserQuery
+
 
 class TestQuery(TestCase):
     def setUp(self):
@@ -58,6 +60,21 @@ class TestQuery(TestCase):
         self.assertEquals(1, len(filtered))
         self.assertEquals(mapped[3].text, filtered[0].text)
 
+    def test_filter_invalid_args(self):
+
+        # Both filter func and params
+        with self.assertRaises(TypeError):
+            self.query.filter(lambda x: x % 2 == 0, text="3")
+
+        # Neither filter func nor params
+        with self.assertRaises(TypeError):
+            self.query.filter()
+
+    def test_retry_on_error(self):
+        seed = Mock()
+        seed.side_effect = [WebDriverException, ["success"]]
+        self.assertEqual(["success"], Query(seed_fn=seed).results)
+
     def test_length(self):
         self.assertEquals(5, len(self.query))
         self.assertEquals(3, len(self.query.filter(lambda x: x % 2 == 0)))
@@ -93,17 +110,33 @@ class TestQuery(TestCase):
             repr(self.query.filter(text='foo'))
         )
 
+    def test_first(self):
+        query = Query(lambda: range(2))
+        self.assertEqual([0], query.first.results)
+        self.assertEqual([0], query.first.first.results)
+
+    def test_first_no_results(self):
+        query = Query(lambda: [])
+        self.assertEqual([], query.first.results)
+
+    def test_nth(self):
+        query = Query(lambda: range(2))
+        self.assertEqual([], query.nth(-1).results)
+        self.assertEqual([0], query.nth(0).results)
+        self.assertEqual([1], query.nth(1).results)
+        self.assertEqual([], query.nth(2).results)
+
 
 class TestBrowserQuery(TestCase):
     def setUp(self):
         self.browser = Mock(
-            find_by_css=Mock(return_value=range(3)),
-            find_by_text=Mock(return_value=range(10))
+            find_elements_by_css_selector=Mock(return_value=range(3)),
+            find_elements_by_xpath=Mock(return_value=range(10))
         )
 
     def test_error_cases(self):
         with self.assertRaises(TypeError):
-            BrowserQuery(self.browser, css='foo', text='bar')
+            BrowserQuery(self.browser, css='foo', xpath='bar')
 
         with self.assertRaises(TypeError):
             BrowserQuery(self.browser)
@@ -113,46 +146,14 @@ class TestBrowserQuery(TestCase):
 
     def test_query_args(self):
         self.assertEquals(
-            self.browser.find_by_css.return_value,
+            self.browser.find_elements_by_css_selector.return_value,
             BrowserQuery(self.browser, css='foo').results
         )
         self.assertEquals(
-            self.browser.find_by_text.return_value,
-            BrowserQuery(self.browser, text='foo').results
+            self.browser.find_elements_by_xpath.return_value,
+            BrowserQuery(self.browser, xpath='foo').results
         )
 
     def test_repr(self):
         self.assertEquals(u"BrowserQuery(css='foo')", repr(BrowserQuery(self.browser, css='foo')))
-        self.assertEquals(u"BrowserQuery(text='foo')", repr(BrowserQuery(self.browser, text='foo')))
-
-
-class TestSubQuery(TestCase):
-    def test_error_cases(self):
-        with self.assertRaises(TypeError):
-            SubQuery(css='foo', text='bar')
-
-        with self.assertRaises(TypeError):
-            SubQuery()
-
-        with self.assertRaises(TypeError):
-            SubQuery(foo='bar')
-
-    def test_call(self):
-        query = SubQuery(css='foo')
-        elem1 = Mock(find_by_css=Mock(return_value=range(4)))
-
-        self.assertEquals(elem1.find_by_css.return_value, query(elem1))
-        self.assertIsNone(query.seed_fn)
-
-        elem2 = Mock(find_by_css=Mock(return_value=range(5)))
-        self.assertEquals(elem2.find_by_css.return_value, query(elem2))
-        self.assertIsNone(query.seed_fn)
-
-    def test_repr(self):
-        self.assertEquals(u"SubQuery(css='foo')", repr(SubQuery(css='foo')))
-        self.assertEquals(u"SubQuery(text='foo')", repr(SubQuery(text='foo')))
-
-        self.assertEquals(
-            u"BrowserQuery(css='foo').map(SubQuery(css='bar'))",
-            repr(BrowserQuery(Mock(), css='foo').map(SubQuery(css='bar')))
-        )
+        self.assertEquals(u"BrowserQuery(xpath='foo')", repr(BrowserQuery(self.browser, xpath='foo')))

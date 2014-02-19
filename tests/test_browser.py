@@ -1,13 +1,27 @@
 import tempfile
 import shutil
 import os
+from selenium import webdriver
 import bok_choy.browser
 from unittest import TestCase
+from mock import patch
 
 from .pages import ButtonPage
 
 
 class TestBrowser(TestCase):
+
+    @patch.dict(os.environ, {'SELENIUM_BROWSER': 'firefox'})
+    def test_local_browser(self):
+        browser = bok_choy.browser.browser()
+        self.addCleanup(browser.quit)
+        self.assertIsInstance(browser, webdriver.Firefox)
+
+    @patch.dict(os.environ, {'SELENIUM_BROWSER': 'invalid'})
+    def test_invalid_browser_name(self):
+        with self.assertRaises(bok_choy.browser.BrowserConfigError):
+            bok_choy.browser.browser()
+
     def test_save_screenshot(self):
 
         # Create a temp directory to save the screenshot to

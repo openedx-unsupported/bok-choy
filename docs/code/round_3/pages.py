@@ -21,7 +21,7 @@ class GitHubSearchResultsPage(PageObject):
         """
         Return a list of results returned from a search
         """
-        return self.css_text('ul.repolist > li > h3.repolist-name > a')
+        return self.q(css='ul.repolist > li > h3.repolist-name > a').text
 
 
 class GitHubSearchPage(PageObject):

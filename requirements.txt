@@ -1,2 +1,3 @@
-splinter==0.5.4
+selenium==2.39.0
 sphinx==1.1.3
+sphinxcontrib-napoleon==0.2.4

@@ -1,40 +1,43 @@
 """
-Tools for querying html inside a running browser.
+Tools for interacting with the DOM inside a browser.
 """
 
 from copy import copy
-from selenium.common.exceptions import WebDriverException, StaleElementReferenceException
-from splinter.exceptions import ElementDoesNotExist
+from selenium.common.exceptions import WebDriverException
 from collections import Sequence
+from itertools import islice
 
-from bok_choy.promise import Promise, fulfill
-
-
-SUPPORTED_QUERY_TYPES = ['css', 'id', 'value', 'text', 'xpath']
+from bok_choy.promise import Promise
 
 
-class KeepWaiting(Exception):
-    """
-    Dummy exception to indicate that a check function wants to continue waiting.
-    """
-    pass
-
-
-RETRY_EXCEPTIONS = (
-    WebDriverException, StaleElementReferenceException,
-    ElementDoesNotExist, KeepWaiting
-)
+# Mapping of query type to Selenium webdriver query method names
+QUERY_TYPES = {
+    'css': 'find_elements_by_css_selector',
+    'xpath': 'find_elements_by_xpath',
+}
 
 
 def no_error(func):
     """
     Decorator to create a `Promise` check function that is satisfied
-    only when `func()` executes successfully.
+    only when `func` executes without a Selenium error.
+
+    This protects against many common test failures due to timing issues.
+    For example, accessing an element after it has been modified by JavaScript
+    ordinarily results in a `StaleElementException`.  Methods decorated
+    with `no_error` will simply retry if that happens, which makes tests
+    more robust.
+
+    Args:
+        func (callable): The function to execute, with retries if an error occurs.
+
+    Returns:
+        Decorated function
     """
     def _inner(*args, **kwargs):
         try:
             return_val = func(*args, **kwargs)
-        except RETRY_EXCEPTIONS:
+        except WebDriverException:
             return (False, None)
         else:
             return (True, return_val)
@@ -44,23 +47,43 @@ def no_error(func):
 
 class Query(Sequence):
     """
-    This represents a general interface for an object that produces values
-    (by calling `seed_fn`), and then transforms them arbitrarily (using the
-    contents of `transforms').
+    General mechanism for selecting and transforming values.
     """
-    def __init__(self, seed_fn, msg_base=None):
-        if msg_base is None:
-            msg_base = u'Query({})'.format(seed_fn.__name__)
+
+    def __init__(self, seed_fn, desc=None):
+        """
+        Configure the `Query`.
+
+        Args:
+            seed_fn (callable): Callable with no arguments that produces a list of values.
+
+        Keyword Args:
+            desc (str): A description of the query, used in log messages.  If not provided, defaults to the name of the seed function.
+
+        Returns:
+            Query
+        """
+        if desc is None:
+            desc = u'Query({})'.format(getattr(seed_fn, '__name__', ''))
 
         self.seed_fn = seed_fn
         self.transforms = []
-        self.msg_stack = []
-        self.msg_base = msg_base
+        self.desc_stack = []
+        self.desc = desc
 
     def replace(self, **kwargs):
         """
         Return a copy of this `Query`, but with attributes specified
         as keyword arguments replaced by the keyword values.
+
+        Keyword Args:
+            Attributes/values to replace in the copy.
+
+        Returns:
+             A copy of the query that has its attributes updated with the specified values.
+
+        Raises:
+            TypeError: The `Query` does not have the specified attribute.
         """
         clone = copy(self)
 
@@ -72,53 +95,82 @@ class Query(Sequence):
             setattr(clone, key, value)
         return clone
 
-    def transform(self, transform, msg=None):
+    def transform(self, transform, desc=None):
         """
-        Return a copy of this query, transformed by `transform`.
+        Create a copy of this query, transformed by `transform`.
 
         Args:
-            transform: A function that takes an iterable of values, and yields new values
-            msg (str): A description of what this transform is doing (like `transform(add_one)`
+            transform (callable): Callable that takes an iterable of values and returns an iterable of transformed values.
+
+        Keyword Args:
+            desc (str): A description of the transform, to use in log messages.  Defaults to the name of the `transform` function.
+
+        Returns:
+            Query
         """
-        if msg is None:
-            msg = u'transform({})'.format(transform.__name__)
+        if desc is None:
+            desc = u'transform({})'.format(getattr(transform, '__name__', ''))
 
         return self.replace(
             transforms=self.transforms + [transform],
-            msg_stack=self.msg_stack + [msg]
+            desc_stack=self.desc_stack + [desc]
         )
 
-    def map(self, map_fn, msg=None):
+    def map(self, map_fn, desc=None):
         """
         Return a copy of this query, with the values mapped through `map_fn`.
 
         Args:
-            map_fn: A function that takes a single argument, and returns a new valu
-            msg (str): A description of what map_fn is doing (if not supplied, will be the
-                `__name__` of `map_fn`).
+            map_fn (callable): A callable that takes a single argument and returns a new value.
+
+        Keyword Args:
+            desc (str): A description of the mapping transform, for use in log message.  Defaults to the name of the map function.
+
+        Returns:
+            Query
         """
-        if msg is None:
-            msg = map_fn.__name__
+        if desc is None:
+            desc = getattr(map_fn, '__name__', '')
+        desc = u'map({})'.format(desc)
 
-        return self.transform(lambda xs: (map_fn(x) for x in xs), u'map({})'.format(msg))
+        return self.transform(lambda xs: (map_fn(x) for x in xs), desc=desc)
 
-    def filter(self, filter_fn=None, msg=None, **kwargs):
+    def filter(self, filter_fn=None, desc=None, **kwargs):
         """
         Return a copy of this query, with some values removed.
 
-        Args:
-            filter_fn: If set, this must be a function that takes one argument,
-                and returns True or False
-            msg: A description of what filter_fn is doing (if not supplied, will be the
-                `__name__` of `filter_fn`)
-            kwargs: If any keyword arguments are set, then only elements
-                of the query whose attributes match the values specified by the
-                keyword arguments will be returned.
+        Example usages:
+
+        .. code:: python
+
+            # Returns a query that matches even numbers
+            q.filter(filter_fn=lambda x: x % 2)
+
+            # Returns a query that matches elements with el.description == "foo"
+            q.filter(description="foo")
+
+        Keyword Args:
+            filter_fn (callable): If specified, a function that accepts one argument (the element)
+                    and returns a boolean indicating whether to include that element in the results.
+
+            kwargs: Specify attribute values that an element must have to be included in the results.
+
+            desc (str): A description of the filter, for use in log messages.  Defaults to the name of the filter function or attribute.
+
+        Raises:
+            TypeError: neither or both of `filter_fn` and `kwargs` are provided.
         """
         if filter_fn is not None and kwargs:
             raise TypeError('Must supply either a filter_fn or attribute filter parameters to filter(), but not both.')
         if filter_fn is None and not kwargs:
             raise TypeError('Must supply one of filter_fn or one or more attribute filter parameters to filter().')
+
+        if desc is None:
+            if filter_fn is not None:
+                desc = getattr(filter_fn, '__name__', '')
+            elif kwargs:
+                desc = u", ".join([u"{}={!r}".format(key, value) for key, value in kwargs.items()])
+        desc = u"filter({})".format(desc)
 
         if kwargs:
             def filter_fn(elem):
@@ -128,14 +180,12 @@ class Query(Sequence):
                     in kwargs.items()
                 )
 
-            msg = u", ".join([u"{}={!r}".format(key, value) for key, value in kwargs.items()])
-
-        if msg is None:
-            msg = filter_fn.__name__
-
-        return self.transform(lambda xs: (x for x in xs if filter_fn(x)), u'filter({})'.format(msg))
+        return self.transform(lambda xs: (x for x in xs if filter_fn(x)), desc=desc)
 
     def _execute(self):
+        """
+        Run the query, generating data from the `seed_fn` and performing transforms on the results.
+        """
         data = self.seed_fn()
         for transform in self.transforms:
             data = transform(data)
@@ -145,23 +195,34 @@ class Query(Sequence):
         """
         Execute this query, retrying based on the supplied parameters.
 
-        Args:
+        Keyword Args:
             try_limit (int): The number of times to retry the query.
-            try_interval (float): The number of seconds to wait between each try.
-            timeout (float): The maximum number of seconds to spend retrying.
+            try_interval (float): The number of seconds to wait between each try (float).
+            timeout (float): The maximum number of seconds to spend retrying (float).
+
+        Returns:
+            The transformed results of the query.
+
+        Raises:
+            BrokenPromise: The query did not execute without a Selenium error after one or more attempts.
         """
-        return fulfill(Promise(
+        return Promise(
             no_error(self._execute),
             u"Executing {!r}".format(self),
             try_limit=try_limit,
             try_interval=try_interval,
             timeout=timeout,
-        ))
+        ).fulfill()
 
     @property
     def results(self):
         """
-        A list of the results of the query. Will be cached.
+        A list of the results of the query, which are cached.
+        If you call `results` multiple times on the same query, you will always get the same results.
+        Use `reset()` to clear the cache and re-run the query.
+
+        Returns:
+            The results from executing the query.
         """
         return self.execute()
 
@@ -171,63 +232,73 @@ class Query(Sequence):
     def __len__(self):
         return len(self.results)
 
-    @property
-    def present(self):
+    def is_present(self):
         """
-        True if the query returns any elements.
+        Check whether the query returns any results.
+
+        Returns:
+            Boolean indicating whether the query contains any results.
         """
         return bool(self.results)
 
-    @property
-    def text(self):
-        """
-        Return the text attributes of each of the results of this Query.
-        """
-        return self.map(lambda el: el.text, 'text').results
-
-    @property
-    def html(self):
-        """
-        Return the html attributes of each of the results of this Query.
-        """
-        return self.map(lambda el: el.html).results
-
-    @property
-    def value(self):
-        """
-        Return the value attributes of each of the results of this Query.
-        """
-        return self.map(lambda el: el.value, 'value').results
+    present = property(is_present)
 
     @property
     def first(self):
         """
-        Return a Query that only selects the first element of this Query.
-        """
-        return self.transform(lambda xs: [iter(xs).next()], 'first')
+        Return a Query that selects only the first element of this Query.
+        If no elements are available, returns a query with no results.
 
-    def click(self):
-        """
-        Call `.click` on all elements selected by this Query, and
-        return the elements unchanged.
-        """
-        self.map(lambda el: el.click(), 'click()').execute()
+        Example usage:
 
-    @property
-    def selected(self):
-        """
-        Call `.selected` on all elements selected by this Query.
-        """
-        return self.map(lambda el: el.selected, 'selected')
+        .. code:: python
 
-    def fill(self, text):
+            >> q = Query(lambda: range(5))
+            >> q.first.results
+            [0]
+
+        Returns:
+            Query
         """
-        Call `.fill(text)` on all elements selected by this Query.
+        def _transform(xs):
+            try:
+                return [iter(xs).next()]
+            except StopIteration:
+                return []
+
+        return self.transform(_transform, 'first')
+
+    def nth(self, index):
         """
-        return self.map(lambda el: el.fill(text), 'fill({!r})'.format(text)).execute()
+        Return a query that selects the element at `index` (starts from 0).
+        If no elements are available, returns a query with no results.
+
+        Example usage:
+
+        .. code:: python
+
+            >> q = Query(lambda: range(5))
+            >> q.nth(2).results
+            [2]
+
+        Args:
+            index (int): The index of the element to select (starts from 0)
+
+        Returns:
+            Query
+        """
+        def _transform(xs):
+            try:
+                return [next(islice(iter(xs), index, None))]
+
+            # Gracefully handle (a) running out of elements, and (b) negative indices
+            except (StopIteration, ValueError):
+                return []
+
+        return self.transform(_transform, 'nth')
 
     def __repr__(self):
-        return u".".join([self.msg_base] + self.msg_stack)
+        return u".".join([self.desc] + self.desc_stack)
 
 
 class BrowserQuery(Query):
@@ -239,10 +310,17 @@ class BrowserQuery(Query):
         Generate a query over a browser.
 
         Args:
-            browser: A :class:`splinter.browser.Browser`.
-            kwargs: Only a single keyword argument may be passed. It is used to
-                select a `find_by_*` method from the browser to use as the `seed_fn`.
-                The keyword value is used as the single argument to the `find_by_*` method.
+            browser (selenium.webdriver): A Selenium-controlled browser.
+
+        Keyword Args:
+            css (str): A CSS selector.
+            xpath (str): An XPath selector.
+
+        Returns:
+            BrowserQuery
+
+        Raises:
+            TypeError: The query must be passed either a CSS or XPath selector, but not both.
         """
         if len(kwargs) > 1:
             raise TypeError('BrowserQuery() takes at most 1 keyword argument.')
@@ -250,65 +328,135 @@ class BrowserQuery(Query):
         if not kwargs:
             raise TypeError('Must pass a query keyword argument to BrowserQuery().')
 
-        query, value = kwargs.items()[0]
+        query_name, query_value = kwargs.items()[0]
 
-        if query not in SUPPORTED_QUERY_TYPES:
-            raise TypeError('{} is not a supported query type for BrowserQuery()'.format(query))
+        if query_name not in QUERY_TYPES:
+            raise TypeError('{} is not a supported query type for BrowserQuery()'.format(query_name))
 
         def query_fn():
-            return getattr(browser, 'find_by_{}'.format(query))(value)
+            return getattr(browser, QUERY_TYPES[query_name])(query_value)
 
         super(BrowserQuery, self).__init__(
             query_fn,
-            msg_base=u"BrowserQuery({}={!r})".format(query, value),
+            desc=u"BrowserQuery({}={!r})".format(query_name, query_value),
         )
         self.browser = browser
 
-
-class SubQuery(Query):
-    """
-    A Query that is late-bound to an element, so that it can be used as an
-    argument to :meth:`.Query.map` or :meth:`.Query.filter`.
-    """
-
-    def __init__(self, **kwargs):
+    def attrs(self, attribute_name):
         """
-        Generate a subquery.
+        Retrieve HTML attribute values from the elements matched by the query.
+
+        Example usage:
+
+        .. code:: python
+
+            # Assume that the query matches html elements:
+            # <div class="foo"> and <div class="bar">
+            >> q.attrs('class')
+            ['foo', 'bar']
 
         Args:
-            kwargs: Only a single keyword argument may be passed. It is used to
-                select a `find_by_*` method from the bound element to use as the `seed_fn`.
-                The keyword value is used as the single argument to the `find_by_*` method.
+            attribute_name (str): The name of the attribute values to retrieve.
+
+        Returns:
+            A list of attribute values for `attribute_name`.
         """
-        if len(kwargs) > 1:
-            raise TypeError('SubQuery() takes at most 1 keyword argument.')
-
-        if not kwargs:
-            raise TypeError('Must supply at least one query parameter to SubQuery().')
-
-        self.query_name, self.query_value = kwargs.items()[0]
-
-        if self.query_name not in SUPPORTED_QUERY_TYPES:
-            raise TypeError('{} is not a supported query type for SubQuery()'.format(self.query_name))
-
-        super(SubQuery, self).__init__(
-            None,
-            msg_base=u"SubQuery({}={!r})".format(self.query_name, self.query_value)
-        )
-
-    def execute(self):
-        # Don't do separate retries on the SubQuery portion of a Query
-        return self._execute()
-
-    def __call__(self, elem):
-        """
-        Return a copy of this SubQuery, bound to the supplied element `elem`.
-        """
-        def seed_fn():
-            return getattr(elem, 'find_by_{}'.format(self.query_name))(self.query_value)
-
-        return self.replace(seed_fn=seed_fn, msg_base='SubQuery({})').results
+        desc = 'attrs({!r})'.format(attribute_name)
+        return self.map(lambda el: el.get_attribute(attribute_name), desc).results
 
     @property
-    def __name__(self):
-        return repr(self)
+    def text(self):
+        """
+        Retrieve text from each matched element.
+
+        Example usage:
+
+        .. code:: python
+
+            # Assume that the query matches html elements:
+            # <div>Foo</div> and <div>Bar</div>
+            >> q.text
+            ['Foo', 'Bar']
+
+        Returns:
+            The text of each element matched by the query.
+        """
+        return self.map(lambda el: el.text, 'text').results
+
+    @property
+    def html(self):
+        """
+        Retrieve the inner HTML of each element matched by the query.
+
+        Example usage:
+
+        .. code:: python
+
+            # Assume that the query matches html elements:
+            # <div><span>Foo</span></div> and <div>Bar</div>
+            >> q.html
+            ['<span>Foo</span>', 'Bar']
+
+        Returns:
+            The inner HTML for each element matched by the query.
+        """
+        return self.map(lambda el: el.get_attribute('innerHTML'), 'html').results
+
+    @property
+    def selected(self):
+        """
+        Check whether all the matched elements are selected.
+
+        Returns:
+            bool
+        """
+        return all(self.map(lambda el: el.is_selected(), 'selected').results)
+
+    @property
+    def visible(self):
+        """
+        Check whether all matched elements are visible.
+
+        Returns:
+            bool
+        """
+        return all(self.map(lambda el: el.is_displayed(), 'visible').results)
+
+    def click(self):
+        """
+        Click each matched element.
+
+        Example usage:
+
+        .. code:: python
+
+            # Click the first element matched by the query
+            q.first.click()
+
+        Returns:
+            None
+        """
+        self.map(lambda el: el.click(), 'click()').execute()
+
+    def fill(self, text):
+        """
+        Set the text value of each matched element to `text`.
+
+        Example usage:
+
+        .. code:: python
+
+            # Set the text of the first element matched by the query to "Foo"
+            q.first.fill('Foo')
+
+        Args:
+            text (str): The text used to fill the element (usually a text field or text area).
+
+        Returns:
+            None
+        """
+        def _fill(el):
+            el.clear()
+            el.send_keys(text)
+
+        self.map(_fill, 'fill({!r})'.format(text)).execute()

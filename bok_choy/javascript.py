@@ -5,35 +5,51 @@ import functools
 import json
 from textwrap import dedent
 from selenium.common.exceptions import TimeoutException
-from .promise import EmptyPromise, fulfill
+from .promise import EmptyPromise
 
 
-def js_defined(*args):
+def js_defined(*js_vars):
     """
-    Class decorator that ensures the JavaScript variables
-    in `args` are defined in the browser.
+    Class decorator that ensures JavaScript variables are defined in the browser.
 
     This adds a `wait_for_js` method to the class, which will
     block until all the expected JavaScript variables are defined.
+
+    Args:
+        js_vars (list of str): List of JavaScript variable names to wait for.
+
+    Returns:
+        Decorated class
     """
-    return _decorator('_js_vars', args)
+    return _decorator('_js_vars', js_vars)
 
 
-def requirejs(*args):
+def requirejs(*modules):
     """
-    Class decorator that ensures all RequireJS modules
-    in `args` are loaded in the browser.
+    Class decorator that ensures RequireJS modules are loaded in the browser.
 
     This adds a `wait_for_js` method to the class, which will
     block until all the expected RequireJS modules are loaded.
+
+    Args:
+        modules (list of str) List of RequireJS module names to wait for.
+
+    Returns:
+        Decorated class
     """
-    return _decorator('_requirejs_deps', args)
+    return _decorator('_requirejs_deps', modules)
 
 
 def wait_for_js(function):
     """
-    Method decorator that waits for JavaScript
-    dependencies before executing `function`.
+    Method decorator that waits for JavaScript dependencies before executing `function`.
+    If the function is not a method, the decorator has no effect.
+
+    Args:
+        function (callable): Method to decorate.
+
+    Returns:
+        Decorated method
     """
 
     @functools.wraps(function)
@@ -102,24 +118,18 @@ def _wait_for_js(self):
 
     # Wait for JavaScript variables to be defined
     if hasattr(self, '_js_vars') and self._js_vars:
-
-        js_defined_promise = EmptyPromise(
+        EmptyPromise(
             lambda: _are_js_vars_defined(self.browser, self._js_vars),
             "JavaScript variables defined: {0}".format(", ".join(self._js_vars))
-        )
-
-        fulfill(js_defined_promise)
+        ).fulfill()
 
     # Wait for RequireJS dependencies to load
     if hasattr(self, '_requirejs_deps') and self._requirejs_deps:
-
-        requirejs_promise = EmptyPromise(
+        EmptyPromise(
             lambda: _are_requirejs_deps_loaded(self.browser, self._requirejs_deps),
             "RequireJS dependencies loaded: {0}".format(", ".join(self._requirejs_deps)),
             try_limit=5
-        )
-
-        fulfill(requirejs_promise)
+        ).fulfill()
 
 
 def _are_js_vars_defined(browser, js_vars):
@@ -127,7 +137,7 @@ def _are_js_vars_defined(browser, js_vars):
     Return a boolean indicating whether all the JavaScript
     variables `js_vars` are defined on the current page.
 
-    `browser` is a Splinter browser instance.
+    `browser` is a Selenium webdriver instance.
     """
     # This script will evaluate to True iff all of
     # the required vars are defined.
@@ -136,7 +146,7 @@ def _are_js_vars_defined(browser, js_vars):
         for var in js_vars
     ])
 
-    return browser.evaluate_script(script)
+    return browser.execute_script("return {}".format(script))
 
 
 def _are_requirejs_deps_loaded(browser, deps):
@@ -144,7 +154,7 @@ def _are_requirejs_deps_loaded(browser, deps):
     Return a boolean indicating whether all the RequireJS
     dependencies `deps` have loaded on the current page.
 
-    `browser` is a Splinter browser instance.
+    `browser` is a WebDriver instance.
     """
 
     # This is a little complicated
@@ -181,12 +191,12 @@ def _are_requirejs_deps_loaded(browser, deps):
     """).format(deps=json.dumps(list(deps)))
 
     # Set a timeout to ensure we get control back
-    browser.driver.set_script_timeout(30)
+    browser.set_script_timeout(30)
 
     # Give control to the browser
     # `result` will be the argument passed to the callback function
     try:
-        result = browser.driver.execute_async_script(script)
+        result = browser.execute_async_script(script)
         return result == 'Success'
 
     except TimeoutException:
