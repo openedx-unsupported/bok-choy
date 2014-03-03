@@ -258,15 +258,22 @@ In the test version that we just completed we entered some search terms and
 then verified that we got to the right page, but not that the correct results
 were returned. Let's improve our test to verify the search results.
 
-Improve the page definition
----------------------------
-
+Improve the page definitions
+----------------------------
 Since we want to verify the results of the search, we need to add a property for the
 results returned to the page object for the search results page.
 
 .. literalinclude:: code/round_3/pages.py
     :language: python
     :lines: 6-24
+
+Also maybe we want a better way to determine that we are on the search page than 
+just the words "code search" the title. Let's use a query to make sure that the 
+search button exists.
+
+.. literalinclude:: code/round_3/pages.py
+    :language: python
+    :lines: 27-35
 
 
 Improve the search test

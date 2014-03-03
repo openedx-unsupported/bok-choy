@@ -186,6 +186,9 @@ class NextPage(SitePage):
     """
     name = "next_page"
 
+    def is_browser_on_page(self):
+        return self.q(css='#next').is_present()
+
     def load_next(self, page, delay_sec):
         """
         Load the page named `page_name` after waiting for `delay_sec`.
