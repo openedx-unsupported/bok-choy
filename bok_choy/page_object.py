@@ -316,6 +316,7 @@ class PageObject(object):
             timeout=timeout
         ).fulfill()
 
+    @unguarded
     def q(self, **kwargs):
         """
         Construct a query on the browser.
