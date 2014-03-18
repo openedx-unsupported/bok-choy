@@ -151,6 +151,15 @@ class SelectorPage(SitePage):
         """
         return self.q(css='div.test').html
 
+    def outer_divs_with_inner_text(self, child_text):
+        """
+        Return a list of outer divs with the specified
+        text in a child element.
+        """
+        return self.q(css='div.outer').filter(
+            lambda el: el.find_element_by_css_selector('div.inner').text == child_text
+        )
+
 
 class DelayPage(SitePage):
     """

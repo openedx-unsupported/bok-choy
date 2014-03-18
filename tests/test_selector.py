@@ -41,3 +41,7 @@ class SelectorTest(WebAppTest):
     def test_is_present(self):
         self.assertTrue(self.selector.q(css='div#fixture').present)
         self.assertFalse(self.selector.q(css='div#not_present').present)
+
+    def test_filtered_query(self):
+        outer = self.selector.outer_divs_with_inner_text('Match This')
+        self.assertEquals(outer.attrs('id'),['o2', 'o3'])
