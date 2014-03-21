@@ -151,14 +151,15 @@ class SelectorPage(SitePage):
         """
         return self.q(css='div.test').html
 
-    def outer_divs_with_inner_text(self, child_text):
+    def ids_of_outer_divs_with_inner_text(self, child_text):
         """
-        Return a list of outer divs with the specified
-        text in a child element.
+        Return a list of the ids of outer divs with
+        the specified text in a child element.
         """
         return self.q(css='div.outer').filter(
-            lambda el: el.find_element_by_css_selector('div.inner').text == child_text
-        )
+            lambda el:
+                child_text in [inner.text for inner in el.find_elements_by_css_selector('div.inner')]
+        ).attrs('id')
 
 
 class DelayPage(SitePage):

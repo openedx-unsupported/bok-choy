@@ -43,5 +43,9 @@ class SelectorTest(WebAppTest):
         self.assertFalse(self.selector.q(css='div#not_present').present)
 
     def test_filtered_query(self):
-        outer = self.selector.outer_divs_with_inner_text('Match This')
-        self.assertEquals(outer.attrs('id'),['o2', 'o3'])
+        outer_id_list = self.selector.ids_of_outer_divs_with_inner_text('Match This')
+        self.assertEquals(outer_id_list,['o2', 'o3'])
+
+    def test_filtered_query_no_match(self):
+        outer_id_list = self.selector.ids_of_outer_divs_with_inner_text('This does not match anything')
+        self.assertEquals(outer_id_list, [])
