@@ -1,9 +1,38 @@
+############
+Introduction
+############
+
+`Bok Choy`_ is a UI-level acceptance test framework for writing robust Selenium_ tests in Python_.
+
+`Bok Choy`_ makes your acceptance tests reliable and maintainable by utilizing the
+`Page Object <https://code.google.com/p/selenium/wiki/PageObjects>`_ and
+`Promise <http://www.quora.com/JavaScript/What-is-the-promise-pattern>`_
+design patterns.
+
+The general pattern is to:
+Define Page => Write Tests for Page => Execute Tests => Repeat, adding more pages and tests
+
+
+*****
+Setup
+*****
+
+As Bok Choy is a Python_ framework, you first need to install Python.
+If you’re running Linux or Mac OS X, you probably already have it installed.
+We recommend that you use `pip <http://www.pip-installer.org/>`_ to install your python
+packages. To install Bok Choy into your Python installation’s site-packages directory:
+
+.. code-block:: bash
+
+   sudo pip install bok-choy
+
+
 ********************
-Tutorial
+Let's start testing!
 ********************
 
-For this tutorial, we will visit GitHub, execute a search for EdX's version of
-its open source MOOC platform, and verify the results returned.
+For this tutorial, we will visit the GitHub site and execute a search for EdX's version of
+its OpenSource MOOC platform, and verify the results returned.
 
 
 Folder structure
@@ -283,8 +312,9 @@ we searched for the EdX user's edx-platform repo and verified that it was the
 first result returned.
 
 
+******************
 Take it from here!
-==================
+******************
 
 This tutorial should have gotten you going with defining page objects for a web application
 and how to start to write tests against the app. Now it's up to you to take it from here and
