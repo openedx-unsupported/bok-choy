@@ -14,7 +14,7 @@ from textwrap import dedent
 from selenium.common.exceptions import WebDriverException
 
 from .query import BrowserQuery
-from .promise import Promise
+from .promise import Promise, EmptyPromise
 
 
 class WrongPageError(Exception):
@@ -365,3 +365,26 @@ class PageObject(object):
 
         # Execute the `with` block
         yield
+
+    @unguarded
+    def wait_for_ajax(self):
+        """
+        Wait for all ajax requests to finish.
+
+        Example usage:
+
+        .. code:: python
+
+            self.q(css='input#email').fill("foo")
+            self.wait_for_ajax()
+
+        Returns:
+            None
+        """
+        def _is_ajax_finished():
+            """
+            Check if all the ajax calls on the current page have completed.
+            """
+            return self.browser.execute_script("return jQuery.active") == 0
+
+        EmptyPromise(_is_ajax_finished, "Finished waiting for ajax requests.").fulfill()

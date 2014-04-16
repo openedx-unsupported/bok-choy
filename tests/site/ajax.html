@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajax</title>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#fixture button").click(function(theEvent){
+                $("#output").load("ajax_test.txt?delay=2");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="fixture">
+        <button>Button</button>
+    </div>
+    <div id="output"><div>
+</body>
+</html>
