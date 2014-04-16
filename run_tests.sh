@@ -26,7 +26,7 @@ trap "kill 0" SIGINT SIGTERM EXIT
 
 # Start the server for the test fixture site
 echo_task "Start server for test fixture site"
-(cd $REPO_ROOT/tests/site && python -m SimpleHTTPServer $SERVER_PORT 2> /dev/null) &
+python -m tests.http_server $SERVER_PORT 2> /dev/null &
 echo "Running test server on port $SERVER_PORT"
 
 echo_task "Run unit test suite"

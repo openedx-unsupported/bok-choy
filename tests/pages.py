@@ -257,3 +257,18 @@ class RequireJSPage(SitePage):
     @wait_for_js
     def output(self):
         return super(RequireJSPage, self).output
+
+
+class AjaxPage(SitePage):
+    """
+    Page for testing an ajax call.
+    """
+
+    name = "ajax"
+
+    def click_button(self):
+        """
+        Click the button on the page, which triggers an ajax
+        call that updates the #output div.
+        """
+        self.q(css='div#fixture button').first.click()
