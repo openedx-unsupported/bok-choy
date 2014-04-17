@@ -190,6 +190,16 @@ class DelayPage(SitePage):
         ).fulfill()
 
 
+class SlowPage(SitePage):
+    """
+    Page that loads its elements slowly.
+    """
+    name = "slow"
+
+    def is_browser_on_page(self):
+        return self.q(css='div#ready').is_present()
+
+
 class NextPage(SitePage):
     """
     Page that loads another page after a delay.

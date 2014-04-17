@@ -234,8 +234,8 @@ class PageObject(object):
 
         Raises:
             PageLoadError: The page did not load successfully.
-            WrongPageError: The browser is not on the correct page.
             NotImplementedError: The page object does not provide a URL to visit.
+            BrokenPromise: The page did not load successfully before timing out.
 
         Returns:
             PageObject
@@ -255,12 +255,13 @@ class PageObject(object):
                 self, self.url
             ))
 
-        # Ask the page object to verify that the correct page loaded
-        self._verify_page()
-
-        # Return the page object, so that the caller can chain the call with an action:
+        # Give the browser enough time to get to the page, then return the page object
+        # so that the caller can chain the call with an action:
         # Example: FooPage.visit().do_something()
-        return self
+        #
+        # A BrokenPromise will be raised if the page object's is_browser_on_page method
+        # does not return True before timing out.
+        return self.wait_for_page()
 
     @classmethod
     @unguarded
