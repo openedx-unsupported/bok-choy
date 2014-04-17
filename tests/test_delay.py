@@ -4,7 +4,7 @@ Test waiting for elements to appear after a delay.
 
 from bok_choy.web_app_test import WebAppTest
 from bok_choy.promise import BrokenPromise
-from .pages import DelayPage
+from .pages import DelayPage, SlowPage
 
 
 class DelayTest(WebAppTest):
@@ -32,3 +32,15 @@ class DelayTest(WebAppTest):
             broken_promise_raised = True
 
         self.assertTrue(broken_promise_raised)
+
+
+class SlowTest(WebAppTest):
+    """
+    Test visiting a page that loads its elements into the DOM slowly.
+    """
+    def setUp(self):
+        super(SlowTest, self).setUp()
+        self.slow = SlowPage(self.browser)
+
+    def test_slow(self):
+        self.slow.visit()

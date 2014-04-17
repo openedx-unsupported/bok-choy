@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slow</title>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            window.setTimeout(function() {
+                $("div#fixture").append('<div id="ready">Ready</div>');
+            }, 2000);
+        });
+    </script>
+</head>
+<body>
+    <div id="fixture">
+    </div>
+</body>
+</html>
