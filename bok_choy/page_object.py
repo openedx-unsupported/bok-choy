@@ -14,7 +14,7 @@ from textwrap import dedent
 from selenium.common.exceptions import WebDriverException
 
 from .query import BrowserQuery
-from .promise import Promise, EmptyPromise
+from .promise import Promise, EmptyPromise, BrokenPromise
 
 
 class WrongPageError(Exception):
@@ -235,7 +235,6 @@ class PageObject(object):
         Raises:
             PageLoadError: The page did not load successfully.
             NotImplementedError: The page object does not provide a URL to visit.
-            BrokenPromise: The page did not load successfully before timing out.
 
         Returns:
             PageObject
@@ -261,7 +260,12 @@ class PageObject(object):
         #
         # A BrokenPromise will be raised if the page object's is_browser_on_page method
         # does not return True before timing out.
-        return self.wait_for_page()
+        try:
+            return self.wait_for_page()
+        except (BrokenPromise):
+            raise PageLoadError("Timed out waiting to load page '{!r}' at URL '{}'".format(
+                self, self.url
+            ))
 
     @classmethod
     @unguarded
@@ -297,7 +301,9 @@ class PageObject(object):
         if not, raise a `WrongPageError`.
         """
         if not self.is_browser_on_page():
-            msg = "Not on the correct page to use {!r}".format(self)
+            msg = "Not on the correct page to use '{!r}' at URL '{}'".format(
+                self, self.url
+            )
             raise WrongPageError(msg)
 
     @unguarded
