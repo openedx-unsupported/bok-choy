@@ -3,12 +3,12 @@ bok-choy
 
 UI-level acceptance test framework.
 
-Contents:
-
 .. toctree::
    :maxdepth: 2
 
+   intro
    tutorial
+   guidelines
    api_reference
 
 
