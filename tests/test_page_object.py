@@ -2,6 +2,7 @@ from mock import Mock
 from unittest import TestCase
 
 from bok_choy.page_object import PageObject, PageLoadError, unguarded, WrongPageError
+from bok_choy.promise import BrokenPromise
 from .pages import SitePage
 
 
@@ -18,6 +19,11 @@ class NeverOnPage(SitePage):
 
     def is_browser_on_page(self):
         return False
+
+    @unguarded
+    def wait_for_page(self):
+        # This page should never load.
+        raise BrokenPromise(None)
 
     def _private_method(self):
         pass
@@ -86,3 +92,10 @@ class PageObjectTest(TestCase):
         # Can't visit a page with no URL specified
         with self.assertRaises(NotImplementedError):
             NoUrlProvidedPage(Mock()).visit()
+
+    def test_visit_timeout(self):
+
+        # If the page doesn't load before the timeout, PageLoadError is raised
+        with self.assertRaises(PageLoadError):
+            NeverOnPage(Mock()).visit()
+
