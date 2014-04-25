@@ -39,7 +39,7 @@ if [ -z $1 ]; then
     coverage report
 
     echo_task "Install bok-choy"
-    pip uninstall bok-choy -y &> /dev/null || true
+    pip uninstall bok_choy -y &> /dev/null || true
     python setup.py install
 
     echo_task "Run tutorial examples"
