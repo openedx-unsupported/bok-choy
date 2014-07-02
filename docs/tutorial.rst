@@ -236,7 +236,7 @@ results returned to the page object for the search results page.
 
 .. literalinclude:: code/round_3/pages.py
     :language: python
-    :lines: 6-24
+    :lines: 1-24
 
 Also maybe we want a better way to determine that we are on the search page than 
 just the words "code search" the title. Let's use a query to make sure that the 
