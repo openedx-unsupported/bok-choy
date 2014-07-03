@@ -17,3 +17,6 @@ class VisibleTest(WebAppTest):
     def test_visible(self):
         self.assertTrue(self.page.is_visible('superman'))
         self.assertFalse(self.page.is_visible('batman'))
+
+    def test_visible_with_incorrect_css_selector(self):
+        self.assertFalse(self.page.is_visible('sandman'))
