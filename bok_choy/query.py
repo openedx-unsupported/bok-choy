@@ -410,7 +410,11 @@ class BrowserQuery(Query):
         Returns:
             bool
         """
-        return all(self.map(lambda el: el.is_selected(), 'selected').results)
+        query_results = self.map(lambda el: el.is_selected(), 'selected').results
+        if query_results:
+            return all(query_results)
+        else:
+            return False
 
     @property
     def visible(self):
@@ -420,7 +424,11 @@ class BrowserQuery(Query):
         Returns:
             bool
         """
-        return all(self.map(lambda el: el.is_displayed(), 'visible').results)
+        query_results = self.map(lambda el: el.is_displayed(), 'visible').results
+        if query_results:
+            return all(query_results)
+        else:
+            return False
 
     def click(self):
         """
