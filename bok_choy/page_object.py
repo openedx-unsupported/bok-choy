@@ -395,3 +395,101 @@ class PageObject(object):
             return self.browser.execute_script("return jQuery.active") == 0
 
         EmptyPromise(_is_ajax_finished, "Finished waiting for ajax requests.").fulfill()
+
+    @unguarded
+    def wait_for(self, promise_check_func, description, result=False, timeout=60):
+        """
+        Calls the method provided as an argument until the Promise satisfied or BrokenPromise
+
+        Arguments:
+            promise_check_func (callable):
+                * If `result` is False Then
+                    Function that accepts no arguments and returns a boolean indicating whether the promise is fulfilled
+                * If `result` is True Then
+                    Function that accepts no arguments and returns a `(is_satisfied, result)` tuple,
+                    where `is_satisfied` is a boolean indicating whether the promise was satisfied, and `result`
+                    is a value to return from the fulfilled `Promise`
+            description (str): Description of the Promise, used in log messages
+            result (bool): Indicates whether we need result
+            timeout (float): Maximum number of seconds to wait for the Promise to be satisfied before timing out
+
+        Raises:
+            BrokenPromise: the `Promise` was not satisfied
+
+        """
+        if result:
+            return Promise(promise_check_func, description, timeout=timeout).fulfill()
+        else:
+            return EmptyPromise(promise_check_func, description, timeout=timeout).fulfill()
+
+    @unguarded
+    def wait_for_element_presence(self, element_selector, description):
+        """
+        Waits for element specified by `element_selector` to be present in DOM.
+
+        Example usage:
+
+        .. code:: python
+
+            self.wait_for_element_presence('.submit', 'Submit Button is Present')
+
+        Arguments:
+            element_selector (str): css selector of the element.
+            description (str): Description of the Promise, used in log messages.
+
+        """
+        self.wait_for(lambda: self.q(css=element_selector).present, description=description)
+
+    @unguarded
+    def wait_for_element_absence(self, element_selector, description):
+        """
+        Waits for element specified by `element_selector` until it disappears from DOM.
+
+        Example usage:
+
+        .. code:: python
+
+            self.wait_for_element_absence('.submit', 'Submit Button is not Present')
+
+        Arguments:
+            element_selector (str): css selector of the element.
+            description (str): Description of the Promise, used in log messages.
+
+        """
+        self.wait_for(lambda: not self.q(css=element_selector).present, description=description)
+
+    @unguarded
+    def wait_for_element_visibility(self, element_selector, description):
+        """
+        Waits for element specified by `element_selector` until it is displayed on web page.
+
+        Example usage:
+
+        .. code:: python
+
+            self.wait_for_element_visibility('.submit', 'Submit Button is Visible')
+
+        Arguments:
+            element_selector (str): css selector of the element.
+            description (str): Description of the Promise, used in log messages.
+
+        """
+        self.wait_for(lambda: self.q(css=element_selector).visible, description=description)
+
+    @unguarded
+    def wait_for_element_invisibility(self, element_selector, description):
+        """
+        Waits for element specified by `element_selector` until it disappears from the web page.
+
+        Example usage:
+
+        .. code:: python
+
+            self.wait_for_element_invisibility('.submit', 'Submit Button Disappeared')
+
+        Arguments:
+            element_selector (str): css selector of the element.
+            description (str): Description of the Promise, used in log messages.
+
+        """
+        self.wait_for(lambda: not self.q(css=element_selector).visible, description=description)
