@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wait</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            window.setTimeout(function() {
+                $("#fixture button").click(function(theEvent) {
+                    window.setTimeout(function() {
+                        $("body").append('<div id="output">Done</div>');
+                    }, 10000);
+                });
+                $("div#fixture").append('<div id="ready">Ready</div>');
+            }, 2000);
+        });
+    </script>
+    <script type = "text/javascript">
+        function show() {
+            $("#anim")
+               .addClass( "playing" )
+               .show();
+            setTimeout(hide, 7000);
+        }
+
+        function hide() {
+            $("#anim")
+               .removeClass( "playing" )
+               .hide();
+        }
+    </script>
+</head>
+<body>
+    <div id="fixture">
+        <button>Button</button>
+    </div>
+    <div id="anim" style="display:none">
+        <img src="images/spinner.gif">
+    </div>
+    <input type="button" id='spinner' value="Show Spinner" onclick="show()">
+</body>
+</html>

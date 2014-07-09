@@ -282,3 +282,41 @@ class AjaxPage(SitePage):
         call that updates the #output div.
         """
         self.q(css='div#fixture button').first.click()
+
+
+class WaitsPage(SitePage):
+    """
+    Page for testing wait helpers.
+    """
+
+    name = "wait"
+
+    def is_button_output_present(self):
+        """
+        Click button and wait until output id appears in DOM.
+        """
+        self.wait_for_element_presence('div#ready', 'Page is Ready')
+        self.q(css='div#fixture button').first.click()
+        self.wait_for_element_presence('div#output', 'Button Output is Available')
+
+    def is_class_absent(self):
+        """
+        Click button and wait until playing class disappeared from DOM
+        """
+        self.q(css='#spinner').first.click()
+        self.wait_for_element_absence('.playing', 'Animation Stopped')
+
+    def is_button_output_visible(self):
+        """
+        Click button and wait until output is displayed.
+        """
+        self.wait_for_element_presence('div#ready', 'Page is Ready')
+        self.q(css='div#fixture button').first.click()
+        self.wait_for_element_visibility('div#output', 'Button Output is Visible')
+
+    def is_spinner_invisible(self):
+        """
+        Click button and wait until spinner is disappeared.
+        """
+        self.q(css='#spinner').first.click()
+        self.wait_for_element_invisibility('#anim', 'Button Output is Visible')
