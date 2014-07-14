@@ -6,7 +6,6 @@ from unittest import TestCase
 from abc import ABCMeta
 from uuid import uuid4
 from .browser import browser, save_screenshot
-from browsermobproxy import Server
 
 
 class WebAppTest(TestCase):
@@ -27,16 +26,13 @@ class WebAppTest(TestCase):
         Returns:
             None
         """
-        server = Server('browsermob-proxy')
-        server.start()
-        proxy = server.create_proxy()
 
         # If using SauceLabs, tag the job with test info
         tags = [self.id()]
 
         # Set up the page objects
         # This will start the browser, so add a cleanup
-        self.browser = browser(tags=tags, proxy=proxy)
+        self.browser = browser(tags)
 
         # Cleanups are executed in LIFO order.
         # This ensures that the screenshot is taken BEFORE the browser quits.
