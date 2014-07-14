@@ -22,7 +22,7 @@ mkdir -p $SCREENSHOT_DIR
 rm -rf $SCREENSHOT_DIR/*.png
 
 # Ensure that the server is shut down on exit
-trap "kill 0" SIGINT SIGTERM EXIT
+trap "kill -- -$BASHPID || echo 'no child processes found'" SIGINT SIGTERM EXIT
 
 # Start the server for the test fixture site
 echo_task "Start server for test fixture site"
