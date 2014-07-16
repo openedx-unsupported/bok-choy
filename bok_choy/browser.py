@@ -75,7 +75,11 @@ def browser(tags=None, proxy=None):
 
     There are two cases:
 
-    1. Local browsers: No environment variables set (default to Firefox locally) or `SELENIUM_BROWSER` set (use that browser locally)
+    1. Local browsers: If the proper environment variables are not all set for the second case,
+        then we use a local browser.  The environment variable `SELENIUM_BROWSER` can be set to
+        specify which local browser to use, but the default is firefox.  Additionally, if a proxy
+        instance is passed and the browser choice is either chrome or firefox, then the browser will
+        be initialized with the proxy server set.
 
     2. SauceLabs: Set all of the following environment variables:
 
@@ -100,6 +104,7 @@ def browser(tags=None, proxy=None):
 
     Keyword Args:
         tags (list of str): Tags to apply to the SauceLabs job.  If not using SauceLabs, these will be ignored.
+        proxy: A proxy instance.
 
     Returns:
         selenium.webdriver: The configured browser object used to drive tests
@@ -119,17 +124,16 @@ def browser(tags=None, proxy=None):
             raise BrowserConfigError(
                 "Invalid browser name {name}.  Options are: {options}".format(
                     name=browser_name, options=", ".join(BROWSERS.keys())))
-        from nose.tools import set_trace; set_trace()
 
-        if proxy and browser_name is 'firefox':
-            profile  = webdriver.FirefoxProfile()
+        if proxy and browser_name == 'firefox':
+            profile = webdriver.FirefoxProfile()
             profile.set_proxy(proxy.selenium_proxy())
             return webdriver.Firefox(firefox_profile=profile)
 
-        elif proxy and browser_name is 'chrome':
+        elif proxy and browser_name == 'chrome':
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument("--proxy-server={0}".format(proxy.proxy))
-            return webdriver.Chrome(chrome_options = chrome_options)
+            return webdriver.Chrome(chrome_options=chrome_options)
 
         else:
             return browser_class()
