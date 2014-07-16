@@ -119,7 +119,6 @@ def browser(tags=None, proxy=None):
             raise BrowserConfigError(
                 "Invalid browser name {name}.  Options are: {options}".format(
                     name=browser_name, options=", ".join(BROWSERS.keys())))
-        from nose.tools import set_trace; set_trace()
 
         if proxy and browser_name is 'firefox':
             profile  = webdriver.FirefoxProfile()
