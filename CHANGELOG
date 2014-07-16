@@ -1,3 +1,18 @@
+v0.3.1 (7/16/14)
+
+* Added docs for test-writing guidelines.
+* Unguard q method
+* Add a test with an example of a filtered query on a page
+* Add a test with an even more complex selector method as a good example
+* Add wait for ajax command to page object
+* When visiting a page, give it some time to get there
+* Minor improvements to Bok Choy failure messages
+* Added test for timeout on PageObject visit method
+* Extended the lines of code to show for round 3 of the search results
+* Fix all function issue
+* Wait Helpers for PageObject
+* Adjusted .sh script for killing child processes.
+
 v0.3.0 (2/19/14)
 
 * Deprecated css_* methods in favor of queries
