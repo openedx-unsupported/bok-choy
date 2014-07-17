@@ -27,10 +27,9 @@ class WebAppPerfReport(WebAppTest):
         server.start()
         self.proxy = server.create_proxy()
 
-        self.har_name = self.id()
         self.page_timings = []
         self.active_har = False
-        self.har_count = 0
+        self.with_cache = False
 
         # If using SauceLabs, tag the job with test info
         tags = [self.id()]
@@ -66,7 +65,6 @@ class WebAppPerfReport(WebAppTest):
 
             self.page_timings = []
             self.active_har = True
-            self.har_count += 1
         else:
             # Save the timings for the previous page before moving on to recording the new one.
             self._record_page_timings()
@@ -91,7 +89,7 @@ class WebAppPerfReport(WebAppTest):
         timings = self.browser.execute_script(script)
         self.page_timings.append(timings)
 
-    def save_har(self):
+    def save_har(self, har_name=None):
         """
         Save a HAR file.
 
@@ -102,6 +100,11 @@ class WebAppPerfReport(WebAppTest):
         Returns:
             None
         """
+        if not har_name:
+            har_name = "{}_{}".format(self.id(), self.unique_id)
+        if self.with_cache:
+            har_name += '_cached'
+
         # Record the most recent pages timings
         self._record_page_timings()
         timings = self.page_timings
@@ -114,7 +117,7 @@ class WebAppPerfReport(WebAppTest):
             har['log']['pages'][i]['pageTimings']['onContentLoad'] = (timings[i]['domContentLoadedEventEnd'] - timings[i]['navigationStart'])
             har['log']['pages'][i]['pageTimings']['onLoad'] = (timings[i]['loadEventEnd'] - timings[i]['navigationStart'])
 
-        har_file = os.path.join(os.environ.get('HAR_DIR', ''), '{}_{}.har'.format(self.har_name, self.har_count))
+        har_file = os.path.join(os.environ.get('HAR_DIR', ''), '{}.har'.format(har_name))
         with open(har_file, 'w') as output_file:
             json.dump(har, output_file)
 
@@ -144,10 +147,8 @@ def with_cache(function):
         # Run once in a new browser instance.
         function(self, *args, **kwargs)
 
-        # Update this so that the new har files will indicate that there was cached data.
-        self.har_name += '_cached'
-
         # run the whole thing again in the same browser instance.
+        self.with_cache = True
         function(self, *args, **kwargs)
 
     return wrapper

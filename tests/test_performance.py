@@ -42,7 +42,9 @@
 #         self.new_page('ButtonPage')
 #         page = ButtonPage(self.browser)
 #         page.visit()
-#         self.save_har()
+
+#         # The har file name defaults to the test_id, but you can pass an alternate name.
+#         self.save_har('ButtonPage1')
 
 #     @with_cache
 #     def test_multi_pages_one_har(self):
@@ -58,7 +60,7 @@
 #         page2.visit()
 #         page2.enter_text('testing')
 
-#         self.save_har()
+#         self.save_har('ButtonPage_and_TextFieldPage')
 
 #     def test_multi_pages_multi_har(self):
 #         """
@@ -70,13 +72,13 @@
 #         self.new_page('ButtonPage')
 #         page = ButtonPage(self.browser)
 #         page.visit()
-#         self.save_har()
+#         self.save_har('ButtonPage2')
 
 #         self.new_page('TextFieldPage')
 #         page2 = TextFieldPage(self.browser)
 #         page2.visit()
 #         page2.enter_text('testing')
-#         self.save_har()
+#         self.save_har('TextFieldPage2')
 
 #     def test_caching_explicitly(self):
 #         """
