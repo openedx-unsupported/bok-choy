@@ -68,7 +68,7 @@ def save_screenshot(driver, name):
         LOGGER.warning(msg)
 
 
-def browser(tags=None):
+def browser(tags=None, proxy=None):
     """
     Interpret environment variables to configure Selenium.
     Performs validation, logging, and sensible defaults.
@@ -120,7 +120,18 @@ def browser(tags=None):
                 "Invalid browser name {name}.  Options are: {options}".format(
                     name=browser_name, options=", ".join(BROWSERS.keys())))
 
-        return browser_class()
+        if proxy and browser_name is 'firefox':
+            profile  = webdriver.FirefoxProfile()
+            profile.set_proxy(proxy.selenium_proxy())
+            return webdriver.Firefox(firefox_profile=profile)
+
+        elif proxy and browser_name is 'chrome':
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument("--proxy-server={0}".format(proxy.proxy))
+            return webdriver.Chrome(chrome_options = chrome_options)
+
+        else:
+            return browser_class()
 
     else:
 
