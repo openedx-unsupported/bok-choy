@@ -2,7 +2,7 @@
 Base class for testing a web application.
 """
 import sys
-from unittest import TestCase
+from unittest import TestCase, SkipTest
 from abc import ABCMeta
 from uuid import uuid4
 from .browser import browser, save_screenshot
@@ -55,6 +55,11 @@ class WebAppTest(TestCase):
         """
         # Determine whether the test case succeeded or failed
         result = sys.exc_info()
+
+	exception_type = result[0]
+	# Do not take screenshot of skipped test
+	if exception_type is SkipTest:
+	    return
 
         # If it failed, take a screenshot
         # The exception info will either be an assertion error (on failure)
