@@ -57,7 +57,7 @@ class WebAppPerfReport(WebAppTest):
             self.proxy.new_har(
                 ref=page_name, 
                 options={
-                    'captureContent': False,
+                    'captureContent': True,
                     'captureHeaders': True,
                     'captureBinaryContent': True,
                 }
@@ -136,18 +136,10 @@ def with_cache(function):
         Runs the test case twice. The first time, there will be an empty cache. The second
         time, the cache will contain anything stored on the first call.
         """
-        # Check that self is a WebAppPerfReport instance.
-        try: 
-            base_classes = [base.__name__ for base in self.__class__.__bases__]
-            if "WebAppPerfReport" not in base_classes: 
-                raise
-        except:
-            raise Exception("Function must be a method of WebAppPerfReport.")
-
         # Run once in a new browser instance.
         function(self, *args, **kwargs)
 
-        # run the whole thing again in the same browser instance.
+        # Run the whole thing again in the same browser instance.
         self.with_cache = True
         function(self, *args, **kwargs)
 
