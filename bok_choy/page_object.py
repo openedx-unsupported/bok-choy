@@ -423,7 +423,7 @@ class PageObject(object):
             return EmptyPromise(promise_check_func, description, timeout=timeout).fulfill()
 
     @unguarded
-    def wait_for_element_presence(self, element_selector, description):
+    def wait_for_element_presence(self, element_selector, description, timeout=60):
         """
         Waits for element specified by `element_selector` to be present in DOM.
 
@@ -436,12 +436,13 @@ class PageObject(object):
         Arguments:
             element_selector (str): css selector of the element.
             description (str): Description of the Promise, used in log messages.
+            timeout (float): Maximum number of seconds to wait for the Promise to be satisfied before timing out
 
         """
-        self.wait_for(lambda: self.q(css=element_selector).present, description=description)
+        self.wait_for(lambda: self.q(css=element_selector).present, description=description, timeout=timeout)
 
     @unguarded
-    def wait_for_element_absence(self, element_selector, description):
+    def wait_for_element_absence(self, element_selector, description, timeout=60):
         """
         Waits for element specified by `element_selector` until it disappears from DOM.
 
@@ -454,12 +455,13 @@ class PageObject(object):
         Arguments:
             element_selector (str): css selector of the element.
             description (str): Description of the Promise, used in log messages.
+            timeout (float): Maximum number of seconds to wait for the Promise to be satisfied before timing out
 
         """
-        self.wait_for(lambda: not self.q(css=element_selector).present, description=description)
+        self.wait_for(lambda: not self.q(css=element_selector).present, description=description, timeout=timeout)
 
     @unguarded
-    def wait_for_element_visibility(self, element_selector, description):
+    def wait_for_element_visibility(self, element_selector, description, timeout=60):
         """
         Waits for element specified by `element_selector` until it is displayed on web page.
 
@@ -472,12 +474,13 @@ class PageObject(object):
         Arguments:
             element_selector (str): css selector of the element.
             description (str): Description of the Promise, used in log messages.
+            timeout (float): Maximum number of seconds to wait for the Promise to be satisfied before timing out
 
         """
-        self.wait_for(lambda: self.q(css=element_selector).visible, description=description)
+        self.wait_for(lambda: self.q(css=element_selector).visible, description=description, timeout=timeout)
 
     @unguarded
-    def wait_for_element_invisibility(self, element_selector, description):
+    def wait_for_element_invisibility(self, element_selector, description, timeout=60):
         """
         Waits for element specified by `element_selector` until it disappears from the web page.
 
@@ -490,6 +493,7 @@ class PageObject(object):
         Arguments:
             element_selector (str): css selector of the element.
             description (str): Description of the Promise, used in log messages.
+            timeout (float): Maximum number of seconds to wait for the Promise to be satisfied before timing out
 
         """
-        self.wait_for(lambda: not self.q(css=element_selector).visible, description=description)
+        self.wait_for(lambda: not self.q(css=element_selector).visible, description=description, timeout=timeout)
