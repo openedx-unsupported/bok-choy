@@ -70,7 +70,8 @@ class PageObjectTest(TestCase):
             ("http://localhost", True), ("http://localhost/test", True),
             ("http://localhost:8080", True), ("http://localhost:8080/test", True)
         ]:
-            self.assertEquals(PageObject.validate_url(url), is_valid)
+            returned_val = PageObject.validate_url(url)
+            self.assertEquals(returned_val, is_valid, msg="Url: {0}, Expected {1} but got {2}".format(url, is_valid, returned_val))
 
     def test_guarded_methods(self):
         never_on = NeverOnPage(Mock())
