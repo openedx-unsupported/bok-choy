@@ -27,12 +27,15 @@ class WebAppTest(TestCase):
             None
         """
 
+        # Use proxy if one is defined
+        self.proxy = self.proxy if hasattr(self, 'proxy') else None
+
         # If using SauceLabs, tag the job with test info
         tags = [self.id()]
 
         # Set up the page objects
         # This will start the browser, so add a cleanup
-        self.browser = browser(tags)
+        self.browser = browser(tags, self.proxy)
 
         # Cleanups are executed in LIFO order.
         # This ensures that the screenshot is taken BEFORE the browser quits.
