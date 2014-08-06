@@ -60,6 +60,8 @@ class WebAppPerfReport(WebAppTest):
             server = Server('browsermob-proxy')
             server.start()
             self.proxy = server.create_proxy()
+            proxy_host = os.environ.get('BROWSERMOB_PROXY_HOST', '127.0.0.1')
+            self.proxy.remap_hosts('localhost', proxy_host)
         except:
             self.skipTest('Skipping: could not start server with browsermob-proxy.')
 
