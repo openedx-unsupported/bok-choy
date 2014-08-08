@@ -290,6 +290,9 @@ class PageObject(object):
         try:
             if result.port is not None:
                 int(result.port)
+            elif ':' in result.netloc:
+                # invalid url if there is a ':' but no port value
+                return False
         except ValueError:
             return False
         else:
