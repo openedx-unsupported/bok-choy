@@ -6,7 +6,7 @@ import bok_choy.browser
 from unittest import TestCase
 from mock import patch
 
-from .pages import ButtonPage
+from .pages import ButtonPage, JavaScriptPage
 
 
 class TestBrowser(TestCase):
@@ -44,3 +44,26 @@ class TestBrowser(TestCase):
 
         # Check that the file is not empty
         self.assertGreater(os.stat(expected_file).st_size, 100)
+
+    def test_save_driver_logs(self):
+
+        # Create a temp directory to save the driver logs to
+        tempdir_path = tempfile.mkdtemp()
+        self.addCleanup(lambda: shutil.rmtree(tempdir_path))
+
+        # Configure the screenshot directory using an environment variable
+        os.environ['SELENIUM_DRIVER_LOG_DIR'] = tempdir_path
+
+        # Start up the browser
+        browser = bok_choy.browser.browser()
+        self.addCleanup(browser.quit)
+
+        JavaScriptPage(browser).visit()
+        bok_choy.browser.save_driver_logs(browser, 'js_page')
+
+        # Check that the files were created.
+        # Note that the 'client' and 'server' log files will be empty.
+        log_types = ['browser', 'driver', 'client', 'server']
+        for log_type in log_types:
+            expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
+            self.assertTrue(os.path.isfile(expected_file))
