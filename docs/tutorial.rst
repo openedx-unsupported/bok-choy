@@ -125,12 +125,13 @@ Improve the page definition
 
 
 Edit your page.py file to add in the input field where you type in text and the search button.
-Using the Developer Tools for my browser, I see that the input field can be identified
-by its type (input) and id (js-command-bar-field), so its css locator would be "input#js-command-bar-field".
+Using the Developer Tools for my browser, I see that the input field can be identified by combining form tags
+id (#search_form) and input tags type (text), so its css locator would be '#search_form > input[type="text"]'.
 
 .. code-block:: xml
 
-    <input type="text" data-hotkey="/ s" name="q" id="js-command-bar-field" placeholder="Search or type a command">
+    <form accept-charset="UTF-8" action="/search" class="search_repos" id="search_form" method="get">
+        <input type="text" data-hotkey="s" name="q" placeholder="Search GitHub" tabindex="1" autocapitalize="off" autofocus="" autocomplete="off" spellcheck="false">
 
 
 Add a method for filling in the search term to the page object definition like this:

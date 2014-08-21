@@ -32,7 +32,7 @@ class GitHubSearchPage(PageObject):
         """
         Fill the text into the input field
         """
-        self.q(css='input#js-command-bar-field').fill(text)
+        self.q(css='#search_form > input[type="text"]').fill(text)
 
     def search(self):
         """
