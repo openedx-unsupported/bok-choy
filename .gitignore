@@ -39,5 +39,7 @@ nosetests.xml
 docs/_build
 docs/**/*.png
 
-# Screenshots
+# Output directories from tests
 screenshots
+logs
+hars

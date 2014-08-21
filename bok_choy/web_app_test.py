@@ -5,7 +5,7 @@ import sys
 from unittest import TestCase, SkipTest
 from abc import ABCMeta
 from uuid import uuid4
-from .browser import browser, save_screenshot
+from .browser import browser, save_screenshot, save_driver_logs
 
 
 class WebAppTest(TestCase):
@@ -38,9 +38,10 @@ class WebAppTest(TestCase):
         self.browser = browser(tags, self.proxy)
 
         # Cleanups are executed in LIFO order.
-        # This ensures that the screenshot is taken BEFORE the browser quits.
+        # This ensures that the screenshot is taken and the driver logs are saved
+        # BEFORE the browser quits.
         self.addCleanup(self.browser.quit)
-        self.addCleanup(self._screenshot)
+        self.addCleanup(self._save_artifacts)
 
     @property
     def unique_id(self):
@@ -52,23 +53,25 @@ class WebAppTest(TestCase):
         """
         return str(uuid4().int)
 
-    def _screenshot(self):
+    def _save_artifacts(self):
         """
-        Take a screenshot on failure or error.
+        On failure or error save a screenshot and the
+        selenium driver logs.
         """
         # Determine whether the test case succeeded or failed
         result = sys.exc_info()
+    	exception_type = result[0]
 
-	exception_type = result[0]
-	# Do not take screenshot of skipped test
-	if exception_type is SkipTest:
-	    return
+    	# Do not save artifacts for skipped tests.
+    	if exception_type is SkipTest:
+    	    return
 
-        # If it failed, take a screenshot
+        # If it failed, take a screenshot and save the driver logs.
         # The exception info will either be an assertion error (on failure)
         # or an actual exception (on error)
         if result != (None, None, None):
             try:
                 save_screenshot(self.browser, self.id())
+                save_driver_logs(self.browser, self.id())
             except:
                 pass
