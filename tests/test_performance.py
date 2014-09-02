@@ -5,115 +5,144 @@ NOTE: To run these tests, browsermob-proxy-2.0-beta-9 must be installed
 These aren't real unittests, just some sample scenarios.
 """
 
-from bok_choy.performance import WebAppPerfReport, with_cache
+from bok_choy.web_app_test import WebAppTest, with_cache
+from bok_choy.performance import MethodNotEnabledInCurrentMode
 from .pages import ButtonPage, TextFieldPage
+from nose.plugins.attrib import attr
+from unittest import expectedFailure
+
+import os
+# Set the default har capture method to 'error'
+os.environ['BOK_CHOY_HAR_MODE'] = 'error'
+os.environ['BROWSERMOB_PROXY_PORT'] = '8000'
+
+def har_files():
+    return os.listdir(os.environ.get('BOK_CHOY_HAR_DIR', ''))
 
 
-class PerformanceReportTest(WebAppPerfReport):
+class HarCaptureTestBase(WebAppTest):
     """
-    Test basic functionality of single page performance reports.
+    CaptureHarOnErrorTest
     """
-    def test_button_page_perf_no_cache(self):
-        """
-        Without the 'with_cached' decorator, the function will run
-        only once and produce only one har file. Because it is run on a
-        newly instantiated browser, it will have an empty cache to start.
-        """
-        self.new_page('ButtonPage')
+
+    def visit_pages(self):
         page = ButtonPage(self.browser)
         page.visit()
-        self.save_har()
+
+        page2 = TextFieldPage(self.browser)
+        page2.visit()
+
+    def setUp(self):
+        # Adding as extra 'Cleanup',  because we have to wait for other
+        # cleanup to happen before checking the har folder. Since cleanup
+        # is LIFO, add the inspecting function first to ensure it is
+        # executed last.
+        self.should_capture = bool()
+        self.addCleanup(self._inspect_har_files)
+        super(HarCaptureTestBase, self).setUp()
+
+    def _inspect_har_files(self):
+        # A list of booleans, each item representing if the file is a match.
+        matched = [filename for filename in har_files() if self.id() in filename]
+        self.assertEqual(self.should_capture, len(matched))
+
+
+@attr(har_mode='explicit')
+class ExplicitHarCaptureTest(HarCaptureTestBase):
+    """
+    How the har_mode is set: using the nose @attr decorator. This should override
+    any environment setting. Note that this will only work if the `TestClass` is
+    decorated, not the `test_case`.
+    """
+    @expectedFailure
+    def test_har_is_not_captured_in_explicit_mode(self):
+        self.should_capture = 0
+        self.visit_pages()
+        self.assertTrue(False)
+
+    def test_capture_har_explicitly(self):
+        self.should_capture = 1
+        self.har_capturer.add_page(self.browser, 'ButtonPage')
+        page = ButtonPage(self.browser)
+        page.visit()
+
+        self.har_capturer.add_page(self.browser, 'TextFieldPage')
+        page2 = TextFieldPage(self.browser)
+        page2.visit()
+        page2.enter_text('testing')
+        self.har_capturer.save_har(self.browser)
 
     @with_cache
-    def test_button_page_perf_with_cache(self):
-        """
-        With the 'with_cached' decorator, the function will run
-        twice during th 'test' and produce two har files. 
-
-        The first time around, the browser will be newly instantiated so the cache
-        will be empty to start. Note that this means if you navigate to multiple 
-        pages during one test case, only the first page is guaranteed to have an 
-        empty cache.
-
-        The second time the function is called, the cache will have anything that was
-        cached the first time.  The second har file name will have '_cached' appended
-        to thename.
-        """
-        self.new_page('ButtonPage')
+    def test_capture_har_explicitly_with_cache(self):
+        self.should_capture = 4
+        self.har_capturer.add_page(self.browser, 'ButtonPage')
         page = ButtonPage(self.browser)
         page.visit()
+        self.har_capturer.save_har(self.browser, self.id()+'_1')
 
-        # The har file name defaults to the test_id, but you can pass an alternate name.
-        self.save_har('ButtonPage1')
+
+        self.har_capturer.add_page(self.browser, 'TextFieldPage')
+        page2 = TextFieldPage(self.browser)
+        page2.visit()
+        page2.enter_text('testing')
+        self.har_capturer.save_har(self.browser, self.id()+'_2')
+
+
+@attr(har_mode='auto')
+class AutoHarCaptureTest(HarCaptureTestBase):
+    """
+    How the har_mode is set: using the nose @attr decorator. This should override
+    any environment setting. Note that this will only work if the `TestClass` is
+    decorated, not the `test_case`.
+    """
+    def test_har_is_captured_on_success_in_auto_mode(self):
+        self.should_capture = 1
+        self.visit_pages()
+        self.assertTrue(True)
+
+    @expectedFailure
+    def test_har_is_captured_on_failure_in_auto_mode(self):
+        self.should_capture = 1
+        self.visit_pages()
+        self.assertTrue(False)
 
     @with_cache
-    def test_multi_pages_one_har(self):
-        """
-        To save multiple pages to one har, just define multiple pages before saving the har.
-        """
-        self.new_page('ButtonPage')
-        page = ButtonPage(self.browser)
-        page.visit()
+    def test_two_hars_captured_on_success_in_auto_mode_with_cache(self):
+        self.should_capture = 2
+        self.visit_pages()
+        self.assertTrue(True)
 
-        self.new_page('TextFieldPage')
-        page2 = TextFieldPage(self.browser)
-        page2.visit()
-        page2.enter_text('testing')
 
-        self.save_har('ButtonPage_and_TextFieldPage')
+class ErrorHarCaptureTest(HarCaptureTestBase):
+    """
+    How the har_mode is set: using environment var `BOK_CHOY_HAR_MODE`. This can
+    be overridden for an individual test class using the @attr decorator from 
+    the nose.plugin.attrib module.
+    """
+    @expectedFailure
+    def test_har_is_captured_on_error_in_error_mode(self):
+        self.should_capture = 1
+        self.visit_pages()
+        raise Exception('Raising generic exception so that this test will error.')
 
-    def test_multi_pages_multi_har(self):
-        """
-        This will save_har a har for the ButtonPage, then save a har file for
-        the TextFieldPage.  Note that when the TextFieldPage is called, the browswer
-        will have assets cached from the ButtonPage, so if there are common assets, the
-        performance of the TextFieldPage will be affected.
-        """
-        self.new_page('ButtonPage')
-        page = ButtonPage(self.browser)
-        page.visit()
-        self.save_har('ButtonPage2')
+    @expectedFailure
+    def test_har_is_captured_on_failure_in_error_mode(self):
+        self.should_capture = 1
+        self.visit_pages()
+        self.assertTrue(False)
 
-        self.new_page('TextFieldPage')
-        page2 = TextFieldPage(self.browser)
-        page2.visit()
-        page2.enter_text('testing')
-        self.save_har('TextFieldPage2')
+    def test_har_is_not_captured_on_success_in_error_mode(self):
+        self.should_capture = 0
+        self.visit_pages()
+        self.assertTrue(True)
 
-    def test_caching_explicitly(self):
-        """
-        If you want to go to one page first to see how it affects the performance of
-        a subsequent page without including the first in the har, you can do something
-        like this.
+    def test_explicit_har_capture_doesnt_work_in_error_mode(self):
+        self.should_capture = 0
 
-        It will only capture data for the TextFieldPage.
-        """
-        page = ButtonPage(self.browser)
-        page.visit()
+        # Try to save one when we shouldn't be able to.
+        with self.assertRaises(MethodNotEnabledInCurrentMode):
+            self.har_capturer.add_page(self.browser, 'ButtonPage')
 
-        self.new_page('TextFieldPage')
-        page2 = TextFieldPage(self.browser)
-        page2.visit()
-        page2.enter_text('testing')
-        self.save_har()
-
-    @with_cache
-    def test_multi_pages_multi_har_with_cache(self):
-        """
-        This will save_har a har for the ButtonPage, then save a har file for
-        the TextFieldPage.  Note that when the TextFieldPage is called, the browswer
-        will have assets cached from the ButtonPage, so if there are common assets, the
-        performance of the TextFieldPage will be affected.
-
-        Including cached 
-        """
-        self.new_page('ButtonPage')
-        page = ButtonPage(self.browser)
-        page.visit()
-        self.save_har()
-
-        self.new_page('TextFieldPage')
-        page2 = TextFieldPage(self.browser)
-        page2.visit()
-        page2.enter_text('testing')
-        self.save_har()
+        # Try to save one when we shouldn't be able to.
+        with self.assertRaises(MethodNotEnabledInCurrentMode):
+            self.har_capturer.save_har(self.browser)

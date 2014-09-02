@@ -16,19 +16,19 @@ function echo_task {
 REPO_ROOT=`dirname $BASH_SOURCE`
 SERVER_PORT=8003
 
-export HAR_DIR=$REPO_ROOT/hars
+export BOK_CHOY_HAR_DIR=$REPO_ROOT/hars
 export LOG_DIR=$REPO_ROOT/logs
 export SCREENSHOT_DIR=$LOG_DIR
 export SELENIUM_DRIVER_LOG_DIR=$LOG_DIR
 
 # Set up the har directory
-mkdir -p $HAR_DIR
-rm -rf $HAR_DIR/*.har
+mkdir -p $BOK_CHOY_HAR_DIR
+rm -rf $BOK_CHOY_HAR_DIR/*.har
 
 # Set up the output logs directory for
 # screenshots and selenium driver logs
 mkdir -p $LOG_DIR
-rm -rf $LOG_DIR
+rm -rf $LOG_DIR/*
 
 # Ensure that the server is shut down on exit
 trap "kill -- -$BASHPID || echo 'no child processes found'" SIGINT SIGTERM EXIT

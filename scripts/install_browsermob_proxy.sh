@@ -19,7 +19,7 @@
     # route /usr/local/bin/browsermob-proxy to the actual package
     cat > /usr/local/bin/browsermob-proxy << EOF
 #!/bin/sh
-/etc/browsermob-proxy/bin/browsermob-proxy
+/etc/browsermob-proxy/bin/browsermob-proxy \$*
 EOF
 else
     echo "browsermob-proxy already installed."

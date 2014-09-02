@@ -10,12 +10,15 @@ from json import dumps
 
 LOGGER = logging.getLogger(__name__)
 
-EXPECTED_ENV_VARS = [
+REMOTE_ENV_VARS = [
     'SELENIUM_BROWSER',
-    'SELENIUM_VERSION',
-    'SELENIUM_PLATFORM',
     'SELENIUM_HOST',
     'SELENIUM_PORT',
+]
+
+SAUCE_ENV_VARS = REMOTE_ENV_VARS + [
+    'SELENIUM_VERSION',
+    'SELENIUM_PLATFORM',
     'SAUCE_USER_NAME',
     'SAUCE_API_KEY',
 ]
@@ -36,6 +39,7 @@ BROWSERS = {
 
 
 class BrowserConfigError(Exception):
+
     """
     Misconfiguration error in the environment variables.
     """
@@ -64,7 +68,11 @@ def save_screenshot(driver, name):
         driver.save_screenshot(image_name)
 
     else:
-        msg = "Browser does not support screenshots.  Could not save screenshot '{name}'".format(name)
+        msg = (
+            "Browser does not support screenshots. "
+            "Could not save screenshot '{name}'"
+        ).format(name=name)
+
         LOGGER.warning(msg)
 
 
@@ -85,13 +93,22 @@ def save_driver_logs(driver, prefix):
     """
     log_types = ['browser', 'driver', 'client', 'server']
     for log_type in log_types:
-        log = driver.get_log(log_type)
-        file_name = os.path.join(
-            os.environ.get('SELENIUM_DRIVER_LOG_DIR', ''), '{}_{}.log'.format(prefix, log_type)
-        )
-        with open (file_name, 'w') as output_file:
-            for line in log:
-                output_file.write("{}{}".format(dumps(line), '\n'))
+        try:
+            log = driver.get_log(log_type)
+            file_name = os.path.join(
+                os.environ.get('SELENIUM_DRIVER_LOG_DIR', ''), '{}_{}.log'.format(
+                    prefix, log_type)
+            )
+            with open(file_name, 'w') as output_file:
+                for line in log:
+                    output_file.write("{}{}".format(dumps(line), '\n'))
+        except:
+            msg = (
+                "Could not save browser log of type '{log_type}'. "
+                "It may be that the browser does not support it."
+            ).format(log_type=log_type)
+
+            LOGGER.warning(msg, exec_info=True)
 
 
 def browser(tags=None, proxy=None):
@@ -99,7 +116,7 @@ def browser(tags=None, proxy=None):
     Interpret environment variables to configure Selenium.
     Performs validation, logging, and sensible defaults.
 
-    There are two cases:
+    There are three cases:
 
     1. Local browsers: If the proper environment variables are not all set for the second case,
         then we use a local browser.  The environment variable `SELENIUM_BROWSER` can be set to
@@ -107,7 +124,14 @@ def browser(tags=None, proxy=None):
         instance is passed and the browser choice is either chrome or firefox, then the browser will
         be initialized with the proxy server set.
 
-    2. SauceLabs: Set all of the following environment variables:
+    2. Remote browser (not SauceLabs): Set all of the following environment variables, but not all of
+        the ones needed for SauceLabs:
+
+        * SELENIUM_BROWSER
+        * SELENIUM_HOST
+        * SELENIUM_PORT
+
+    3. SauceLabs: Set all of the following environment variables:
 
         * SELENIUM_BROWSER
         * SELENIUM_VERSION
@@ -137,66 +161,143 @@ def browser(tags=None, proxy=None):
 
     Raises:
         BrowserConfigError: The environment variables are not correctly specified.
+
+    """
+
+    browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')
+
+    # Get the class and kwargs required to instantiate the browser based on
+    # whether we are using a local or remote one.
+    if _use_remote_browser(SAUCE_ENV_VARS):
+        browser_class, browser_args, browser_kwargs = _remote_browser_class(
+            SAUCE_ENV_VARS, tags)
+    elif _use_remote_browser(REMOTE_ENV_VARS):
+        browser_class, browser_args, browser_kwargs = _remote_browser_class(
+            REMOTE_ENV_VARS, tags)
+    else:
+        browser_class, browser_args, browser_kwargs = _local_browser_class(
+            browser_name)
+
+    # If we are using a proxy, we need extra kwargs passed on intantiation.
+    if proxy:
+        browser_kwargs = _proxy_kwargs(browser_name, proxy, browser_kwargs)
+
+    # Instantiate the browser and return the browser instance
+    return browser_class(*browser_args, **browser_kwargs)
+
+
+def _local_browser_class(browser_name):
+    """
+    Returns class, kwargs, and args needed to instatiate the local browser.
+    """
+
+    # Log name of local browser
+    LOGGER.info(
+        "Using local browser: {0} [Default is firefox]".format(browser_name))
+
+    # Get class of local browser based on name
+    browser_class = BROWSERS.get(browser_name)
+    if browser_class is None:
+        raise BrowserConfigError(
+            "Invalid browser name {name}.  Options are: {options}".format(
+                name=browser_name, options=", ".join(BROWSERS.keys())))
+    else:
+        browser_args, browser_kwargs = [], {}
+        return browser_class, browser_args, browser_kwargs
+
+
+def _remote_browser_class(env_vars, tags=None):
+    """
+    Returns class, kwargs, and args needed to instatiate the remote browser.
     """
     if tags is None:
         tags = []
 
-    if _use_local_browser():
-        browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')
-        LOGGER.info("Using local browser: {0} [Default is firefox]".format(browser_name))
+    # Interpret the environment variables, raising an exception if they're
+    # invalid
+    envs = _required_envs(env_vars)
+    envs.update(_optional_envs())
 
-        browser_class = BROWSERS.get(browser_name)
-        if browser_class is None:
-            raise BrowserConfigError(
-                "Invalid browser name {name}.  Options are: {options}".format(
-                    name=browser_name, options=", ".join(BROWSERS.keys())))
+    # Turn the environment variables into a dictionary of desired capabilities
+    caps = _capabilities_dict(envs, tags)
 
-        if proxy and browser_name == 'firefox':
-            profile = webdriver.FirefoxProfile()
-            profile.set_proxy(proxy.selenium_proxy())
-            return webdriver.Firefox(firefox_profile=profile)
-
-        elif proxy and browser_name == 'chrome':
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument("--proxy-server={0}".format(proxy.proxy))
-            return webdriver.Chrome(chrome_options=chrome_options)
-
-        else:
-            return browser_class()
-
-    else:
-
-        # Interpret the environment variables, raising an exception if they're invalid
-        envs = _required_envs()
-        envs.update(_optional_envs())
-
-        # Turn the environment variables into a dictionary of desired capabilities
-        caps = _capabilities_dict(envs, tags)
-
+    if 'accessKey' in caps:
         LOGGER.info("Using SauceLabs: {0} {1} {2}".format(
             caps['platform'], caps['browserName'], caps['version']
         ))
+    else:
+        LOGGER.info("Using Remote Browser: {}".format(
+            caps['browserName']
+        ))
 
-        # Create and return a new Browser
-        # We assume that the WebDriver end-point is running locally (e.g. using SauceConnect)
-        url = "http://{0}:{1}/wd/hub".format(envs['SELENIUM_HOST'], envs['SELENIUM_PORT'])
-        return webdriver.Remote(command_executor=url, desired_capabilities=caps)
+    # Create and return a new Browser
+    # We assume that the WebDriver end-point is running locally (e.g. using
+    # SauceConnect)
+    url = "http://{0}:{1}/wd/hub".format(
+        envs['SELENIUM_HOST'], envs['SELENIUM_PORT'])
+
+    browser_args = []
+    browser_kwargs = {
+        'command_executor': url,
+        'desired_capabilities': caps,
+    }
+
+    return webdriver.Remote, browser_args, browser_kwargs
 
 
-def _use_local_browser():
+def _proxy_kwargs(browser_name, proxy, browser_kwargs={}):
     """
-    Returns a boolean indicating whether we should use a local
-    browser.  This means the user has made no attempt to set
-    environment variables indicating they want to connect to SauceLabs!
+    Determines the kwargs needed to set up a proxy based on the
+    browser type.
+
+    Returns: a dictionary of arguments needed to pass when
+        instantiating the WebDriver instance.
+    """
+
+    proxy_type = {
+        'firefox': 'MANUAL',
+        'internet explorer': 'MANUAL',
+        'chrome': 'AUTODETECT',
+        'safari': 'AUTODETECT',
+    }
+
+    proxy_dict = {'proxy': {
+            "httpProxy": proxy.host,
+            "ftpProxy": proxy.host,
+            "sslProxy": proxy.host,
+            "noProxy": None,
+            "proxyType": proxy_type[browser_name],
+            "class":"org.openqa.selenium.Proxy",
+        }
+    }
+
+    if browser_name == 'firefox' and 'desired_capabilities' not in browser_kwargs:
+        browser_kwargs['capabilities'] = {}
+        browser_kwargs['capabilities'].update(proxy_dict)
+
+    else:
+        if 'desired_capabilities' not in browser_kwargs:
+            browser_kwargs['desired_capabilities'] = {}
+
+        browser_kwargs['desired_capabilities'].update(proxy_dict)
+
+    return browser_kwargs
+
+
+def _use_remote_browser(required_vars):
+    """
+    Returns a boolean indicating whether we should use a remote
+    browser.  This means the user has made an attempt to set
+    environment variables indicating they want to connect to SauceLabs
+    or a remote browser.
     """
     return all([
-        key not in os.environ
-        for key in EXPECTED_ENV_VARS
-        if key != 'SELENIUM_BROWSER'
+        key in os.environ
+        for key in required_vars
     ])
 
 
-def _required_envs():
+def _required_envs(env_vars):
     """
     Parse environment variables for required values,
     raising a `BrowserConfig` error if they are not found.
@@ -205,7 +306,7 @@ def _required_envs():
     """
     envs = {
         key: os.environ.get(key)
-        for key in EXPECTED_ENV_VARS
+        for key in env_vars
     }
 
     # Check for missing keys
@@ -258,10 +359,6 @@ def _capabilities_dict(envs, tags):
     """
     capabilities = {
         'browserName': envs['SELENIUM_BROWSER'],
-        'platform': envs['SELENIUM_PLATFORM'],
-        'version': envs['SELENIUM_VERSION'],
-        'username': envs['SAUCE_USER_NAME'],
-        'accessKey': envs['SAUCE_API_KEY'],
         'video-upload-on-pass': False,
         'sauce-advisor': False,
         'capture-html': True,
@@ -271,10 +368,25 @@ def _capabilities_dict(envs, tags):
         'tags': tags,
     }
 
+    # Add SauceLabs specific environment vars if they are set.
+    if _use_remote_browser(SAUCE_ENV_VARS):
+        sauce_capabilities = {
+            'platform': envs['SELENIUM_PLATFORM'],
+            'version': envs['SELENIUM_VERSION'],
+            'username': envs['SAUCE_USER_NAME'],
+            'accessKey': envs['SAUCE_API_KEY'],
+        }
+
+        capabilities.update(sauce_capabilities)
+
     # Optional: Add in Jenkins-specific environment variables
     # to link Sauce output with the Jenkins job
     if 'JOB_NAME' in envs:
-        jenkins_vars = {'build': envs['BUILD_NUMBER'], 'name': envs['JOB_NAME']}
+        jenkins_vars = {
+            'build': envs['BUILD_NUMBER'],
+            'name': envs['JOB_NAME'],
+        }
+
         capabilities.update(jenkins_vars)
 
     return capabilities
