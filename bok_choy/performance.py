@@ -1,82 +1,112 @@
 """
-Base class for checking network performance of a web application.
+Utilities for checking network performance of a web application.
 """
-import functools
 import os
 import json
-from web_app_test import WebAppTest
-from .browser import browser
-from browsermobproxy import Server
+import datetime
 from textwrap import dedent
+from selenium.webdriver.support.events import AbstractEventListener
+
+HAR_CAPTURE_MODES = ('error', 'explicit', 'auto')
 
 
-class WebAppPerfReport(WebAppTest):
+class MethodNotEnabledInCurrentMode(Exception):
     """
-    Base class for generating reports for a web application page performance.
-
-    This is a subclass of WebAppTest that allows you to interact with PageObjects
-    while recording network traffic to har files.  You can write and run scenarios
-    as tests (with assertions) if desired, but there are a few additional steps needed
-    to produce the network timing reports.
-
-    1. Indicate when you are about to navigate to a new page with the `new_page`
-        method. Be sure to do this before going to the first page you want to record.
-    2. Save the currently recording har with the `save_har` method.
-
-    Example::
-
-        class MyPerformanceTestClass(WebAppPerfReport):
-
-            test_foo(self):
-                foo_page = FooPage(self.browser)
-
-                # Declare that you are going to foo_page.
-                self.new_page('FooPage')
-
-                # Then go to the foo_page.
-                foo_page.visit()
-
-                # Do some other interactions with the page if you want.
-                # ...
-
-                # Save the har file
-                # This one will end up named 'FooPage.har'
-                self.save_har('FooPage')
-
-    Note: You can visit many pages in one har recording. You can also record many hars in one scenario.
+    An exception for when a method is called that should not be used
+    in the current mode.
     """
+    def __str__(self):
+        return (
+            "To manipulate the har on your own, please use @attr(har_mode='"
+            "explicit') or BOK_CHOY_HAR_MODE='explicit'."
+        )
 
-    def setUp(self):
-        """
-        Start the browser with a browsermob-proxy instance for use by the test.
-        You *must* call this in the `setUp` method of any subclasses before using the browser!
+class UnknownHarCaptureMode(Exception):
+    """
+    An exception for when the mode selected doesn't match any defined
+    modes.
+    """
+    def __str__(self):
+        return 'Expected one of: {}'.format(HAR_CAPTURE_MODES)
 
-        Returns:
-            None
-        """
 
-        try:
-            # Start server proxy
-            server = Server('browsermob-proxy')
-            server.start()
-            self.proxy = server.create_proxy()
-            proxy_host = os.environ.get('BROWSERMOB_PROXY_HOST', '127.0.0.1')
-            self.proxy.remap_hosts('localhost', proxy_host)
-        except:
-            self.skipTest('Skipping: could not start server with browsermob-proxy.')
+class HarListener(AbstractEventListener):
+    """
+    An object that can automatically track and save a HAR file from the
+    selenium controlled browser.
 
-        # parent's setUp
-        super(WebAppPerfReport, self).setUp()
+    Usage:
+        driver = EventFiringWebDriver(driver, HarListener(har_capturer))
 
-        # Initialize vars
+    Args:
+        har_capturer: An instance of HarCapturer.
+
+    """
+    def __init__(self, har_capturer, *args, **kwargs):
+        super(HarListener, self).__init__(*args, **kwargs)
+        self.har_capturer = har_capturer
+
+    def before_navigate_to(self, url, driver):
+        if self.har_capturer.mode in ('auto', 'error'):
+            self.har_capturer.add_page(driver, url, caller_mode=self.har_capturer.mode)
+
+    def before_close(self, driver):
+        if self.har_capturer.mode in ('auto',):
+            self.har_capturer.save_har(driver, caller_mode=self.har_capturer.mode)
+
+    def before_quit(self, driver):
+        if self.har_capturer.mode in ('auto',):
+            self.har_capturer.save_har(driver, caller_mode=self.har_capturer.mode)
+
+
+class HarCapturer(object):
+    """
+    An object that can track and manipulate HAR files.
+
+    Args:
+        proxy: a browsermobproxy proxy instance.
+        
+    Keyword Args:
+        har_base_name: A base for the har file names. The har filename may
+            still have the datetime and 'cached' specifier appended to them.
+        
+        mode: 'auto', 'error', or 'explicit'. Although it is a kwarg, an
+            UnknownHarCaptureMode exception will be raised if no mode is passed
+            or if the mode doesn't match one of the following.
+            
+            * auto: automatically save a single har file for each test.          
+            * error: automatically save a single har file for each test only if
+                it fails or errors.
+            * explicit: interact explicitly with this object in order to capture
+                and save a har file.
+    """
+    def __init__(self, *args, **kwargs):
+        super(HarCapturer, self).__init__()
+
+        # We need to access the proxy server in addition to the browser.
+        self.proxy = args[0]
+        self._har_base_name = kwargs.get('har_base_name', '')
+        
+        self.mode = kwargs.get('mode', None)
+
+        if self.mode not in HAR_CAPTURE_MODES:
+            raise UnknownHarCaptureMode
+
+        # Vars for tracking state 
         self._page_timings = []
         self._active_har = False
         self._with_cache = False
 
-        # Add one more cleanup for the server
-        self.addCleanup(server.stop)
-        
-    def new_page(self, page_name):
+    def _validate_mode(self, *args, **kwargs):
+        """
+        Raises MethodNotEnabledInCurrentMode if a user tries to interact
+        with the har explicitly while in 'auto' or 'error' mode.
+        """
+        caller_mode = kwargs.get('caller_mode', 'explicit')
+        if caller_mode != self.mode:
+            raise MethodNotEnabledInCurrentMode
+
+    def add_page(self, driver, page_name, *args, **kwargs):
         """
         Creates a new page within the har file. If no har file has been started 
         since the last save, it will create one.
@@ -87,10 +117,12 @@ class WebAppPerfReport(WebAppTest):
         Returns:
             None
         """
+        self._validate_mode(*args, **kwargs)
+
         if not self._active_har:
             # Start up a new HAR file
             self.proxy.new_har(
-                ref=page_name, 
+                ref=page_name,
                 options={
                     'captureContent': True,
                     'captureHeaders': True,
@@ -102,10 +134,10 @@ class WebAppPerfReport(WebAppTest):
             self._active_har = True
         else:
             # Save the timings for the previous page before moving on to recording the new one.
-            self._record_page_timings()
+            self._record_page_timings(driver)
             self.proxy.new_page(ref=page_name)
 
-    def _record_page_timings(self):
+    def _record_page_timings(self, driver):
         """
         Saves recorded page timings to self.timings to be added to the har file
         on save.
@@ -121,75 +153,59 @@ class WebAppPerfReport(WebAppTest):
         """)
 
         # Capture the timings from the browser via javascript
-        timings = self.browser.execute_script(script)
+        timings = driver.execute_script(script)
         self._page_timings.append(timings)
 
-    def save_har(self, har_name=None):
+
+    def har_name(self, name_override=None):
+        """
+        Returns the name to use for a saved artifacts.
+        """
+
+        if name_override:
+            file_name = name_override
+
+        else:
+            file_name =  "{}_{}".format(
+                self._har_base_name, 
+                datetime.datetime.utcnow().isoformat()
+            )
+
+        if self._with_cache:
+            file_name += '_cached'
+
+        return file_name
+
+    def save_har(self, driver, name_override=None, *args, **kwargs):
         """
         Save a HAR file.
 
         The location of the har file can be configured
-        by the environment variable `HAR_DIR`.  If not set,
+        by the environment variable `BOK_CHOY_HAR_DIR`.  If not set,
         this defaults to the current working directory.
-
-        Args:
-            har_name (optional): title for the har file
 
         Returns:
             None
         """
-        if not har_name:
-            har_name = "{}_{}".format(self.id(), self.unique_id)
-        if self._with_cache:
-            har_name += '_cached'
+        self._validate_mode(*args, **kwargs)
 
-        # Record the most recent pages timings
-        self._record_page_timings()
-        timings = self._page_timings
+        if self._active_har:
+            # Record the most recent pages timings
+            self._record_page_timings(driver)
+            timings = self._page_timings
 
-        # Get the har contents from the proxy
-        har = self.proxy.har
+            # Get the har contents from the proxy
+            har = self.proxy.har
 
-        # Record the timings from the pages
-        for index, timing in enumerate(timings):
-            har['log']['pages'][index]['pageTimings']['onContentLoad'] = (timings[index]['domContentLoadedEventEnd'] - timings[index]['navigationStart'])
-            har['log']['pages'][index]['pageTimings']['onLoad'] = (timings[index]['loadEventEnd'] - timings[index]['navigationStart'])
+            # Record the timings from the pages
+            for index, timing in enumerate(timings):
+                har['log']['pages'][index]['pageTimings']['onContentLoad'] = (timings[index]['domContentLoadedEventEnd'] - timings[index]['navigationStart'])
+                har['log']['pages'][index]['pageTimings']['onLoad'] = (timings[index]['loadEventEnd'] - timings[index]['navigationStart'])
 
-        har_file = os.path.join(os.environ.get('HAR_DIR', ''), '{}.har'.format(har_name))
-        with open(har_file, 'w') as output_file:
-            json.dump(har, output_file)
+            har_file = os.path.join(os.environ.get('BOK_CHOY_HAR_DIR', ''), '{}.har'.format(self.har_name(name_override)))
+            with open(har_file, 'w') as output_file:
+                json.dump(har, output_file)
+                output_file.close()
 
-        # Set this to false so that a new har will be started if new_page is called again
-        self._active_har = False
-
-
-def with_cache(function):
-    """
-    A decorator to be used on a test case of a WebAppPerfReport test class to run it twice.
-
-    This will produce two sets of har files; one for each time the scenario is executed. The
-    second set of har files saved will have '_cached' appended to the file name to indicate that
-    there may have been some resources cached prior to execution. The resources that may be in
-    the cache will have come from the first time the scenario was run.
-
-    Args:
-        function (callable): The function to decorate. It should be a method of WebAppPerfReport.
-
-    Returns:
-        Decorated method
-    """
-
-    @functools.wraps(function)
-    def wrapper(self, *args, **kwargs):
-        """
-        Runs the test case twice. The first time, there will be an empty cache. The second
-        time, the cache will contain anything stored on the first call.
-        """
-        # Run once in a new browser instance.
-        function(self, *args, **kwargs)
-
-        # Run the whole thing again in the same browser instance.
-        self._with_cache = True
-        function(self, *args, **kwargs)
-
-    return wrapper
+            # Set this to false so that a new har will be started if new_page is called again
+            self._active_har = False
