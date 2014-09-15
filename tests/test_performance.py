@@ -10,6 +10,7 @@ from bok_choy.performance import MethodNotEnabledInCurrentMode
 from .pages import ButtonPage, TextFieldPage
 from nose.plugins.attrib import attr
 from unittest import expectedFailure
+import json
 
 import os
 # Set the default har capture method to 'error'
@@ -39,12 +40,28 @@ class HarCaptureTestBase(WebAppTest):
         # executed last.
         self.should_capture = bool()
         self.addCleanup(self._inspect_har_files)
+        self.inspect_har_content = False
+        self.addCleanup(self._inspect_har_content)
         super(HarCaptureTestBase, self).setUp()
 
     def _inspect_har_files(self):
         # A list of booleans, each item representing if the file is a match.
         matched = [filename for filename in har_files() if self.id() in filename]
         self.assertEqual(self.should_capture, len(matched))
+
+    def _inspect_har_content(self):
+        # Additional check for this one to make sure that data is actually captured
+        if self.inspect_har_content:
+            har_file = None
+            for filename in har_files():
+                if self.id() in filename:
+                    har_file = filename
+                    break
+
+            with open(os.path.join(os.environ.get('BOK_CHOY_HAR_DIR', ''), har_file)) as f:
+                har_contents = json.load(f)
+
+            self.assertTrue('status' in har_contents['log']['entries'][0]['response'].keys())
 
 
 @attr(har_mode='explicit')
@@ -97,6 +114,7 @@ class AutoHarCaptureTest(HarCaptureTestBase):
     """
     def test_har_is_captured_on_success_in_auto_mode(self):
         self.should_capture = 1
+        self.inspect_har_content = True
         self.visit_pages()
         self.assertTrue(True)
 
