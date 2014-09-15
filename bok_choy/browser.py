@@ -254,34 +254,25 @@ def _proxy_kwargs(browser_name, proxy, browser_kwargs={}):
         instantiating the WebDriver instance.
     """
 
-    proxy_type = {
-        'firefox': 'MANUAL',
-        'internet explorer': 'MANUAL',
-        'chrome': 'AUTODETECT',
-        'safari': 'AUTODETECT',
-    }
-
-    proxy_dict = {'proxy': {
-            "httpProxy": proxy.host,
-            "ftpProxy": proxy.host,
-            "sslProxy": proxy.host,
-            "noProxy": None,
-            "proxyType": proxy_type[browser_name],
-            "class":"org.openqa.selenium.Proxy",
-        }
+    proxy_dict = {
+        "httpProxy": proxy.proxy,
+        "proxyType": 'manual',
     }
 
     if browser_name == 'firefox' and 'desired_capabilities' not in browser_kwargs:
-        browser_kwargs['capabilities'] = {}
-        browser_kwargs['capabilities'].update(proxy_dict)
-
+        # This one works for firefox locally
+        wd_proxy = webdriver.common.proxy.Proxy(proxy_dict)
+        browser_kwargs['proxy'] = wd_proxy
     else:
+        # This one works with chrome, both locally and remote
+        # This one works with firefox remote, but not locally
         if 'desired_capabilities' not in browser_kwargs:
             browser_kwargs['desired_capabilities'] = {}
 
-        browser_kwargs['desired_capabilities'].update(proxy_dict)
+        browser_kwargs['desired_capabilities']['proxy'] = proxy_dict
 
     return browser_kwargs
+
 
 
 def _use_remote_browser(required_vars):
