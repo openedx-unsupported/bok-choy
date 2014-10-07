@@ -1,3 +1,12 @@
+v0.3.2 (10/7/14)
+
+* Update selenium version to 2.42.1
+* Save selenium driver logs on error
+* Add capability for capturing HAR files of network traffic
+* Do not take auto screenshots for skipped tests
+* Add timeout in wait helpers
+* Small bug fixes
+
 v0.3.1 (7/16/14)
 
 * Added docs for test-writing guidelines.
