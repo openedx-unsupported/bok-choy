@@ -8,5 +8,6 @@ addons:
 install:
     - "pip install -r test_requirements.txt"
     - "pip install -r requirements.txt"
+    - "pip install -r doc_requirements.txt"
     - "sudo ./scripts/install_browsermob_proxy.sh"
 script: "./run_tests.sh"
