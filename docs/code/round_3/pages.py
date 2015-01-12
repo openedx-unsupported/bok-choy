@@ -38,7 +38,7 @@ class GitHubSearchPage(PageObject):
         """
         Fill the text into the input field
         """
-        self.q(css='#search_form > input[type="text"]').fill(text)
+        self.q(css='#search_form input[type="text"]').fill(text)
 
     def search(self):
         """
@@ -55,5 +55,3 @@ class GitHubSearchPage(PageObject):
         """
         self.enter_search_terms(text)
         self.search()
-
-
