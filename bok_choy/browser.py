@@ -2,12 +2,14 @@
 Use environment variables to configure Selenium remote WebDriver.
 For use with SauceLabs (via SauceConnect) or local browsers.
 """
-
 import os
 import logging
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import socket
 from json import dumps
+
+from promise import Promise
 
 LOGGER = logging.getLogger(__name__)
 
@@ -162,7 +164,6 @@ def browser(tags=None, proxy=None):
 
     Raises:
         BrowserConfigError: The environment variables are not correctly specified.
-
     """
 
     browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')
@@ -184,7 +185,18 @@ def browser(tags=None, proxy=None):
         browser_kwargs = _proxy_kwargs(browser_name, proxy, browser_kwargs)
 
     # Instantiate the browser and return the browser instance
-    return browser_class(*browser_args, **browser_kwargs)
+    def browser_check_func():
+        # See https://openedx.atlassian.net/browse/TE-701
+        try:
+            return True, browser_class(*browser_args, **browser_kwargs)
+        except socket.error as e:
+            LOGGER.debug('Failed to instantiate browser: ' + e.strerror)
+            return False, None
+
+    browser_instance = Promise(
+        browser_check_func, "Browser is instantiated successfully.", timeout=30).fulfill()
+
+    return browser_instance
 
 
 def _local_browser_class(browser_name):
@@ -300,7 +312,6 @@ def _proxy_kwargs(browser_name, proxy, browser_kwargs={}):
         browser_kwargs['desired_capabilities']['proxy'] = proxy_dict
 
     return browser_kwargs
-
 
 
 def _use_remote_browser(required_vars):
