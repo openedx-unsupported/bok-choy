@@ -202,7 +202,20 @@ def _local_browser_class(browser_name):
             "Invalid browser name {name}.  Options are: {options}".format(
                 name=browser_name, options=", ".join(BROWSERS.keys())))
     else:
-        browser_args, browser_kwargs = [], {}
+        if browser_name == 'firefox':
+            firefox_profile = webdriver.FirefoxProfile()
+
+            # Bypasses the security prompt displayed by the browser when it attempts to
+            # access a media device (e.g., a webcam)
+            firefox_profile.set_preference('media.navigator.permission.disabled', True)
+
+            browser_args = []
+            browser_kwargs = {
+                'firefox_profile': firefox_profile,
+            }
+        else:
+            browser_args, browser_kwargs = [], {}
+
         return browser_class, browser_args, browser_kwargs
 
 
