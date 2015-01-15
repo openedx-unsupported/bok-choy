@@ -6,6 +6,7 @@ For use with SauceLabs (via SauceConnect) or local browsers.
 import os
 import logging
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from json import dumps
 
 LOGGER = logging.getLogger(__name__)
@@ -212,6 +213,20 @@ def _local_browser_class(browser_name):
             browser_args = []
             browser_kwargs = {
                 'firefox_profile': firefox_profile,
+            }
+        elif browser_name == 'chrome':
+            chrome_options = Options()
+            
+            # Emulate webcam and microphone for testing purposes
+            chrome_options.add_argument('--use-fake-device-for-media-stream')
+            
+            # Bypasses the security prompt displayed by the browser when it attempts to
+            # access a media device (e.g., a webcam)
+            chrome_options.add_argument('--use-fake-ui-for-media-stream')
+
+            browser_args = []
+            browser_kwargs = {
+                'chrome_options': chrome_options,
             }
         else:
             browser_args, browser_kwargs = [], {}
