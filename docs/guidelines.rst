@@ -89,7 +89,7 @@ Each test can then access the section title and assert that it matches what the 
 Never use ``time.sleep()``
 --------------------------
 
-Sometimes, tests fail because when they check the page too soon.  Often, tests must wait for JavaScript on the page to finish manipulating the DOM.  In these cases, it is tempting to insert an explicit wait using ``time.sleep()``.  For example:
+Sometimes, tests fail because when they check the page too soon.  Often, tests must wait for JavaScript on the page to finish manipulating the DOM, such as when adding elements or even attaching event listeners.  In these cases, it is tempting to insert an explicit wait using ``time.sleep()``.  For example:
 
 .. code-block:: python
 
