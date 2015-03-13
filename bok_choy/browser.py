@@ -168,27 +168,28 @@ def browser(tags=None, proxy=None):
 
     browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')
 
-    # Get the class and kwargs required to instantiate the browser based on
-    # whether we are using a local or remote one.
-    if _use_remote_browser(SAUCE_ENV_VARS):
-        browser_class, browser_args, browser_kwargs = _remote_browser_class(
-            SAUCE_ENV_VARS, tags)
-    elif _use_remote_browser(REMOTE_ENV_VARS):
-        browser_class, browser_args, browser_kwargs = _remote_browser_class(
-            REMOTE_ENV_VARS, tags)
-    else:
-        browser_class, browser_args, browser_kwargs = _local_browser_class(
-            browser_name)
-
-    # If we are using a proxy, we need extra kwargs passed on intantiation.
-    if proxy:
-        browser_kwargs = _proxy_kwargs(browser_name, proxy, browser_kwargs)
-
     # Instantiate the browser and return the browser instance
     def browser_check_func():
         # See https://openedx.atlassian.net/browse/TE-701
         try:
+            # Get the class and kwargs required to instantiate the browser based on
+            # whether we are using a local or remote one.
+            if _use_remote_browser(SAUCE_ENV_VARS):
+                browser_class, browser_args, browser_kwargs = _remote_browser_class(
+                    SAUCE_ENV_VARS, tags)
+            elif _use_remote_browser(REMOTE_ENV_VARS):
+                browser_class, browser_args, browser_kwargs = _remote_browser_class(
+                    REMOTE_ENV_VARS, tags)
+            else:
+                browser_class, browser_args, browser_kwargs = _local_browser_class(
+                    browser_name)
+
+            # If we are using a proxy, we need extra kwargs passed on intantiation.
+            if proxy:
+                browser_kwargs = _proxy_kwargs(browser_name, proxy, browser_kwargs)
+
             return True, browser_class(*browser_args, **browser_kwargs)
+
         except socket.error as e:
             LOGGER.debug('Failed to instantiate browser: ' + e.strerror)
             return False, None
@@ -228,10 +229,10 @@ def _local_browser_class(browser_name):
             }
         elif browser_name == 'chrome':
             chrome_options = Options()
-            
+
             # Emulate webcam and microphone for testing purposes
             chrome_options.add_argument('--use-fake-device-for-media-stream')
-            
+
             # Bypasses the security prompt displayed by the browser when it attempts to
             # access a media device (e.g., a webcam)
             chrome_options.add_argument('--use-fake-ui-for-media-stream')
