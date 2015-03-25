@@ -255,6 +255,23 @@ class JavaScriptPage(SitePage):
         self.q(css='div#fixture button').first.click()
 
 
+@js_defined('something.SomethingThatDoesntExist')
+class JavaScriptUndefinedPage(SitePage):
+    """
+    Page for testing asynchronous JavaScript, where the
+    javascript that we wait for is never defined.
+    """
+
+    name = "javascript"
+
+    @wait_for_js
+    def trigger_output(self):
+        """
+        Click a button which will only work once RequireJS finishes loading.
+        """
+        self.q(css='div#fixture button').first.click()
+
+
 @requirejs('main')
 class RequireJSPage(SitePage):
     """

@@ -4,7 +4,7 @@ Helpers for dealing with JavaScript synchronization issues.
 import functools
 import json
 from textwrap import dedent
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, WebDriverException
 from .promise import EmptyPromise
 
 
@@ -146,7 +146,13 @@ def _are_js_vars_defined(browser, js_vars):
         for var in js_vars
     ])
 
-    return browser.execute_script("return {}".format(script))
+    try:
+        return browser.execute_script("return {}".format(script))
+    except WebDriverException as e:
+        if "is not defined" in e.msg or "is undefined" in e.msg:
+            return False
+        else:
+            raise
 
 
 def _are_requirejs_deps_loaded(browser, deps):
