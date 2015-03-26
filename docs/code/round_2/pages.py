@@ -14,7 +14,7 @@ class GitHubSearchResultsPage(PageObject):
     def is_browser_on_page(self):
         # This should be something like: u'Search · foo bar · GitHub'
         title = self.browser.title
-        matches = re.match(u'^Search .+$', title)
+        matches = re.match(u'^Search .+ GitHub$', title)
         return matches is not None
 
 
@@ -39,7 +39,7 @@ class GitHubSearchPage(PageObject):
         Click on the Search button and wait for the
         results page to be displayed
         """
-        self.q(css='button.button').click()
+        self.q(css='button.btn').click()
         GitHubSearchResultsPage(self.browser).wait_for_page()
 
     def search_for_terms(self, text):
