@@ -1,3 +1,11 @@
+v0.3.3 (03/31/15)
+
+* Changed license from AGPL to Apache
+* Unpinned selenium version
+* Bypass the security prompt when accessing a media device in FF
+* Support faking media device access in Chrome
+* Small bug fixes and improvements
+
 v0.3.2 (10/7/14)
 
 * Update selenium version to 2.42.1
