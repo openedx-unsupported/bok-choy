@@ -9,6 +9,7 @@ UI-level acceptance test framework.
    intro
    tutorial
    guidelines
+   accessibility
    api_reference
 
 

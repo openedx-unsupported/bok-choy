@@ -17,6 +17,12 @@ class TestBrowser(TestCase):
         self.addCleanup(browser.quit)
         self.assertIsInstance(browser, webdriver.Firefox)
 
+    @patch.dict(os.environ, {'SELENIUM_BROWSER': 'phantomjs'})
+    def test_phantom_browser(self):
+        browser = bok_choy.browser.browser()
+        self.addCleanup(browser.quit)
+        self.assertIsInstance(browser, webdriver.PhantomJS)
+
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'invalid'})
     def test_invalid_browser_name(self):
         with self.assertRaises(bok_choy.browser.BrowserConfigError):

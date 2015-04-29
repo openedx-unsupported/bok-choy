@@ -1,16 +1,17 @@
 """
 Base class for testing a web application.
 """
-import sys
-from unittest import TestCase, SkipTest
 from abc import ABCMeta
-from uuid import uuid4
 import functools
 import os
+import sys
+from unittest import TestCase, SkipTest
+from uuid import uuid4
+from selenium.webdriver.support.events import EventFiringWebDriver
+
 from .browser import browser, save_screenshot, save_driver_logs
 from .proxy import bmp_proxy, stop_server
 from .performance import HarListener, HarCapturer
-from selenium.webdriver.support.events import EventFiringWebDriver
 
 
 class WebAppTest(TestCase):
