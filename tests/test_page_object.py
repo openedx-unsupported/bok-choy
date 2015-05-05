@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from bok_choy.page_object import PageObject, PageLoadError, unguarded, WrongPageError
 from bok_choy.promise import BrokenPromise
-from .pages import SitePage
+from tests.pages import SitePage
 
 
 class InvalidURLPage(SitePage):
@@ -65,10 +65,11 @@ class PageObjectTest(TestCase):
         it must use the correct syntax.
         """
         for url, is_valid in [
-            ("", False), ("invalid", False), ("/invalid", False),
+            ("", False), ("invalid", False), ("/invalid", False), ("http://localhost:", False),
             ("http://localhost:/invalid", False), ("://localhost/invalid", False),
             ("http://localhost", True), ("http://localhost/test", True),
-            ("http://localhost:8080", True), ("http://localhost:8080/test", True)
+            ("http://localhost:8080", True), ("http://localhost:8080/test", True),
+            ("http://user:pass@localhost/test", True), ("http://user:pass@localhost:8080/test", True)
         ]:
             returned_val = PageObject.validate_url(url)
             self.assertEquals(returned_val, is_valid, msg="Url: {0}, Expected {1} but got {2}".format(url, is_valid, returned_val))
