@@ -290,8 +290,8 @@ class PageObject(object):
         try:
             if result.port is not None:
                 int(result.port)
-            elif ':' in result.netloc:
-                # invalid url if there is a ':' but no port value
+            elif result.netloc.endswith(':'):
+                # Valid URLs do not end with colons.
                 return False
         except ValueError:
             return False
