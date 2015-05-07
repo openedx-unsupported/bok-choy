@@ -15,8 +15,8 @@ A Python framework for writing robust Selenium tests.
 License
 -------
 
-The code in this repository is licensed under version 3 of the AGPL unless
-otherwise noted.
+The code in this repository is licensed under the Apache License, Version 2.0,
+unless otherwise noted.
 
 Please see ``LICENSE.txt`` for details.
 
