@@ -41,6 +41,7 @@ class WebAppTest(TestCase):
         Returns:
             None
         """
+        super(WebAppTest, self).setUp()
 
         if self.har_mode:
             # Set up proxy using browsermobproxy if we want to capture har files
