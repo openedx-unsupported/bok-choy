@@ -85,7 +85,7 @@ class WebAppTest(TestCase):
         Returns:
             39-char UUID string
         """
-        return str(uuid4().int)
+        return str(uuid4().int)  # pylint: disable=no-member
 
     def _save_artifacts(self):
         """
@@ -106,12 +106,12 @@ class WebAppTest(TestCase):
         if result != (None, None, None):
             try:
                 save_screenshot(self.browser, self.id())
-            except:
+            except:  # pylint: disable=bare-except
                 pass
 
             try:
                 save_driver_logs(self.browser, self.id())
-            except:
+            except:  # pylint: disable=bare-except
                 pass
 
             try:
@@ -119,7 +119,7 @@ class WebAppTest(TestCase):
                     self.browser,
                     caller_mode=self.har_mode
                 )
-            except:
+            except:  # pylint: disable=bare-except
                 pass
 
 
@@ -153,7 +153,7 @@ def with_cache(function):
         function(self, *args, **kwargs)
 
         self.har_capturer.save_har(self.browser, caller_mode=self.har_mode)
-        self.har_capturer._with_cache = True
+        self.har_capturer._with_cache = True  # pylint: disable=protected-access
         # Run the whole thing again in the same browser instance.
         function(self, *args, **kwargs)
 

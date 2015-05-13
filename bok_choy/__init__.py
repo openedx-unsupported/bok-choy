@@ -1,3 +1,6 @@
+"""
+bok-choy is a UI-level acceptance test framework
+"""
 import logging
 
 # Suppress noisy loggers

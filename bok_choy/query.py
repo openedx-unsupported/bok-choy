@@ -34,7 +34,7 @@ def no_error(func):
     Returns:
         Decorated function
     """
-    def _inner(*args, **kwargs):
+    def _inner(*args, **kwargs):  # pylint: disable=missing-docstring
         try:
             return_val = func(*args, **kwargs)
         except WebDriverException:
@@ -58,7 +58,8 @@ class Query(Sequence):
             seed_fn (callable): Callable with no arguments that produces a list of values.
 
         Keyword Args:
-            desc (str): A description of the query, used in log messages.  If not provided, defaults to the name of the seed function.
+            desc (str): A description of the query, used in log messages.
+                If not provided, defaults to the name of the seed function.
 
         Returns:
             Query
@@ -100,10 +101,12 @@ class Query(Sequence):
         Create a copy of this query, transformed by `transform`.
 
         Args:
-            transform (callable): Callable that takes an iterable of values and returns an iterable of transformed values.
+            transform (callable): Callable that takes an iterable of values and
+                returns an iterable of transformed values.
 
         Keyword Args:
-            desc (str): A description of the transform, to use in log messages.  Defaults to the name of the `transform` function.
+            desc (str): A description of the transform, to use in log messages.
+                Defaults to the name of the `transform` function.
 
         Returns:
             Query
@@ -124,7 +127,8 @@ class Query(Sequence):
             map_fn (callable): A callable that takes a single argument and returns a new value.
 
         Keyword Args:
-            desc (str): A description of the mapping transform, for use in log message.  Defaults to the name of the map function.
+            desc (str): A description of the mapping transform, for use in log message.
+                Defaults to the name of the map function.
 
         Returns:
             Query
@@ -155,7 +159,8 @@ class Query(Sequence):
 
             kwargs: Specify attribute values that an element must have to be included in the results.
 
-            desc (str): A description of the filter, for use in log messages.  Defaults to the name of the filter function or attribute.
+            desc (str): A description of the filter, for use in log messages.
+                Defaults to the name of the filter function or attribute.
 
         Raises:
             TypeError: neither or both of `filter_fn` and `kwargs` are provided.
@@ -173,7 +178,7 @@ class Query(Sequence):
         desc = u"filter({})".format(desc)
 
         if kwargs:
-            def filter_fn(elem):
+            def filter_fn(elem):  # pylint: disable=function-redefined, missing-docstring
                 return all(
                     getattr(elem, filter_key) == filter_value
                     for filter_key, filter_value
@@ -260,7 +265,7 @@ class Query(Sequence):
         Returns:
             Query
         """
-        def _transform(xs):
+        def _transform(xs):  # pylint: disable=missing-docstring, invalid-name
             try:
                 return [iter(xs).next()]
             except StopIteration:
@@ -287,7 +292,7 @@ class Query(Sequence):
         Returns:
             Query
         """
-        def _transform(xs):
+        def _transform(xs):  # pylint: disable=missing-docstring, invalid-name
             try:
                 return [next(islice(iter(xs), index, None))]
 
@@ -333,7 +338,7 @@ class BrowserQuery(Query):
         if query_name not in QUERY_TYPES:
             raise TypeError('{} is not a supported query type for BrowserQuery()'.format(query_name))
 
-        def query_fn():
+        def query_fn():  # pylint: disable=missing-docstring
             return getattr(browser, QUERY_TYPES[query_name])(query_value)
 
         super(BrowserQuery, self).__init__(
@@ -463,8 +468,8 @@ class BrowserQuery(Query):
         Returns:
             None
         """
-        def _fill(el):
-            el.clear()
-            el.send_keys(text)
+        def _fill(elem):  # pylint: disable=missing-docstring
+            elem.clear()
+            elem.send_keys(text)
 
         self.map(_fill, 'fill({!r})'.format(text)).execute()

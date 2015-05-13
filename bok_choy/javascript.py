@@ -53,7 +53,7 @@ def wait_for_js(function):
     """
 
     @functools.wraps(function)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs):  # pylint: disable=missing-docstring
 
         # If not a method, then just call the function
         if len(args) < 1:
@@ -83,7 +83,7 @@ def _decorator(store_name, store_values):
     2) Defines a new class list variable, `store_name` and adds
         `store_values` to the list.
     """
-    def decorator(clz):
+    def decorator(clz):  # pylint: disable=missing-docstring
 
         # Add a `wait_for_js` method to the class
         if not hasattr(clz, 'wait_for_js'):
@@ -116,6 +116,7 @@ def _wait_for_js(self):
     if not hasattr(self, 'browser'):
         return
 
+    # pylint: disable=protected-access
     # Wait for JavaScript variables to be defined
     if hasattr(self, '_js_vars') and self._js_vars:
         EmptyPromise(
@@ -148,8 +149,8 @@ def _are_js_vars_defined(browser, js_vars):
 
     try:
         return browser.execute_script("return {}".format(script))
-    except WebDriverException as e:
-        if "is not defined" in e.msg or "is undefined" in e.msg:
+    except WebDriverException as exc:
+        if "is not defined" in exc.msg or "is undefined" in exc.msg:
             return False
         else:
             raise

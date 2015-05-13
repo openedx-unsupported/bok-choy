@@ -44,7 +44,7 @@ def unguarded(method):
     Returns:
         Decorated method
     """
-    method._unguarded = True
+    method._unguarded = True  # pylint: disable=protected-access
     return method
 
 
@@ -59,8 +59,8 @@ def pre_verify(method):
         Decorated method
     """
     @wraps(method)
-    def wrapper(self, *args, **kwargs):
-        self._verify_page()
+    def wrapper(self, *args, **kwargs):  # pylint: disable=missing-docstring
+        self._verify_page()  # pylint: disable=protected-access
         return method(self, *args, **kwargs)
     return wrapper
 
@@ -262,7 +262,7 @@ class PageObject(object):
         # does not return True before timing out.
         try:
             return self.wait_for_page()
-        except (BrokenPromise):
+        except BrokenPromise:
             raise PageLoadError("Timed out waiting to load page '{!r}' at URL '{}'".format(
                 self, self.url
             ))
@@ -327,7 +327,7 @@ class PageObject(object):
         ).fulfill()
 
     @unguarded
-    def q(self, **kwargs):
+    def q(self, **kwargs):  # pylint: disable=invalid-name
         """
         Construct a query on the browser.
 

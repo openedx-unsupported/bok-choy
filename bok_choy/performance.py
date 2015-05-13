@@ -42,19 +42,19 @@ class HarListener(AbstractEventListener):
         har_capturer: An instance of HarCapturer.
 
     """
-    def __init__(self, har_capturer, *args, **kwargs):
+    def __init__(self, har_capturer, *args, **kwargs):  # pylint: disable=super-on-old-class
         super(HarListener, self).__init__(*args, **kwargs)
         self.har_capturer = har_capturer
 
-    def before_navigate_to(self, url, driver):
+    def before_navigate_to(self, url, driver):  # pylint: disable=missing-docstring
         if self.har_capturer.mode in ('auto', 'error'):
             self.har_capturer.add_page(driver, url, caller_mode=self.har_capturer.mode)
 
-    def before_close(self, driver):
+    def before_close(self, driver):  # pylint: disable=missing-docstring
         if self.har_capturer.mode in ('auto',):
             self.har_capturer.save_har(driver, caller_mode=self.har_capturer.mode)
 
-    def before_quit(self, driver):
+    def before_quit(self, driver):  # pylint: disable=missing-docstring
         if self.har_capturer.mode in ('auto',):
             self.har_capturer.save_har(driver, caller_mode=self.har_capturer.mode)
 
@@ -65,16 +65,16 @@ class HarCapturer(object):
 
     Args:
         proxy: a browsermobproxy proxy instance.
-        
+
     Keyword Args:
         har_base_name: A base for the har file names. The har filename may
             still have the datetime and 'cached' specifier appended to them.
-        
+
         mode: 'auto', 'error', or 'explicit'. Although it is a kwarg, an
             UnknownHarCaptureMode exception will be raised if no mode is passed
             or if the mode doesn't match one of the following.
-            
-            * auto: automatically save a single har file for each test.          
+
+            * auto: automatically save a single har file for each test.
             * error: automatically save a single har file for each test only if
                 it fails or errors.
             * explicit: interact explicitly with this object in order to capture
@@ -86,18 +86,18 @@ class HarCapturer(object):
         # We need to access the proxy server in addition to the browser.
         self.proxy = args[0]
         self._har_base_name = kwargs.get('har_base_name', '')
-        
+
         self.mode = kwargs.get('mode', None)
 
         if self.mode not in HAR_CAPTURE_MODES:
             raise UnknownHarCaptureMode
 
-        # Vars for tracking state 
+        # Vars for tracking state
         self._page_timings = []
         self._active_har = False
         self._with_cache = False
 
-    def _validate_mode(self, *args, **kwargs):
+    def _validate_mode(self, *args, **kwargs):  # pylint: disable=unused-argument
         """
         Raises MethodNotEnabledInCurrentMode if a user tries to interact
         with the har explicitly while in 'auto' or 'error' mode.
@@ -108,12 +108,12 @@ class HarCapturer(object):
 
     def add_page(self, driver, page_name, *args, **kwargs):
         """
-        Creates a new page within the har file. If no har file has been started 
+        Creates a new page within the har file. If no har file has been started
         since the last save, it will create one.
 
         Args:
             page_name: a string to be used as the page name in the har
-            
+
         Returns:
             None
         """
@@ -141,7 +141,7 @@ class HarCapturer(object):
         """
         Saves recorded page timings to self.timings to be added to the har file
         on save.
-            
+
         Returns:
             None
         """
@@ -166,8 +166,8 @@ class HarCapturer(object):
             file_name = name_override
 
         else:
-            file_name =  "{}_{}".format(
-                self._har_base_name, 
+            file_name = "{}_{}".format(
+                self._har_base_name,
                 datetime.datetime.utcnow().isoformat()
             )
 
@@ -198,11 +198,16 @@ class HarCapturer(object):
             har = self.proxy.har
 
             # Record the timings from the pages
-            for index, timing in enumerate(timings):
-                har['log']['pages'][index]['pageTimings']['onContentLoad'] = (timings[index]['domContentLoadedEventEnd'] - timings[index]['navigationStart'])
-                har['log']['pages'][index]['pageTimings']['onLoad'] = (timings[index]['loadEventEnd'] - timings[index]['navigationStart'])
+            for index, _timing in enumerate(timings):
+                nav_start = timings[index]['navigationStart']
+                dom_content_loaded_event_end = timings[index]['domContentLoadedEventEnd']
+                load_event_end = timings[index]['loadEventEnd']
+                har['log']['pages'][index]['pageTimings']['onContentLoad'] = dom_content_loaded_event_end - nav_start
+                har['log']['pages'][index]['pageTimings']['onLoad'] = load_event_end - nav_start
 
-            har_file = os.path.join(os.environ.get('BOK_CHOY_HAR_DIR', ''), '{}.har'.format(self.har_name(name_override)))
+            har_file = os.path.join(
+                os.environ.get('BOK_CHOY_HAR_DIR', ''),
+                '{}.har'.format(self.har_name(name_override)))
             with open(har_file, 'w') as output_file:
                 json.dump(har, output_file)
                 output_file.close()
