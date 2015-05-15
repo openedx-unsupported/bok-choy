@@ -22,7 +22,7 @@ def bmp_proxy():
         """
         try:
             proxy = server.create_proxy()
-        except:
+        except:  # pylint: disable=bare-except
             return False, None
         return True, proxy
 
@@ -43,7 +43,7 @@ def bmp_proxy():
 
         proxy_host = os.environ.get('BROWSERMOB_PROXY_HOST', '127.0.0.1')
         proxy.remap_hosts('localhost', proxy_host)
-    except:
+    except:  # pylint: disable=bare-except
         # Make sure that the server process is stopped.
         stop_server(server)
         raise

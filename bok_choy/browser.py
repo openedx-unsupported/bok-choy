@@ -9,7 +9,7 @@ from selenium.webdriver.chrome.options import Options
 import socket
 from json import dumps
 
-from promise import Promise
+from bok_choy.promise import Promise
 
 LOGGER = logging.getLogger(__name__)
 
@@ -105,7 +105,7 @@ def save_driver_logs(driver, prefix):
             with open(file_name, 'w') as output_file:
                 for line in log:
                     output_file.write("{}{}".format(dumps(line), '\n'))
-        except:
+        except:  # pylint: disable=bare-except
             msg = (
                 "Could not save browser log of type '{log_type}'. "
                 "It may be that the browser does not support it."
@@ -168,8 +168,8 @@ def browser(tags=None, proxy=None):
 
     browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')
 
-    # Instantiate the browser and return the browser instance
     def browser_check_func():
+        """ Instantiate the browser and return the browser instance """
         # See https://openedx.atlassian.net/browse/TE-701
         try:
             # Get the class and kwargs required to instantiate the browser based on
@@ -190,8 +190,8 @@ def browser(tags=None, proxy=None):
 
             return True, browser_class(*browser_args, **browser_kwargs)
 
-        except socket.error as e:
-            LOGGER.debug('Failed to instantiate browser: ' + e.strerror)
+        except socket.error as err:
+            LOGGER.debug('Failed to instantiate browser: ' + err.strerror)
             return False, None
 
     browser_instance = Promise(
@@ -206,8 +206,7 @@ def _local_browser_class(browser_name):
     """
 
     # Log name of local browser
-    LOGGER.info(
-        "Using local browser: {0} [Default is firefox]".format(browser_name))
+    LOGGER.info("Using local browser: %s [Default is firefox]", browser_name)
 
     # Get class of local browser based on name
     browser_class = BROWSERS.get(browser_name)
@@ -263,13 +262,9 @@ def _remote_browser_class(env_vars, tags=None):
     caps = _capabilities_dict(envs, tags)
 
     if 'accessKey' in caps:
-        LOGGER.info("Using SauceLabs: {0} {1} {2}".format(
-            caps['platform'], caps['browserName'], caps['version']
-        ))
+        LOGGER.info("Using SauceLabs: %s %s %s", caps['platform'], caps['browserName'], caps['version'])
     else:
-        LOGGER.info("Using Remote Browser: {}".format(
-            caps['browserName']
-        ))
+        LOGGER.info("Using Remote Browser: %s", caps['browserName'])
 
     # Create and return a new Browser
     # We assume that the WebDriver end-point is running locally (e.g. using
@@ -286,7 +281,7 @@ def _remote_browser_class(env_vars, tags=None):
     return webdriver.Remote, browser_args, browser_kwargs
 
 
-def _proxy_kwargs(browser_name, proxy, browser_kwargs={}):
+def _proxy_kwargs(browser_name, proxy, browser_kwargs={}):  # pylint: disable=dangerous-default-value
     """
     Determines the kwargs needed to set up a proxy based on the
     browser type.

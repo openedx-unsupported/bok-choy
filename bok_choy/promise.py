@@ -64,7 +64,8 @@ class Promise(object):
             description (str): Description of the `Promise`, used in log messages.
 
         Keyword Args:
-            try_limit (int or None): Number of attempts to make to satisfy the `Promise`.  Can be `None` to disable the limit.
+            try_limit (int or None): Number of attempts to make to satisfy the `Promise`.
+                Can be `None` to disable the limit.
             try_interval (float): Number of seconds to wait between attempts.
             timeout (float): Maximum number of seconds to wait for the `Promise` to be satisfied before timing out.
 
@@ -162,7 +163,8 @@ class EmptyPromise(Promise):
             EmptyPromise(lambda: is_done('test'), "Test operation is done").fulfill()
 
         Args:
-            check_func (callable): Function that accepts no arguments and returns a boolean indicating whether the promise is fulfilled.
+            check_func (callable): Function that accepts no arguments and
+                returns a boolean indicating whether the promise is fulfilled.
             description (str): Description of the Promise, used in log messages.
 
         Returns:
