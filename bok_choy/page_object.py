@@ -20,7 +20,8 @@ from .query import BrowserQuery
 from .promise import Promise, EmptyPromise, BrokenPromise
 
 
-AXS_FILE = 'vendor/google/axs_testing.js'
+CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+AXS_FILE = os.path.join(os.path.split(CUR_DIR)[0], 'vendor/google/axs_testing.js')
 AuditResults = namedtuple('AuditResults', 'errors, warnings')
 
 
