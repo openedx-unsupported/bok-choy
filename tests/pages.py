@@ -337,3 +337,10 @@ class WaitsPage(SitePage):
         """
         self.q(css='#spinner').first.click()
         self.wait_for_element_invisibility('#anim', 'Button Output is Visible')
+
+
+class AccessibilityPage(SitePage):
+    """
+    Page for testing accessibility auditing.
+    """
+    name = "accessibility"

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Accessibility</title>
+	<!-- See https://github.com/GoogleChrome/accessibility-developer-tools/wiki/Audit-Rules -->
+</head>
+<body>
+	<div id="AX_ARIA_01">  <!-- AX_ARIA_01: badAriaRole -->
+		<div id="AX_ARIA_01_01" role="button"></div>     <!-- Good: "button" is a valid ARIA role -->
+		<div id="AX_ARIA_01_02" ></div>                   <!-- Good: No ARIA role -->
+		<div id="AX_ARIA_01_not_a_role" role="datepicker"></div> <!-- Bad: "datepicker" is not an ARIA role -->
+		<div id="AX_ARIA_01_empty_role" role=""></div>           <!-- Bad: An empty ARIA role is not allowed -->
+	</div>
+
+	<div id="limit_scope">  <!-- AX_ARIA_04 -->
+		<!-- Bad: the aria-hidden state is of type true/false -->
+		<span id="AX_ARIA_04_bad" aria-hidden="yes">foo</span>
+		<!-- Good: the aria-hidden state is of type true/false -->
+		<span id="AX_ARIA_04_good" aria-hidden="true">foo</span>
+    </div>
+</body>
+</html>

@@ -38,6 +38,7 @@ BROWSERS = {
     'chrome': webdriver.Chrome,
     'internet explorer': webdriver.Ie,
     'safari': webdriver.Safari,
+    'phantomjs': webdriver.PhantomJS
 }
 
 

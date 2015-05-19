@@ -39,7 +39,9 @@ nosetests.xml
 docs/_build
 docs/**/*.png
 
-# Output directories from tests
+# Output from tests
 screenshots
 logs
 hars
+ghostdriver.log
+server.log
