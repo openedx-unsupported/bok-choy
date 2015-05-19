@@ -614,9 +614,10 @@ class PageObject(object):
 
             result = resp.json().get('value')
             if result is None:
-                msg = '{} {}'.format(
+                msg = '{} {} \nResponse:{}'.format(
                     'No results were returned by the audit report.',
-                    'Perhaps there was a problem with the rules or scope defined for this page.')
+                    'Perhaps there was a problem with the rules or scope defined for this page.',
+                    resp.text)
                 raise RuntimeError(msg)
 
             # audit_results is report of accessibility errors for that session
