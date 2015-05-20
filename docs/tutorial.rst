@@ -172,7 +172,7 @@ So we add the search results page definition to pages.py:
 .. literalinclude:: code/round_2/pages.py
     :language: python
     :lines: 1-18
-    :emphasize-lines: 3, 6-18
+    :emphasize-lines: 2, 6-18
 
 
 Define the search method
