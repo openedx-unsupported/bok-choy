@@ -534,6 +534,18 @@ class PageObject(object):
         """
         return []
 
+    def axs_audit_rules_to_ignore(self):
+        """
+        List of rules to ignore for accessibility errors on the page.
+        See https://github.com/GoogleChrome/accessibility-developer-tools/tree/master/src/audits
+
+        E.g. return ['badAriaAttributeValue']
+        An empty list means to run rules as defined by axs_audit_rules_to_run.
+        Otherwise, if rules are listed here, they will be ignored even if
+        they are specified in axs_audit_rules_to_run.
+        """
+        return None
+
     def axs_scope(self):
         """
         The "start point" for the audit: the element which contains the portion of
@@ -594,6 +606,14 @@ class PageObject(object):
                     rules=rules)
             else:
                 rules_config = ""
+
+            ignored_rules = self.axs_audit_rules_to_ignore()
+            if ignored_rules:
+                rules_config += (
+                    "\nauditConfig.auditRulesToIgnore = {rules};".format(
+                        rules=ignored_rules
+                    )
+                )
 
             script = dedent("""
                 var page = this;
