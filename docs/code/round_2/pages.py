@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from bok_choy.page_object import PageObject
 import re
+from bok_choy.page_object import PageObject
 
 
 class GitHubSearchResultsPage(PageObject):
