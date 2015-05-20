@@ -614,9 +614,10 @@ class PageObject(object):
 
             result = resp.json().get('value')
             if result is None:
-                msg = '{} {} \nResponse:{}'.format(
+                msg = '{} {} \nScript:{} \nResponse:{}'.format(
                     'No results were returned by the audit report.',
                     'Perhaps there was a problem with the rules or scope defined for this page.',
+                    script,
                     resp.text)
                 raise RuntimeError(msg)
 
