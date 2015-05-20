@@ -20,7 +20,8 @@ from .query import BrowserQuery
 from .promise import Promise, EmptyPromise, BrokenPromise
 
 
-AXS_FILE = 'vendor/google/axs_testing.js'
+CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+AXS_FILE = os.path.join(os.path.split(CUR_DIR)[0], 'vendor/google/axs_testing.js')
 AuditResults = namedtuple('AuditResults', 'errors, warnings')
 
 
@@ -614,9 +615,11 @@ class PageObject(object):
 
             result = resp.json().get('value')
             if result is None:
-                msg = '{} {}'.format(
+                msg = '{} {} \nScript:{} \nResponse:{}'.format(
                     'No results were returned by the audit report.',
-                    'Perhaps there was a problem with the rules or scope defined for this page.')
+                    'Perhaps there was a problem with the rules or scope defined for this page.',
+                    script,
+                    resp.text)
                 raise RuntimeError(msg)
 
             # audit_results is report of accessibility errors for that session
