@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import re
 from bok_choy.page_object import PageObject
+import re
 
 
 class GitHubSearchResultsPage(PageObject):
