@@ -263,7 +263,7 @@ class AccessibilityTest(WebAppTest):
 
     @patch('tests.pages.AccessibilityPage.axs_audit_rules_to_ignore')
     @patch('tests.pages.AccessibilityPage.axs_audit_rules_to_run')
-    def test_axs_audit_ignore_none_and_run_2(self, mock_rules, mock_ignore):
+    def test_axs_audit_ignore_0_and_run_2(self, mock_rules, mock_ignore):
         """
         Tests that all rules defined in axs_audit_rules_to_run are run
         when the axs_audit_rules_to_ignore is set to [].
@@ -290,7 +290,7 @@ class AccessibilityTest(WebAppTest):
 
     @patch('tests.pages.AccessibilityPage.axs_audit_rules_to_ignore')
     @patch('tests.pages.AccessibilityPage.axs_audit_rules_to_run')
-    def test_axs_audit_ignore_none_and_run_all(self, mock_rules, mock_ignore):
+    def test_axs_audit_ignore_0_and_run_all(self, mock_rules, mock_ignore):
         """
         Tests that all rules are run when both axs_audit_rules_to_run and
         axs_audit_rules_to_ignore are set to [].

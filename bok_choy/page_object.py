@@ -544,7 +544,7 @@ class PageObject(object):
         Otherwise, if rules are listed here, they will be ignored even if
         they are specified in axs_audit_rules_to_run.
         """
-        return None
+        return []
 
     def axs_scope(self):
         """

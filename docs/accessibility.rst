@@ -67,7 +67,7 @@ axs_audit_rules_to_run method.
         return ['badAriaAttributeValue']
 
 (*Default*) Defining axs_audit_rules_to_ignore to return an empty list
-or None will result in the rules being run however they are defined by
+will result in the rules being run however they are defined by
 axs_audit_rules_to_run.
 
 .. code-block:: python
