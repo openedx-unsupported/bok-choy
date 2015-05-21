@@ -53,6 +53,29 @@ axs_audit_rules_to_run method to return None.
     def axs_audit_rules_to_run(self):
         return None
 
+
+To run all rules *except* for specific ones, configure the page object's
+axs_audit_rules_to_ignore method to return a list of the rules you want to not
+check. This will take precedence over rules in axs_audit_rules_to_run. For
+instance, if we were using the example below, then the rule 'badAriaAttributeValue'
+would be ignored even if it was also listed in the page object's
+axs_audit_rules_to_run method.
+
+.. code-block:: python
+
+    def axs_audit_rules_to_ignore(self):
+        return ['badAriaAttributeValue']
+
+(*Default*) Defining axs_audit_rules_to_ignore to return an empty list
+will result in the rules being run however they are defined by
+axs_audit_rules_to_run.
+
+.. code-block:: python
+
+    def axs_audit_rules_to_ignore(self):
+        return []
+
+
 (optional) Define the scope for accessibility auditing of a page
 ----------------------------------------------------------------
 
