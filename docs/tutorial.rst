@@ -124,7 +124,7 @@ Improve the page definition
 .. _FireFox: https://developer.mozilla.org/en-US/docs/Tools/Page_Inspector
 
 
-Edit your page.py file to add in the input field where you type in text and the search button.
+Edit your pages.py file to add in the input field where you type in text and the search button.
 Using the Developer Tools for my browser, I see that the input field can be identified by combining form tags
 id (#search_form) and input tags type (text), so its css locator would be '#search_form > input[type="text"]'.
 
@@ -171,7 +171,8 @@ So we add the search results page definition to pages.py:
 
 .. literalinclude:: code/round_2/pages.py
     :language: python
-    :lines: 6-18
+    :lines: 1-18
+    :emphasize-lines: 2, 6-18
 
 
 Define the search method
@@ -187,6 +188,7 @@ Let's see how the method definition for pressing the search button would look.
 .. literalinclude:: code/round_2/pages.py
     :language: python
     :lines: 21-51
+    :emphasize-lines: 11-
 
 
 
@@ -197,6 +199,7 @@ Now let's add the new test to test_search.py:
 
 .. literalinclude:: code/round_2/test_search.py
     :language: python
+    :emphasize-lines: 3, 10-15, 23-27
 
 
 Run it!
@@ -238,6 +241,7 @@ results returned to the page object for the search results page.
 .. literalinclude:: code/round_3/pages.py
     :language: python
     :lines: 1-24
+    :emphasize-lines: 19-
 
 Also maybe we want a better way to determine that we are on the search page than 
 just the words "code search" the title. Let's use a query to make sure that the 
@@ -246,6 +250,7 @@ search button exists.
 .. literalinclude:: code/round_3/pages.py
     :language: python
     :lines: 27-35
+    :emphasize-lines: 9
 
 
 Improve the search test
@@ -253,10 +258,11 @@ Improve the search test
 
 Now we want to verify that edx-platform repo for the EdX account was returned in the
 search results. And not only that, but also that it was the first result.
-Modify the test.py file to do these assertions:
+Modify the test_search.py file to do these assertions:
 
 .. literalinclude:: code/round_3/test_search.py
     :language: python
+    :emphasize-lines: 16, 29-31
 
 
 Run it!
