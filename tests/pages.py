@@ -344,3 +344,9 @@ class AccessibilityPage(SitePage):
     Page for testing accessibility auditing.
     """
     name = "accessibility"
+
+class ImagePage(SitePage):
+    """
+    Page for testing image capture and comparison.
+    """
+    name = "image"

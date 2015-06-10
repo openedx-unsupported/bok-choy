@@ -2,12 +2,15 @@
 Use environment variables to configure Selenium remote WebDriver.
 For use with SauceLabs (via SauceConnect) or local browsers.
 """
-import os
 import logging
+from json import dumps
+import os
+import socket
+
+from needle.driver import (NeedleFirefox, NeedleChrome, NeedleIe,
+                           NeedleSafari, NeedlePhantomJS)
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-import socket
-from json import dumps
 
 from bok_choy.promise import Promise
 
@@ -34,11 +37,11 @@ OPTIONAL_ENV_VARS = [
 
 
 BROWSERS = {
-    'firefox': webdriver.Firefox,
-    'chrome': webdriver.Chrome,
-    'internet explorer': webdriver.Ie,
-    'safari': webdriver.Safari,
-    'phantomjs': webdriver.PhantomJS
+    'firefox': NeedleFirefox,
+    'chrome': NeedleChrome,
+    'internet explorer': NeedleIe,
+    'safari': NeedleSafari,
+    'phantomjs': NeedlePhantomJS
 }
 
 

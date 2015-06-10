@@ -5,8 +5,10 @@ from abc import ABCMeta
 import functools
 import os
 import sys
-from unittest import TestCase, SkipTest
+from unittest import SkipTest
 from uuid import uuid4
+
+from needle.cases import NeedleTestCase, import_from_string
 from selenium.webdriver.support.events import EventFiringWebDriver
 
 from .browser import browser, save_screenshot, save_driver_logs
@@ -14,7 +16,7 @@ from .proxy import bmp_proxy, stop_server
 from .performance import HarListener, HarCapturer
 
 
-class WebAppTest(TestCase):
+class WebAppTest(NeedleTestCase):
 
     """
     Base class for testing a web application.
@@ -33,6 +35,67 @@ class WebAppTest(TestCase):
         self.proxy = getattr(self, 'proxy', None)
         self.har_mode = getattr(
             self, 'har_mode', os.environ.get('BOK_CHOY_HAR_MODE', None))
+
+    @classmethod
+    def setUpClass(cls):
+        """
+        Override NeedleTestCase's setUpClass method so that it does not
+        start up the browser once for each testcase class.
+        Instead we start up the browser once per TestCase instance,
+        in the setUp method.
+        """
+        # Instantiate the diff engine.
+        # This will allow Needle's flexibility for choosing which you want to use.
+        # These lines are copied over from Needle's setUpClass method.
+        klass = import_from_string(cls.engine_class)
+        cls.engine = klass()
+
+        # Needle's setUpClass method set up the driver (thus starting up the browser),
+        # and set the initial window position and viewport size.
+        # Those lines are not copied here into WebAppTest's setUpClass method,
+        # but instead into our setUp method. This follows our paradigm of starting
+        # up a new browser session for each TestCase.
+
+        # Now call the super of the NeedleTestCase class, so that we get everything
+        # from the setUpClass method of its parent (unittest.TestCase).
+        super(NeedleTestCase, cls).setUpClass()  # pylint: disable=bad-super-call
+
+    @classmethod
+    def tearDownClass(cls):
+        """
+        Override NeedleTestCase's tearDownClass method because it
+        would quit the browser. This is not needed as we have already quit the browser
+        after each TestCase, by virtue of a cleanup that we add in the setUp method.
+        """
+        # We still want to call the super of the NeedleTestCase class, so that we get
+        # everything from the tearDownClass method of its parent (unittest.TestCase).
+        super(NeedleTestCase, cls).tearDownClass()  # pylint: disable=bad-super-call
+
+    def get_web_driver(self):
+        """
+        Override NeedleTestCases's get_web_driver class method to return the WebDriver instance
+        that is already being used, instead of starting up a new one.
+        """
+        return self.browser
+
+    def set_viewport_size(self, width, height):
+        """
+        Override NeedleTestCases's set_viewport_size class method because we need it to operate
+        on the instance not the class.
+
+        See the Needle documentation at http://needle.readthedocs.org/ for information on this
+        feature. It is particularly useful to predict the size of the resulting screenshots
+        when taking fullscreen captures, or to test responsive sites.
+        """
+        self.driver.set_window_size(width, height)
+
+        # Measure the difference between the actual document width and the
+        # desired viewport width so we can account for scrollbars:
+        script = "return {width: document.body.clientWidth, height: document.body.clientHeight};"
+        measured = self.driver.execute_script(script)
+        delta = width - measured['width']
+
+        self.driver.set_window_size(width + delta, height)
 
     def setUp(self):
         """
@@ -55,6 +118,11 @@ class WebAppTest(TestCase):
         # If using SauceLabs, tag the job with test info
         tags = [self.id()]
         self.browser = browser(tags, self.proxy)
+
+        # Needle uses these attributes for taking the screenshots
+        self.driver = self.get_web_driver()
+        self.driver.set_window_position(0, 0)
+        self.set_viewport_size(self.viewport_width, self.viewport_height)
 
         if self.har_mode:
             # Initialize a HarCapturer. The har_capturer instance will always be
