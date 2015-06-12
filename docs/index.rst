@@ -10,6 +10,7 @@ UI-level acceptance test framework.
    tutorial
    guidelines
    accessibility
+   visual_diff
    api_reference
 
 
