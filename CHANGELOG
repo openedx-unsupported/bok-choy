@@ -1,3 +1,10 @@
+v0.4.0 (06/12/15)
+
+* Implement visual diff testing with Needle
+* Implement a11y testing with PhantomJS and Google Chrome Accessibility Developer Tools
+* Small clarity edits for the tutorial
+* Fix all pylint errors and enable linting in CI
+
 v0.3.4 (05/13/15)
 
 * URLs can contain basic auth credentials
