@@ -21,7 +21,7 @@ from .promise import Promise, EmptyPromise, BrokenPromise
 
 
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
-AXS_FILE = os.path.join(os.path.split(CUR_DIR)[0], 'vendor/google/axs_testing.js')
+AXS_FILE = os.path.join(os.path.split(CUR_DIR)[0], 'bok_choy/vendor/google/axs_testing.js')
 AuditResults = namedtuple('AuditResults', 'errors, warnings')
 
 
