@@ -24,5 +24,6 @@ setup(
                  'Topic :: Software Development :: Testing',
                  'Topic :: Software Development :: Quality Assurance'],
     packages=['bok_choy'],
+    package_data={'bok_choy': ['vendor/google/*.*']},
     install_requires=REQUIREMENTS,
 )

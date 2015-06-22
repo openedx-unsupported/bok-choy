@@ -2,3 +2,5 @@ include requirements.txt
 include LICENSE
 include AUTHORS
 include README.rst
+
+recursive-include bok_choy/vendor *
