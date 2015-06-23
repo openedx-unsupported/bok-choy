@@ -38,9 +38,9 @@ copyright = u'2015, EdX'
 # built documents.
 #
 # The short X.Y version.
-version = '0.4.0'
+version = '0.4.1'
 # The full version, including alpha/beta/rc tags.
-release = '0.4.0'
+release = '0.4.1'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
