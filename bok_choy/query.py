@@ -435,6 +435,16 @@ class BrowserQuery(Query):
         else:
             return False
 
+    @property
+    def invisible(self):
+        """
+        Check whether all matched elements are present, but not visible.
+
+        Returns:
+            bool
+        """
+        return self.present and not self.visible
+
     def click(self):
         """
         Click each matched element.

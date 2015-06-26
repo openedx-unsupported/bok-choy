@@ -521,7 +521,7 @@ class PageObject(object):
             timeout (float): Maximum number of seconds to wait for the Promise to be satisfied before timing out
 
         """
-        self.wait_for(lambda: not self.q(css=element_selector).visible, description=description, timeout=timeout)
+        self.wait_for(lambda: self.q(css=element_selector).invisible, description=description, timeout=timeout)
 
     def axs_audit_rules_to_run(self):
         """

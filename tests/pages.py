@@ -229,6 +229,12 @@ class VisiblePage(SitePage):
         """
         return self.q(css="div.{}".format(name)).first.visible
 
+    def is_invisible(self, name):
+        """
+        Return a boolean indicating whether the given element is present, but not visible.
+        """
+        return self.q(css="div.{}".format(name)).first.invisible
+
 
 @js_defined('test_var1', 'test_var2')
 class JavaScriptPage(SitePage):
