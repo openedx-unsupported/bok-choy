@@ -1,3 +1,6 @@
+v0.4.2 (06/25/15)
+* Implement distinction between an element being invisible vs not-present
+
 v0.4.1 (06/23/15)
 
 * Fix a bug in the packaging of the accessibility JS file
