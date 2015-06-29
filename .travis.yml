@@ -16,3 +16,6 @@ install:
 script:
     - "pylint bok_choy"
     - "./run_tests.sh"
+after_success:
+    - "pip install coveralls"
+    - coveralls
