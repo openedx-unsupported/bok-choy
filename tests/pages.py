@@ -292,6 +292,14 @@ class RequireJSPage(SitePage):
         return super(RequireJSPage, self).output
 
 
+class AjaxNoJQueryPage(SitePage):
+    """
+    Page for testing an ajax call.
+    """
+
+    name = "ajax_no_jquery"
+
+
 class AjaxPage(SitePage):
     """
     Page for testing an ajax call.
