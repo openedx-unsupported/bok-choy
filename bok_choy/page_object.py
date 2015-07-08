@@ -405,6 +405,10 @@ class PageObject(object):
         that we have to wait for jQuery to load first because it is used to
         check that ajax requests are complete.
 
+        Important: If you have an ajax requests that results in a page reload,
+        you will need to use wait_for_page or some other method to confirm that
+        the page has finished reloading after wait_for_ajax has returned.
+
         Example usage:
 
         .. code:: python
@@ -423,28 +427,17 @@ class PageObject(object):
             BrokenPromise: The timeout is exceeded before (1) jQuery is defined
             and (2) all ajax requests are completed.
         """
-        def _is_jquery_defined():
-            """
-            Check if jQuery is defined on the page.
-            """
-            return self.browser.execute_script(
-                "return typeof(jQuery)!='undefined'")
 
         def _is_ajax_finished():
             """
             Check if all the ajax calls on the current page have completed.
             """
-            return self.browser.execute_script("return jQuery.active==0")
-
-        # Wait for jQuery to be defined first, so that jQuery.active
-        # doesn't raise an error that 'jQuery is not defined'.  We have
-        # seen this as a flaky pattern possibly related to pages reloading
-        # while wait_for_ajax is being called.
-        EmptyPromise(
-            _is_jquery_defined,
-            "Finished waiting for jquery to be defined.",
-            timeout=timeout
-        ).fulfill()
+            # Wait for jQuery to be defined first, so that jQuery.active
+            # doesn't raise an error that 'jQuery is not defined'.  We have
+            # seen this as a flaky pattern possibly related to pages reloading
+            # while wait_for_ajax is being called.
+            return self.browser.execute_script(
+                "return typeof(jQuery)!='undefined' && jQuery.active==0")
 
         EmptyPromise(
             _is_ajax_finished,
