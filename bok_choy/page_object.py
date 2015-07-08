@@ -399,9 +399,11 @@ class PageObject(object):
         yield
 
     @unguarded
-    def wait_for_ajax(self):
+    def wait_for_ajax(self, timeout=30):
         """
-        Wait for all ajax requests to finish.
+        Wait for jQuery to be loaded and for all ajax requests to finish. Note
+        that we have to wait for jQuery to load first because it is used to
+        check that ajax requests are complete.
 
         Example usage:
 
@@ -410,16 +412,45 @@ class PageObject(object):
             self.q(css='input#email').fill("foo")
             self.wait_for_ajax()
 
+        Keyword Args:
+            timeout (int): The number of seconds to wait before timing out with
+            a BrokenPromise exception.
+
         Returns:
             None
+
+        Raises:
+            BrokenPromise: The timeout is exceeded before (1) jQuery is defined
+            and (2) all ajax requests are completed.
         """
+        def _is_jquery_defined():
+            """
+            Check if jQuery is defined on the page.
+            """
+            return self.browser.execute_script(
+                "return typeof(jQuery)!='undefined'")
+
         def _is_ajax_finished():
             """
             Check if all the ajax calls on the current page have completed.
             """
-            return self.browser.execute_script("return jQuery.active") == 0
+            return self.browser.execute_script("return jQuery.active==0")
 
-        EmptyPromise(_is_ajax_finished, "Finished waiting for ajax requests.").fulfill()
+        # Wait for jQuery to be defined first, so that jQuery.active
+        # doesn't raise an error that 'jQuery is not defined'.  We have
+        # seen this as a flaky pattern possibly related to pages reloading
+        # while wait_for_ajax is being called.
+        EmptyPromise(
+            _is_jquery_defined,
+            "Finished waiting for jquery to be defined.",
+            timeout=timeout
+        ).fulfill()
+
+        EmptyPromise(
+            _is_ajax_finished,
+            "Finished waiting for ajax requests.",
+            timeout=timeout
+        ).fulfill()
 
     @unguarded
     def wait_for(self, promise_check_func, description, result=False, timeout=60):
