@@ -59,5 +59,5 @@ class AjaxNoJQueryTest(WebAppTest):
             self.ajax.wait_for_ajax(timeout=1)
 
         self.assertEqual(
-            'Promise not satisfied: Finished waiting for jquery to be defined.',
+            'Promise not satisfied: Finished waiting for ajax requests.',
             exc.exception.__str__())
