@@ -1,3 +1,6 @@
+v0.4.3 (07/08/15)
+* Bugfix in wait_for_ajax to check that jQuery is defined
+
 v0.4.2 (06/25/15)
 * Implement distinction between an element being invisible vs not-present
 
