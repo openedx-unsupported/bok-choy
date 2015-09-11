@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Accessibility</title>
-	<!-- See https://github.com/GoogleChrome/accessibility-developer-tools/wiki/Audit-Rules -->
 </head>
 <body>
 	<div id="AX_ARIA_01">  <!-- AX_ARIA_01: badAriaRole -->
@@ -12,6 +11,9 @@
 		<div id="AX_ARIA_01_empty_role" role=""></div>           <!-- Bad: An empty ARIA role is not allowed -->
 	</div>
 
+	<div id="bad-link">
+		<a href="#" style="color: white; background-color: white;"></a>
+	</div>
 	<div id="limit_scope">  <!-- AX_ARIA_04 -->
 		<!-- Bad: the aria-hidden state is of type true/false -->
 		<span id="AX_ARIA_04_bad" aria-hidden="yes">foo</span>

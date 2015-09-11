@@ -23,7 +23,7 @@ setup(
                  'Programming Language :: Python',
                  'Topic :: Software Development :: Testing',
                  'Topic :: Software Development :: Quality Assurance'],
-    packages=['bok_choy'],
-    package_data={'bok_choy': ['vendor/google/*.*']},
+    packages=['bok_choy', 'bok_choy/a11y'],
+    package_data={'bok_choy': ['vendor/google/*.*', 'vendor/axe-core/*.*']},
     install_requires=REQUIREMENTS,
 )

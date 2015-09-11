@@ -2,3 +2,4 @@ selenium
 browsermob-proxy==0.6.0
 psutil==2.2.1
 needle==0.3
+lazy>=1.0

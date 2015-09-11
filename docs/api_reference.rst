@@ -21,6 +21,11 @@ performance
 .. automodule:: bok_choy.performance
    :members:
 
+accessibility
+-------------
+.. automodule:: bok_choy.a11y
+   :members:
+
 promise
 -------
 .. automodule:: bok_choy.promise
