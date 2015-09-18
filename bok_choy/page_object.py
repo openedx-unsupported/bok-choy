@@ -342,6 +342,20 @@ class PageObject(object):
         Raises:
             BrokenPromise: The timeout is exceeded without the page loading successfully.
         """
+        def _is_document_ready():
+            """
+            Check the loading state of the document to ensure the document and all sub-resources
+            have finished loading (the document load event has been fired.)
+            """
+            return self.browser.execute_script(
+                "return document.readyState=='complete'")
+
+        EmptyPromise(
+            _is_document_ready,
+            "The document and all sub-resources have finished loading.",
+            timeout=timeout
+        ).fulfill()
+
         result = Promise(
             lambda: (self.is_browser_on_page(), self), "loaded page {!r}".format(self),
             timeout=timeout
