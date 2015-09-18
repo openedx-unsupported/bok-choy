@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
+BMP_VERSION="2.1.0-beta-3"
+BMP_NAME="browsermob-proxy-$BMP_VERSION"
+BMP_URL="https://github.com/lightbody/browsermob-proxy/releases/download/$BMP_NAME/$BMP_NAME-bin.zip"
 
  if [ ! -f /usr/local/bin/browsermob-proxy ]; then
     if [ ! -d /etc/browsermob-proxy ]; then
         # get the package and put it in /etc/browsermob-proxy
         echo "Fetching browsermob-proxy package."
-        curl 'https://s3-us-west-1.amazonaws.com/lightbody-bmp/browsermob-proxy-2.0-beta-9-bin.zip' > /var/tmp/bmp.zip
+        # Use "-L" to follow redirects, which github uses in order to
+        # specify the access token for the AWS bucket where it keeps the file
+        curl -L $BMP_URL > /var/tmp/bmp.zip
         cd /var/tmp
         unzip /var/tmp/bmp.zip
-        mv /var/tmp/browsermob-proxy-2.0-beta-9 /etc/browsermob-proxy
+        mv /var/tmp/$BMP_NAME /etc/browsermob-proxy
     else
         echo "browsermob-proxy package found."
     fi
