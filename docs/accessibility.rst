@@ -30,35 +30,33 @@ This can be updated after instantiating the page object to be tested via the
 ``set_rules`` method.
 
 The default is to check all the rules. To set this explicitly, pass an empty
-list to ``set_rules``.
+dictionary to ``set_rules``.
 
 .. code-block:: python
 
-    page.a11y_audit.config.set_rules([])
+    page.a11y_audit.config.set_rules({})
 
 To skip automatic accessibility checking for a particular page, update the
 page object's ``page.verify_accessibility`` attribute to return ``False``.
 
 To check only a specific set of rules on a particular page, pass the list of
 the names of the rules to that page's ``A11yAudit`` object's ``set_rules``
-method.
+method as the `apply` key.
 
 .. code-block:: python
 
-    page.a11y_audit.config.set_rules(
-        ['badAriaAttributeValue', 'imagesWithoutAltText']
-    )
+    page.a11y_audit.config.set_rules({
+        "apply": ['badAriaAttributeValue', 'imagesWithoutAltText'],
+    })
 
 To skip checking a specific set of rules on a particular page, pass the list
-of the names of the rules as the first argument and ``ignore=True`` as the
-second argument to that page's ``A11yAudit`` object's ``set_rules`` method.
+of the names of the rules as the first argument to that page's ``A11yAudit`` object's ``set_rules`` method as the `ignore` key.
 
 .. code-block:: python
 
-    page.a11y_audit.config.set_rules(
-        ['badAriaAttributeValue', 'imagesWithoutAltText'],
-        ignore=True
-    )
+    page.a11y_audit.config.set_rules({
+        "ignore": ['badAriaAttributeValue', 'imagesWithoutAltText'],
+    })
 
 
 (Optional) Define the Scope of Accessibility Auditing for a Page
@@ -99,9 +97,9 @@ an accessibility audit.
         def __init__(self, *args, **kwargs):
             super(MyPage, self).__init__(*args, **kwargs)
 
-            self.a11y_audit.config.set_rules(
-                ['badAriaAttributeValue', 'imagesWithoutAltText']
-            )
+            self.a11y_audit.config.set_rules({
+                "apply": ['badAriaAttributeValue', 'imagesWithoutAltText'],
+            })
 
         def url(self):
             return 'https://www.mysite.com/page'
@@ -149,9 +147,9 @@ specific accessibility rules.
         def __init__(self, *args, **kwargs):
             super(MyPage, self).__init__(*args, **kwargs)
 
-            self.a11y_audit.config.set_rules(
-                ['badAriaAttributeValue', 'imagesWithoutAltText']
-            )
+            self.a11y_audit.config.set_rules({
+               "apply": ['badAriaAttributeValue', 'imagesWithoutAltText']
+            })
 
         def url(self):
             return 'https://www.mysite.com/page'

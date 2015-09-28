@@ -42,9 +42,9 @@ class A11yAuditConfig(object):
             self.rules_file = os.path.abspath(path)
 
     @abstractmethod
-    def set_rules(self, rules, ignore=False, include_type="rule"):
+    def set_rules(self, rules):
         """
-        Overrides the default list of rules to be run.
+        Overrides the default rules to be run.
 
         Raises:
 

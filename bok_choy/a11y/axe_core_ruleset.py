@@ -27,48 +27,51 @@ class AxeCoreAuditConfig(A11yAuditConfig):
             os.path.split(CUR_DIR)[0],
             'vendor/axe-core/axe.min.js'
         )
-        self.set_rules(None)
+        self.set_rules({})
         self.set_scope()
 
-    def set_rules(self, rules, ignore=False, include_type="rule"):
+    def set_rules(self, rules):
         """
-        List of rules to ignore XOR limit to when checking for accessibility
+        Set rules to ignore XOR limit to when checking for accessibility
         errors on the page.
 
         Args:
 
-            rules (list): a list of rule identifiers. If `None` or an
-                empty list, then all rules will be run.
-            ignore (bool) (optional): If you want to run all of the rules
-                except for the ones in `rules`, set this to `True`.  By
-                default this is `False`, which means _only_ the rules in
-                `rules` will be run.
-            include_type (optional): one of `"rule"` (default) or `"tag"`. If
-                set to `"tag"`, then `rules` should be a list of acessibility
-                standard tag names. Note that you _can't_ ignore tags, only
-                rules. (See below docs for more details.)
+            rules: a dictionary one of the following formats.
+                If you want to run all of the rules except for some::
+
+                    {"ignore": []}
+
+                If you want to run only a specific set of rules::
+
+                    {"apply": []}
+
+                If you want to run only rules of a specific standard::
+
+                    {"tags": []}
 
         Examples:
 
             To run only "bad-link" and "color-contrast" rules::
 
-                page.a11y_audit.config.set_rules(
-                    ["bad-link", "color-contrast"]
-                )
+                page.a11y_audit.config.set_rules({
+                    "apply": ["bad-link", "color-contrast"],
+                })
 
             To run all rules except for "bad-link" and "color-contrast"::
 
-                page.a11y_audit.config.set_rules(
-                    ["bad-link", "color-contrast"],
-                    ignore=True
-                )
+                page.a11y_audit.config.set_rules({
+                    "ignore": ["bad-link", "color-contrast"],
+                })
 
             To run only WCAG 2.0 Level A rules::
 
-                page.a11y_audit.config.set_rules(
-                    ["wcag2a"],
-                    include_type="tag"
-                )
+                page.a11y_audit.config.set_rules({
+                    "tags": ["wcag2a"],
+                })
+
+            To run all rules:
+                page.a11y_audit.config.set_rules({})
 
         Related documentation:
 
@@ -77,16 +80,20 @@ class AxeCoreAuditConfig(A11yAuditConfig):
         """
         options = {}
         if rules:
-            if ignore:
+            if rules.get("ignore"):
                 options["rules"] = {}
-                for rule in rules:
+                for rule in rules.get("ignore"):
                     options["rules"][rule] = {"enabled": False}
-            else:
+            elif rules.get("apply"):
                 options["runOnly"] = {
-                    "type": include_type,
-                    "values": rules,
+                    "type": "rule",
+                    "values": rules.get("apply"),
                 }
-
+            elif rules.get("tags"):
+                options["runOnly"] = {
+                    "type": "tag",
+                    "values": rules.get("tags"),
+                }
         self.rules = json.dumps(options)
 
     def set_scope(self, include=None, exclude=None):

@@ -89,7 +89,7 @@ class AxsAccessibilityTest(WebAppTest):
 
     def test_axs_audit_no_rules(self):
         page = AccessibilityPage(self.browser)
-        page.a11y_audit.config.set_rules(None)
+        page.a11y_audit.config.set_rules({"apply": None,})
         page.visit()
         report = page.a11y_audit.do_audit()
         self.assertIsNone(report)
@@ -137,7 +137,7 @@ class AxsAccessibilityTest(WebAppTest):
         page = AccessibilityPage(self.browser)
 
         # Limit the rules checked to AX_ARIA_01
-        page.a11y_audit.config.set_rules(['badAriaRole'])
+        page.a11y_audit.config.set_rules({"apply": ['badAriaRole']})
 
         page.visit()
         report = page.a11y_audit.do_audit()
@@ -153,8 +153,9 @@ class AxsAccessibilityTest(WebAppTest):
 
     def test_axs_audit_run_multiple_rules(self):
         page = AccessibilityPage(self.browser)
-        page.a11y_audit.config.set_rules(
-            ['badAriaRole', 'badAriaAttributeValue'])
+        page.a11y_audit.config.set_rules({
+            "apply": ['badAriaRole', 'badAriaAttributeValue'],
+        })
         page.visit()
         report = page.a11y_audit.do_audit()
 
@@ -174,7 +175,7 @@ class AxsAccessibilityTest(WebAppTest):
 
         # Ignore the rule AX_ARIA_01. For this test, that means the only rule
         # to result in an error should be AX_ARIA_04.
-        page.a11y_audit.config.set_rules(['badAriaRole'], ignore=True)
+        page.a11y_audit.config.set_rules({"ignore": ['badAriaRole']})
 
         page.visit()
         report = page.a11y_audit.do_audit()
@@ -191,10 +192,9 @@ class AxsAccessibilityTest(WebAppTest):
     def test_axs_audit_ignore_multiple_rules(self):
         page = AccessibilityPage(self.browser)
         # Ignore multiple rules. In this test, we are explicitly ignoring each.
-        page.a11y_audit.config.set_rules(
-            ['badAriaRole', 'badAriaAttributeValue'],
-            ignore=True
-        )
+        page.a11y_audit.config.set_rules({
+            "ignore": ['badAriaRole', 'badAriaAttributeValue'],
+        })
 
         page.visit()
         report = page.a11y_audit.do_audit()
@@ -208,8 +208,10 @@ class AxsAccessibilityTest(WebAppTest):
 
     def test_axs_audit_ignore_1_and_run_1(self):
         page = AccessibilityPage(self.browser)
-        page.a11y_audit.config.set_rules(['badAriaAttributeValue'])
-        page.a11y_audit.config.set_rules(['badAriaRole'], ignore=True)
+        page.a11y_audit.config.set_rules({
+            "apply": ['badAriaAttributeValue'],
+            "ignore": ['badAriaRole'],
+        })
         page.visit()
         report = page.a11y_audit.do_audit()
 
@@ -227,9 +229,10 @@ class AxsAccessibilityTest(WebAppTest):
 
     def test_axs_audit_ignore_and_run_same_rule(self):
         page = AccessibilityPage(self.browser)
-        page.a11y_audit.config.set_rules(['badAriaRole'])
-        page.a11y_audit.config.set_rules(['badAriaRole'], ignore=True)
-
+        page.a11y_audit.config.set_rules({
+            "apply": ['badAriaRole'],
+            "ignore": ['badAriaRole']
+        })
         page.visit()
         report = page.a11y_audit.do_audit()
 
@@ -247,10 +250,10 @@ class AxsAccessibilityTest(WebAppTest):
 
     def test_axs_audit_ignore_1_and_run_2(self):
         page = AccessibilityPage(self.browser)
-        page.a11y_audit.config.set_rules(
-            ['badAriaRole', 'badAriaAttributeValue'])
-        page.a11y_audit.config.set_rules(['badAriaRole'], ignore=True)
-
+        page.a11y_audit.config.set_rules({
+            "apply": ['badAriaRole', 'badAriaAttributeValue'],
+            "ignore": ['badAriaRole'],
+        })
         page.visit()
         report = page.a11y_audit.do_audit()
 
@@ -268,9 +271,10 @@ class AxsAccessibilityTest(WebAppTest):
 
     def test_axs_audit_ignore_0_and_run_2(self):
         page = AccessibilityPage(self.browser)
-        page.a11y_audit.config.set_rules(
-            ['badAriaRole', 'badAriaAttributeValue'])
-        page.a11y_audit.config.set_rules([], ignore=True)
+        page.a11y_audit.config.set_rules({
+            "apply": ['badAriaRole', 'badAriaAttributeValue'],
+            "ignore": [],
+        })
 
         page.visit()
         report = page.a11y_audit.do_audit()
@@ -288,8 +292,10 @@ class AxsAccessibilityTest(WebAppTest):
 
     def test_axs_audit_ignore_0_and_run_all(self):
         page = AccessibilityPage(self.browser)
-        page.a11y_audit.config.set_rules([])
-        page.a11y_audit.config.set_rules([], ignore=True)
+        page.a11y_audit.config.set_rules({
+            "apply": [],
+            "ignore": [],
+        })
         page.visit()
         report = page.a11y_audit.do_audit()
 
@@ -349,15 +355,21 @@ class AxeCoreAccessibilityTest(WebAppTest):
         self._do_audit_and_check_errors(6)
 
     def test_ignored_rule(self):
-        self.page.a11y_audit.config.set_rules(['aria-roles'], ignore=True)
+        self.page.a11y_audit.config.set_rules({
+            "ignore": ['aria-roles'],
+        })
         self._do_audit_and_check_errors(4)
 
     def test_limited_rules(self):
-        self.page.a11y_audit.config.set_rules(['aria-roles'])
+        self.page.a11y_audit.config.set_rules({
+            "apply": ['aria-roles'],
+        })
         self._do_audit_and_check_errors(2)
 
     def test_limited_rule_tags(self):
-        self.page.a11y_audit.config.set_rules(['wcag111'], include_type="tag")
+        self.page.a11y_audit.config.set_rules({
+            "tags": ['wcag111'],
+        })
         self._do_audit_and_check_errors(1)
 
     def test_exclude_scope(self):
@@ -369,13 +381,6 @@ class AxeCoreAccessibilityTest(WebAppTest):
         self._do_audit_and_check_errors(1)
 
     def test_include_and_exclude_scope(self):
-        self.page.a11y_audit.config.set_scope(
-            exclude=['#limit_scope'],
-            include=['#bad-link']
-        )
-        self._do_audit_and_check_errors(1)
-
-    def test_set_rules_and_scope(self):
         self.page.a11y_audit.config.set_scope(
             exclude=['#limit_scope'],
             include=['#bad-link']
