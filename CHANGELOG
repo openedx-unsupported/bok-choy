@@ -1,3 +1,8 @@
+v0.4.4 (09/28/15)
+* Added check the loading state of the document in wait_for_page to reduce flakiness due to synchronization/timing in tests.
+* Refactored accesibility auditing feature. Two accessibility auditing rulesets now available: axe-core ruleset (default) and google's accessibility dev tools ruleset.
+* Update browsermob proxy version to the latest
+
 v0.4.3 (07/08/15)
 * Bugfix in wait_for_ajax to check that jQuery is defined
 
