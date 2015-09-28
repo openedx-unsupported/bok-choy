@@ -30,53 +30,43 @@ class AxsAuditConfig(A11yAuditConfig):
             os.path.split(CUR_DIR)[0],
             'vendor/google/axs_testing.js'
         )
-        self.set_rules([], ignore=False)
-        self.set_rules([], ignore=True)
+        self.set_rules({})
         self.set_scope()
 
-    def set_rules(self, rules, ignore=False, include_type="rule"):
+    def set_rules(self, rules):
         """
-        Sets `rules_to_run` or `rules_to_ignore` to the passed list of rule IDs.
+        Sets the rules to be run or ignored for the audit.
 
         Args:
 
-            rules: List of rules to ignore or run for accessibility errors on
-                the page.
-                See https://github.com/GoogleChrome/accessibility-developer-tools/tree/master/src/audits
-            ignore (bool) (optional): If you want to ignore the specified rules
-                set this to `True`.  By default this is `False`.
+            rules: a dictionary of the format `{"ignore": [], "apply": []}`.
 
-        If `ignore=False`,
+        See https://github.com/GoogleChrome/accessibility-developer-tools/tree/master/src/audits
 
-            * passing `rules=[]` means to check for all available rules.
-            * passing `rules=None` means that no audit should be done for this
-            page.
+        Passing `{"apply": []}` or `{}` means to check for all available rules.
 
-        If `ignore=True`,
+        Passing `{"apply": None}` means that no audit should be done for this page.
 
-            * passing `rules=[]` means to run all otherwise enabled rules.
-            * any specified rules will be ignored even if they were also
-            specified as rules to run.
+        Passing `{"ignore": []}` means to run all otherwise enabled rules.
+        Any rules in the "ignore" list will be ignored even if they were also
+        specified in the "apply".
 
         Examples:
 
             To check only `badAriaAttributeValue`::
 
-                page.a11y_audit.config.set_rules(
-                    ['badAriaAttributeValue']
-                )
+                page.a11y_audit.config.set_rules({
+                    "apply": ['badAriaAttributeValue']
+                })
 
             To check all rules except `badAriaAttributeValue`::
 
                 page.a11y_audit.config.set_rules(
-                    ['badAriaAttributeValue'],
-                    ignore=True
+                    "ignore": ['badAriaAttributeValue'],
                 )
         """
-        if ignore:
-            self.rules_to_ignore = rules
-        else:
-            self.rules_to_run = rules
+        self.rules_to_ignore = rules.get("ignore", [])
+        self.rules_to_run = rules.get("apply", [])
 
     def set_scope(self, include=None, exclude=None):
         """
