@@ -23,7 +23,13 @@ performance
 
 accessibility
 -------------
-.. automodule:: bok_choy.a11y
+.. automodule:: bok_choy.a11y.a11y_audit
+   :members:
+
+.. automodule:: bok_choy.a11y.axs_ruleset
+   :members:
+
+.. automodule:: bok_choy.a11y.axe_core_ruleset
    :members:
 
 promise
