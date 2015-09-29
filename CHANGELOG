@@ -1,3 +1,6 @@
+v0.4.5 (09/29/15)
+* Fix for generating a11y API documentation.
+
 v0.4.4 (09/28/15)
 * Added check the loading state of the document in wait_for_page to reduce flakiness due to synchronization/timing in tests.
 * Refactored accesibility auditing feature. Two accessibility auditing rulesets now available: axe-core ruleset (default) and google's accessibility dev tools ruleset.
