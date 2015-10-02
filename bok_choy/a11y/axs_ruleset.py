@@ -2,10 +2,8 @@
 Interface for using the google accessibility ruleset.
 See: https://github.com/GoogleChrome/accessibility-developer-tools
 """
-import json
 import logging
 import os
-import requests
 
 from collections import namedtuple
 from textwrap import dedent
@@ -61,9 +59,9 @@ class AxsAuditConfig(A11yAuditConfig):
 
             To check all rules except `badAriaAttributeValue`::
 
-                page.a11y_audit.config.set_rules(
+                page.a11y_audit.config.set_rules({
                     "ignore": ['badAriaAttributeValue'],
-                )
+                })
         """
         self.rules_to_ignore = rules.get("ignore", [])
         self.rules_to_run = rules.get("apply", [])
@@ -109,27 +107,24 @@ class AxsAudit(A11yAudit):
     page for accessibility problems.
 
     See https://github.com/GoogleChrome/accessibility-developer-tools
-
-    Since this needs to inject JavaScript into the browser page, the only
-    known way to do this is to use PhantomJS as your browser.
     """
 
     @property
     def default_config(self):
         """
-        Returns an instance of a subclass of AxsAuditConfig.
+        Returns an instance of AxsAuditConfig.
         """
         return AxsAuditConfig()
 
     @staticmethod
-    def _check_rules(ghostdriver_url, session_id, config):
+    def _check_rules(browser, rules_js, config):
         """
         Check the page for violations of the configured rules. By default,
         all rules in the ruleset will be checked.
 
         Args:
-            ghostdriver_url: url of ghostdriver.
-            session_id: a session id to test.
+            browser: a browser instance.
+            rules_js: the ruleset JavaScript as a string.
             config: an AxsAuditConfig instance.
 
         Returns:
@@ -165,31 +160,16 @@ class AxsAudit(A11yAudit):
             )
 
         script = dedent("""
-            return this.evaluate(function() {{
-              var auditConfig = new axs.AuditConfiguration();
-              {rules_config}
-              auditConfig.scope = {scope};
-              var run_results = axs.Audit.run(auditConfig);
-              var audit_results = axs.Audit.auditResults(run_results)
-              return audit_results;
-            }});
-        """.format(rules_config=rules_config, scope=config.scope))
+            {rules_js}
+            var auditConfig = new axs.AuditConfiguration();
+            {rules_config}
+            auditConfig.scope = {scope};
+            var run_results = axs.Audit.run(auditConfig);
+            var audit_results = axs.Audit.auditResults(run_results)
+            return audit_results;
+        """.format(rules_js=rules_js, rules_config=rules_config, scope=config.scope))
 
-        payload = {"script": script, "args": []}
-        resp = requests.post('{}/session/{}/phantom/execute'.format(
-            ghostdriver_url, session_id), data=json.dumps(payload))
-
-        result = resp.json().get('value')
-        if result is None:
-            msg = '{} {} \nScript:{} \nResponse:{}'.format(
-                'No results were returned by the audit report.',
-                (
-                    'Perhaps there was a problem with the rules or scope '
-                    'defined for this page.'
-                ),
-                script,
-                resp.text)
-            raise RuntimeError(msg)
+        result = browser.execute_script(script)
 
         # audit_results is report of accessibility errors for that session
         audit_results = AuditResults(
@@ -199,20 +179,18 @@ class AxsAudit(A11yAudit):
         return audit_results
 
     @staticmethod
-    def get_errors(audit):
+    def get_errors(audit_results):
         """
         Args:
 
-            audit: results of `AxsAudit.do_audit()`.
+            audit_results: results of `AxsAudit.do_audit()`.
 
         Returns: a list of errors.
         """
         errors = []
-        for session_result in audit:
-            if session_result:
-                if session_result.errors:
-                    errors.extend(session_result.errors)
-
+        if audit_results:
+            if audit_results.errors:
+                errors.extend(audit_results.errors)
         return errors
 
     @staticmethod

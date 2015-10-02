@@ -4,7 +4,6 @@ See: https://github.com/dequelabs/axe-core
 """
 import json
 import os
-import requests
 
 from textwrap import dedent, fill
 
@@ -154,9 +153,6 @@ class AxeCoreAudit(A11yAudit):
     """
     Use Deque Labs' axe-core engine to audit a page for accessibility issues.
 
-    Since this needs to inject JavaScript into the browser page, the only
-    known way to do this is to use PhantomJS as your browser.
-
     Related documentation:
 
         https://github.com/dequelabs/axe-core/blob/master/doc/API.md
@@ -165,18 +161,18 @@ class AxeCoreAudit(A11yAudit):
     @property
     def default_config(self):
         """
-        Returns an instance of a subclass of AxeCoreAuditConfig.
+        Returns an instance of AxeCoreAuditConfig.
         """
         return AxeCoreAuditConfig()
 
     @staticmethod
-    def _check_rules(ghostdriver_url, session_id, config):
+    def _check_rules(browser, rules_js, config):
         """
         Run an accessibility audit on the page using the axe-core ruleset.
 
         Args:
-            ghostdriver_url: url of ghostdriver.
-            session_id: a session id to test.
+            browser: a browser instance.
+            rules_js: the ruleset JavaScript as a string.
             config: an AxsAuditConfig instance.
 
         Returns:
@@ -189,31 +185,25 @@ class AxeCoreAudit(A11yAudit):
         __Caution__: You probably don't really want to call this method
         directly! It will be used by `AxeCoreAudit.do_audit`.
         """
-        script_url = '{}/session/{}/phantom/execute'.format(
-            ghostdriver_url, session_id)
-
         audit_run_script = dedent("""
-            return this.evaluate(function(){{
-                var updatedResults = function(r) {{
-                    window.a11yAuditResults = JSON.stringify(r);
-                    window.console.log(window.a11yAuditResults);
-                }}
-
-                axe.a11yCheck({context}, {options}, updatedResults);
-            }});
-        """.format(context=config.context, options=config.rules))
+            {rules_js}
+            var updatedResults = function(r) {{
+                window.a11yAuditResults = JSON.stringify(r);
+                window.console.log(window.a11yAuditResults);
+            }}
+            axe.a11yCheck({context}, {options}, updatedResults);
+        """).format(
+            rules_js=rules_js,
+            context=config.context,
+            options=config.rules
+        )
 
         audit_results_script = dedent("""
-            return this.evaluate(function(){{
-                window.console.log(window.a11yAuditResults);
-                return window.a11yAuditResults;
-            }});
+            window.console.log(window.a11yAuditResults);
+            return window.a11yAuditResults;
         """)
 
-        requests.post(
-            script_url,
-            data=json.dumps({"script": audit_run_script, "args": []}),
-        )
+        browser.execute_script(audit_run_script)
 
         def audit_results_check_func():
             """
@@ -224,13 +214,11 @@ class AxeCoreAudit(A11yAudit):
                 (True, results) if the results are available.
                 (False, None) if the results aren't available.
             """
-            resp = requests.post(
-                script_url,
-                data=json.dumps({"script": audit_results_script, "args": []})
-            )
+
+            unicode_results = browser.execute_script(audit_results_script)
 
             try:
-                results = json.loads(resp.json().get('value'))
+                results = json.loads(unicode_results)
             except (TypeError, ValueError):
                 results = None
 
@@ -251,23 +239,22 @@ class AxeCoreAudit(A11yAudit):
         return audit_results
 
     @staticmethod
-    def get_errors(audit):
+    def get_errors(audit_results):
         """
         Args:
 
-            audit: results of `AxeCoreAudit.do_audit()`.
+            audit_results: results of `AxeCoreAudit.do_audit()`.
 
         Returns:
 
             A dictionary with keys "errors" and "total".
         """
         errors = {"errors": [], "total": 0}
-        for session_result in audit:
-            if session_result:
-                errors["errors"].extend(session_result)
-                for i in session_result:
-                    for _node in i["nodes"]:
-                        errors["total"] += 1
+        if audit_results:
+            errors["errors"].extend(audit_results)
+            for i in audit_results:
+                for _node in i["nodes"]:
+                    errors["total"] += 1
         return errors
 
     @staticmethod

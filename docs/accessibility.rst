@@ -18,8 +18,6 @@ following steps.
   * Actively: `Trigger an Audit Actively and Assert on the Results Returned`_
   * Passively: `Leverage Your Existing Tests and Fail on Accessibility Errors`_
 
-.. note:: Accessibility auditing is only supported with PhantomJS as the browser.
-
 
 Define the Accessibility Rules to Check for a Page
 --------------------------------------------------
