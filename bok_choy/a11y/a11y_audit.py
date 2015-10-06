@@ -1,12 +1,8 @@
 """
 Interface for running accessibility audits on a PageObject.
 """
-import json
 import os
-import requests
-
 from abc import abstractmethod, abstractproperty, ABCMeta
-from textwrap import dedent
 
 
 class AccessibilityError(Exception):
@@ -95,7 +91,7 @@ class A11yAudit(object):
         Sets ruleset to be used.
 
         Args:
-            browser: A phantomjs browser instance
+            browser: A browser instance
             url: URL of the page to test
             config: (optional) A11yAuditConfig or subclass of A11yAuditConfig
         """
@@ -104,37 +100,10 @@ class A11yAudit(object):
         self.browser = browser
         self.config = config or self.default_config
 
-    def _phantomjs_setup(self):
+    def _get_rules_js(self):
         """
-        Verifies that phantomjs is being used and returns the ghostdriver URL
-        and session information.
-
-        Returns: (ghostdriver_url, sessions) where sessions is a list of
-            session ids.
-
-        Raises: `NotImplementedError` if not using phantomjs.
-        """
-        if self.browser.name != 'phantomjs':
-            msg = (
-                'Accessibility auditing is only supported with PhantomJS as'
-                ' the browser.'
-            )
-            raise NotImplementedError(msg)
-
-        # The ghostdriver URL will be something like this:
-        # 'http://localhost:33225/wd/hub'
-        ghostdriver_url = self.browser.service.service_url
-
-        # Get the session_id from ghostdriver so that we can inject JS into
-        # the page.
-        resp = requests.get('{}/sessions'.format(ghostdriver_url))
-        sessions = resp.json()
-
-        return ghostdriver_url, sessions
-
-    def _verify_rules_file_exists(self):
-        """
-        Checks that the rules file for the enabled ruleset exists.
+        Checks that the rules file for the enabled ruleset exists
+        and returns its contents as string.
 
         Raises: `RuntimeError` if the file isn't found.
         """
@@ -143,62 +112,23 @@ class A11yAudit(object):
                 self.config.rules_file)
             raise RuntimeError(msg)
 
+        else:
+            with open(self.config.rules_file, "r") as rules_file:
+                return rules_file.read()
+
     def do_audit(self):
         """
         Audit the page for accessibility problems using the enabled ruleset.
-
-        Since this needs to inject JavaScript into the browser page, the only
-        known way to do this is to use PhantomJS as your browser.
-
-        Raises:
-
-            * NotImplementedError if you are not using PhantomJS
-            * RuntimeError if there was a problem with the injected JS or
-                getting the report
 
         Returns:
             A list (one for each browser session) of results returned from
             the audit. See documentation of `_check_rules` in the enabled
             ruleset for the format of each result.
-            `None` if no results are returned.
         """
-        ghostdriver_url, sessions = self._phantomjs_setup()
-        self._verify_rules_file_exists()
-
-        # report is the list that is returned, with one item for each
-        # browser session.
-        report = []
-        for session in sessions.get('value'):
-            session_id = session.get('id')
-
-            # First make sure you can successfully inject the JS on the page
-            script = dedent("""
-                return this.injectJs("{file}");
-            """.format(file=self.config.rules_file))
-
-            payload = {"script": script, "args": []}
-            resp = requests.post('{}/session/{}/phantom/execute'.format(
-                ghostdriver_url, session_id), data=json.dumps(payload))
-
-            result = resp.json().get('value')
-
-            if result is False:
-                msg = '{msg} \nScript:{script} \nResponse:{response}'.format(
-                    msg=(
-                        'Failure injecting the Accessibility Audit JS '
-                        'on the page.'
-                    ),
-                    script=script,
-                    response=resp.text)
-                raise RuntimeError(msg)
-
-            audit_results = self._check_rules(
-                ghostdriver_url, session_id, self.config)
-
-            if audit_results:
-                report.append(audit_results)
-
-        return report or None
+        rules_js = self._get_rules_js()
+        audit_results = self._check_rules(
+            self.browser, rules_js, self.config)
+        return audit_results
 
     def check_for_accessibility_errors(self):
         """
@@ -228,14 +158,14 @@ class A11yAudit(object):
 
     @staticmethod
     @abstractmethod
-    def _check_rules(ghostdriver_url, session_id, config):
+    def _check_rules(browser, rules_js, config):
         """
         Run an accessibility audit on the page using the implemented ruleset.
 
         Args:
 
-            ghostdriver_url: url of ghostdriver.
-            session_id: a session id to test.
+            browser: a browser instance.
+            rules_js: the ruleset JavaScript as a string.
             config: an AxsAuditConfig instance.
 
         Returns:

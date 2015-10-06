@@ -14,71 +14,32 @@ from bok_choy.promise import BrokenPromise
 from .pages import AccessibilityPage
 
 
-class NoAccessibilityTest(WebAppTest):
+class GoogleAxsAccessibilityTestMixin(object):
     """
-    Test unsupported accessibility audit configuration.
+    Test cases for axs ruleset accessibility audit integration.
     """
-    @patch.dict(os.environ, {'SELENIUM_BROWSER': 'firefox'})
-    def setUp(self):
-        super(NoAccessibilityTest, self).setUp()
+    # Audit rule name is badAriaAttributeValue
+    ax_aria_04_errors = u'{}{}{}{}'.format(
+        'Error: AX_ARIA_04 ',
+        '(ARIA state and property values must be valid) failed on the following ',
+        'element:\n',
+        '#AX_ARIA_04_bad')
 
-    def test_axs_audit_firefox(self):
-        page = AccessibilityPage(self.browser).visit()
-        with self.assertRaises(NotImplementedError):
-            page.a11y_audit.do_audit()
+    # Audit rule name is badAriaRole
+    ax_aria_01_errors = u'{}{}{}{}{}{}'.format(
+        'Error: AX_ARIA_01 ',
+        '(Elements with ARIA roles must use a valid, non-abstract ARIA role) failed on the following ',
+        'elements (1 - 2 of 2):\n',
+        '#AX_ARIA_01_not_a_role\n#AX_ARIA_01_empty_role\n',
+        'See https://github.com/GoogleChrome/accessibility-developer-tools/wiki/Audit-Rules',
+        '#-ax_aria_01--elements-with-aria-roles-must-use-a-valid-non-abstract-aria-role for more information.')
 
-
-class AccessibilityTest(WebAppTest):
-    """
-    Test general accessibility audit integration.
-    """
-    @patch.dict(os.environ, {'SELENIUM_BROWSER': 'phantomjs'})
-    def setUp(self):
-        super(AccessibilityTest, self).setUp()
-
-    def test_failure_to_inject_script(self):
-        page = AccessibilityPage(self.browser)
-        page.visit()
-
-        mock_response = Response()
-        mock_response.json = Mock(return_value={"value": False})
-
-        with patch('requests.post', return_value=mock_response):
-            with self.assertRaises(RuntimeError):
-                page.a11y_audit.do_audit()
-
-
-@patch.dict(os.environ, {'BOKCHOY_A11Y_RULESET': 'google_axs'})
-class AxsAccessibilityTest(WebAppTest):
-    """
-    Test axs ruleset accessibility audit integration.
-    """
-    @patch.dict(os.environ, {'SELENIUM_BROWSER': 'phantomjs'})
-    def setUp(self):
-        super(AxsAccessibilityTest, self).setUp()
-
-        # Audit rule name is badAriaAttributeValue
-        self.ax_aria_04_errors = u'{}{}{}{}'.format(
-            'Error: AX_ARIA_04 ',
-            '(ARIA state and property values must be valid) failed on the following ',
-            'element:\n',
-            '#AX_ARIA_04_bad')
-
-        # Audit rule name is badAriaRole
-        self.ax_aria_01_errors = u'{}{}{}{}{}{}'.format(
-            'Error: AX_ARIA_01 ',
-            '(Elements with ARIA roles must use a valid, non-abstract ARIA role) failed on the following ',
-            'elements (1 - 2 of 2):\n',
-            '#AX_ARIA_01_not_a_role\n#AX_ARIA_01_empty_role\n',
-            'See https://github.com/GoogleChrome/accessibility-developer-tools/wiki/Audit-Rules',
-            '#-ax_aria_01--elements-with-aria-roles-must-use-a-valid-non-abstract-aria-role for more information.')
-
-        self.mock_audit_results = {
-            'warnings_': [],
-            'errors_': [
-                'Error: AX_ARIA_00 (rule description) failed on:\n#element_id',
-            ]
-        }
+    mock_audit_results = {
+        'warnings_': [],
+        'errors_': [
+            'Error: AX_ARIA_00 (rule description) failed on:\n#element_id',
+        ]
+    }
 
     def test_axs_missing_rules_file(self):
         page = AccessibilityPage(self.browser)
@@ -98,11 +59,7 @@ class AxsAccessibilityTest(WebAppTest):
         # Default page object definition is to check all rules
         page = AccessibilityPage(self.browser)
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         # When checking all rules, results are 2 errors and 1 warnings
         self.assertEqual(2, len(result.errors))
@@ -116,11 +73,7 @@ class AxsAccessibilityTest(WebAppTest):
         page = AccessibilityPage(self.browser)
         page.a11y_audit.config.set_scope(['#limit_scope'])
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         self.assertEqual(1, len(result.errors))
         self.assertEqual(result.errors[0], self.ax_aria_04_errors)
@@ -140,11 +93,7 @@ class AxsAccessibilityTest(WebAppTest):
         page.a11y_audit.config.set_rules({"apply": ['badAriaRole']})
 
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         self.assertEqual(1, len(result.errors))
         self.assertEqual(result.errors[0], self.ax_aria_01_errors)
@@ -157,11 +106,7 @@ class AxsAccessibilityTest(WebAppTest):
             "apply": ['badAriaRole', 'badAriaAttributeValue'],
         })
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         # It is expected that both rules will be reported.
         self.assertEqual(2, len(result.errors))
@@ -178,11 +123,7 @@ class AxsAccessibilityTest(WebAppTest):
         page.a11y_audit.config.set_rules({"ignore": ['badAriaRole']})
 
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         self.assertEqual(1, len(result.errors))
         self.assertEqual(result.errors[0], self.ax_aria_04_errors)
@@ -197,11 +138,7 @@ class AxsAccessibilityTest(WebAppTest):
         })
 
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         self.assertEqual(0, len(result.errors))
         self.assertEqual(1, len(result.warnings))
@@ -213,11 +150,7 @@ class AxsAccessibilityTest(WebAppTest):
             "ignore": ['badAriaRole'],
         })
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         # It is expected that the badAriaRole error would be ignored because it
         # is in rules_to_ignore, but the rule badAriaAttributeValue
@@ -234,11 +167,7 @@ class AxsAccessibilityTest(WebAppTest):
             "ignore": ['badAriaRole']
         })
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         # `rules_to_ignore` take precedence over `rules_to_run`. This is the
         # default behavior of the google accessibility tool we are using.
@@ -255,11 +184,7 @@ class AxsAccessibilityTest(WebAppTest):
             "ignore": ['badAriaRole'],
         })
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         # It is expected that the badAriaRole error would be ignored because it
         # is in both rules_to_run and rules_to_ignore, but
@@ -277,11 +202,7 @@ class AxsAccessibilityTest(WebAppTest):
         })
 
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         # It is expected that no rules will be ignored because we have set
         # rules_to_ignore to [], which translates to 'ingore none'.
@@ -297,11 +218,7 @@ class AxsAccessibilityTest(WebAppTest):
             "ignore": [],
         })
         page.visit()
-        report = page.a11y_audit.do_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-        result = report[0]
+        result = page.a11y_audit.do_audit()
 
         # It is expected that no rules will be ignored because we have set
         # rules_to_ignore to [] (which translates to 'ingore none'),
@@ -317,31 +234,34 @@ class AxsAccessibilityTest(WebAppTest):
         with self.assertRaises(AccessibilityError):
             page.a11y_audit.check_for_accessibility_errors()
 
-    def test_no_results_returned(self):
-        page = AccessibilityPage(self.browser)
-        page.visit()
-        mock_response = Response()
-        mock_response.json = Mock(return_value={"value": None})
 
-        with patch('requests.post', return_value=mock_response):
-            with self.assertRaises(RuntimeError):
-                page.a11y_audit.do_audit()
-
-
-@patch.dict(os.environ, {'BOKCHOY_A11Y_RULESET': 'axe_core'})
-class AxeCoreAccessibilityTest(WebAppTest):
+@patch.dict(os.environ, {'BOKCHOY_A11Y_RULESET': 'google_axs'})
+class GoogleAxsAccessibilityPhantomJsTest(WebAppTest, GoogleAxsAccessibilityTestMixin):
     """
-    Test axe-core ruleset accessibility audit integration.
+    Test axs ruleset accessibility audit integration in phantomjs.
     """
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'phantomjs'})
     def setUp(self):
-        super(AxeCoreAccessibilityTest, self).setUp()
-        self.page = AccessibilityPage(self.browser)
+        super(GoogleAxsAccessibilityPhantomJsTest, self).setUp()
 
+
+@patch.dict(os.environ, {'BOKCHOY_A11Y_RULESET': 'google_axs'})
+class GoogleAxsAccessibilityFirefoxTest(WebAppTest, GoogleAxsAccessibilityTestMixin):
+    """
+    Test axs ruleset accessibility audit integration in firefox.
+    """
+    @patch.dict(os.environ, {'SELENIUM_BROWSER': 'firefox'})
+    def setUp(self):
+        super(GoogleAxsAccessibilityFirefoxTest, self).setUp()
+
+
+class AxeCoreTestMixin(object):
+    """
+    Test cases for axe-core ruleset accessibility audit integration.
+    """
     def _do_audit_and_check_errors(self, expected_errors):
         self.page.visit()
         report = self.page.a11y_audit.do_audit()
-        self.assertEqual(1, len(report))
         errors = self.page.a11y_audit.get_errors(report)
         self.assertEqual(expected_errors, errors["total"])
 
@@ -392,14 +312,27 @@ class AxeCoreAccessibilityTest(WebAppTest):
         with self.assertRaises(AccessibilityError):
             self.page.a11y_audit.check_for_accessibility_errors()
 
-    def test_no_results_returned(self):
-        self.page.visit()
-        mock_response = Response()
-        mock_response.json = Mock(return_value={"value": None})
 
-        with patch('requests.post', return_value=mock_response):
-            with self.assertRaises(BrokenPromise):
-                self.page.a11y_audit.do_audit()
+@patch.dict(os.environ, {'BOKCHOY_A11Y_RULESET': 'axe_core'})
+class AxeCoreAccessibilityPhantomJsTest(WebAppTest, AxeCoreTestMixin):
+    """
+    Test axe-core ruleset accessibility audit integration in phantomjs.
+    """
+    @patch.dict(os.environ, {'SELENIUM_BROWSER': 'phantomjs'})
+    def setUp(self):
+        super(AxeCoreAccessibilityPhantomJsTest, self).setUp()
+        self.page = AccessibilityPage(self.browser)
+
+
+@patch.dict(os.environ, {'BOKCHOY_A11Y_RULESET': 'axe_core'})
+class AxeCoreAccessibilityFirefoxTest(WebAppTest, AxeCoreTestMixin):
+    """
+    Test axe-core ruleset accessibility audit integration in firefox.
+    """
+    @patch.dict(os.environ, {'SELENIUM_BROWSER': 'firefox'})
+    def setUp(self):
+        super(AxeCoreAccessibilityFirefoxTest, self).setUp()
+        self.page = AccessibilityPage(self.browser)
 
 
 class TestVerifyAccessibilityFlagTest(WebAppTest):

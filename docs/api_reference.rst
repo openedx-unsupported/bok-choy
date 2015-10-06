@@ -23,12 +23,19 @@ performance
 
 accessibility
 -------------
+
+A11yAudit and A11yAuditConfig (Abstract Classes)
+________________________________________________
 .. automodule:: bok_choy.a11y.a11y_audit
    :members:
 
+AxsAudit and AxsAuditConfig
+___________________________
 .. automodule:: bok_choy.a11y.axs_ruleset
    :members:
 
+AxeCoreAudit and AxeCoreAuditConfig
+___________________________________
 .. automodule:: bok_choy.a11y.axe_core_ruleset
    :members:
 
