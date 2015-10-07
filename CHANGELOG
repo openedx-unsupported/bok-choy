@@ -1,3 +1,6 @@
+v0.4.6 (10/07/15)
+* Allow A11yAudits to run on browsers other than phantomjs
+
 v0.4.5 (09/29/15)
 * Fix for generating a11y API documentation.
 
