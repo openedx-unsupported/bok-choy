@@ -100,6 +100,17 @@ class AxsAuditConfig(A11yAuditConfig):
                 "AxsAuditConfig.set_scope method."
             )
 
+    def customize_ruleset(self, custom_ruleset_file=None):
+        """
+        This has not been implemented for the google_axs ruleset.
+
+        Raises:
+
+            `NotImplementedError`
+        """
+        raise NotImplementedError(
+            "The ability to customize the ruleset has not been implemented."
+        )
 
 class AxsAudit(A11yAudit):
     """
