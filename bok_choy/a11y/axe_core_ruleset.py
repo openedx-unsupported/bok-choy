@@ -318,21 +318,35 @@ class AxeCoreAudit(A11yAudit):
 
         Returns: The errors as a formatted string.
         """
+
+        def _get_message(node):
+            """
+            Get the message to display in the error output.
+            """
+            messages = set()
+
+            try:
+                messages.update([node['message']])
+            except KeyError:
+                pass
+
+            for check_group in ['any', 'all', 'none']:
+                try:
+                    for check in node[check_group]:
+                        messages.update([check.get('message')])
+                except KeyError:
+                    pass
+
+            messages = messages.difference([''])
+            return '; '.join(messages)
+
         lines = []
         for error_type in errors:
             lines.append("Rule ID: {}".format(error_type.get("id")))
             lines.append("Help URL: {}\n".format(error_type.get('helpUrl')))
 
             for node in error_type['nodes']:
-                try:
-                    msg = node['message']
-                except KeyError:
-                    try:
-                        msg = node['any'][0]['message']
-                    except (KeyError, IndexError):
-                        msg = ''
-
-                msg = "Message: {}".format(msg)
+                msg = "Message: {}".format(_get_message(node))
                 html = "Html: {}".format(node.get('html').encode('utf-8'))
                 target = "Target: {}".format(node.get('target'))
                 fill_opts = {
