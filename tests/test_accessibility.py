@@ -7,7 +7,7 @@ from mock import patch, Mock
 from requests import Response
 
 from bok_choy.web_app_test import WebAppTest
-from bok_choy.a11y.a11y_audit import AccessibilityError
+from bok_choy.a11y.a11y_audit import AccessibilityError, A11yAuditConfigError
 from bok_choy.a11y.axs_ruleset import AxsAudit
 from bok_choy.a11y.axe_core_ruleset import AxeCoreAudit
 from bok_choy.promise import BrokenPromise
@@ -330,6 +330,10 @@ class AxeCoreTestMixin(object):
     def test_customize_ruleset_bad_file_path(self):
         with self.assertRaises(IOError):
             self.page.a11y_audit.config.customize_ruleset('not_an_existing_file.js')
+
+    def test_customize_ruleset_bad_file_content(self):
+        with self.assertRaises(A11yAuditConfigError):
+            self.page.a11y_audit.config.customize_ruleset('tests/a11y_bad_custom_rules.js')
 
     def test_run_only_custom_rule(self):
         self.page.a11y_audit.config.customize_ruleset('tests/a11y_custom_rules.js')

@@ -1,4 +1,4 @@
-{
+var customRules = {
   "rules": [{
       "id": "fake-rule",
       "selector": "div",
@@ -31,4 +31,4 @@
     },
     after: function(results, options) {return [ results[0] ];}
   }]
-}
+};
