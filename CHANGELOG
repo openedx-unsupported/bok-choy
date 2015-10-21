@@ -1,3 +1,7 @@
+v0.4.7 (10/22/15)
+* Added BrowserQuery is_focused method and focused property
+* Ability to include custom rules in an axe-core accessibility audit
+
 v0.4.6 (10/07/15)
 * Allow A11yAudits to run on browsers other than phantomjs
 
