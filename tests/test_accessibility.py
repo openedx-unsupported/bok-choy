@@ -7,7 +7,7 @@ from mock import patch, Mock
 from requests import Response
 
 from bok_choy.web_app_test import WebAppTest
-from bok_choy.a11y.a11y_audit import AccessibilityError
+from bok_choy.a11y.a11y_audit import AccessibilityError, A11yAuditConfigError
 from bok_choy.a11y.axs_ruleset import AxsAudit
 from bok_choy.a11y.axe_core_ruleset import AxeCoreAudit
 from bok_choy.promise import BrokenPromise
@@ -234,6 +234,11 @@ class GoogleAxsAccessibilityTestMixin(object):
         with self.assertRaises(AccessibilityError):
             page.a11y_audit.check_for_accessibility_errors()
 
+    def test_customize_ruleset(self):
+        page = AccessibilityPage(self.browser)
+        with self.assertRaises(NotImplementedError):
+            page.a11y_audit.config.customize_ruleset()
+
 
 @patch.dict(os.environ, {'BOKCHOY_A11Y_RULESET': 'google_axs'})
 class GoogleAxsAccessibilityPhantomJsTest(WebAppTest, GoogleAxsAccessibilityTestMixin):
@@ -311,6 +316,45 @@ class AxeCoreTestMixin(object):
         self.page.visit()
         with self.assertRaises(AccessibilityError):
             self.page.a11y_audit.check_for_accessibility_errors()
+
+    def test_customize_ruleset_via_env_var(self):
+        with patch.dict(os.environ,
+            {'BOKCHOY_A11Y_CUSTOM_RULES_FILE': 'tests/a11y_custom_rules.js'}):
+            self.page.a11y_audit.config.customize_ruleset()
+            self._do_audit_and_check_errors(7)
+
+    def test_customize_ruleset_via_config_param(self):
+        self.page.a11y_audit.config.customize_ruleset('tests/a11y_custom_rules.js')
+        self._do_audit_and_check_errors(7)
+
+    def test_customize_ruleset_bad_file_path(self):
+        with self.assertRaises(IOError):
+            self.page.a11y_audit.config.customize_ruleset('not_an_existing_file.js')
+
+    def test_customize_ruleset_bad_file_content(self):
+        with self.assertRaises(A11yAuditConfigError):
+            self.page.a11y_audit.config.customize_ruleset('tests/a11y_bad_custom_rules.js')
+
+    def test_run_only_custom_rule(self):
+        self.page.a11y_audit.config.customize_ruleset('tests/a11y_custom_rules.js')
+        self.page.a11y_audit.config.set_rules({
+            "apply": ["fake-rule"],
+        })
+        self._do_audit_and_check_errors(1)
+
+    def test_ignoring_custom_rule(self):
+        self.page.a11y_audit.config.customize_ruleset('tests/a11y_custom_rules.js')
+        self.page.a11y_audit.config.set_rules({
+            "ignore": ["fake-rule"],
+        })
+        self._do_audit_and_check_errors(6)
+
+    def test_running_custom_tag(self):
+        self.page.a11y_audit.config.customize_ruleset('tests/a11y_custom_rules.js')
+        self.page.a11y_audit.config.set_rules({
+            "tags": ["custom"],
+        })
+        self._do_audit_and_check_errors(1)
 
 
 @patch.dict(os.environ, {'BOKCHOY_A11Y_RULESET': 'axe_core'})

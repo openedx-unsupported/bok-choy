@@ -11,6 +11,11 @@ class AccessibilityError(Exception):
     """
     pass
 
+class A11yAuditConfigError(Exception):
+    """
+    An error in A11yAuditConfig.
+    """
+    pass
 
 class A11yAuditConfig(object):
     """
@@ -63,6 +68,21 @@ class A11yAuditConfig(object):
         """
         raise NotImplementedError(
             "The ability to specify scope has not been implemented."
+        )
+
+    @abstractmethod
+    def customize_ruleset(self, custom_ruleset_file=None):
+        """
+        Allows customization of the ruleset. (e.g. adding custom rules,
+        extending the implementation of an existing rule.)
+
+        Raises:
+
+            `NotImplementedError` if this isn't overwritten in the ruleset
+                specific implementation.
+        """
+        raise NotImplementedError(
+            "The ability to customize the ruleset has not been implemented."
         )
 
 

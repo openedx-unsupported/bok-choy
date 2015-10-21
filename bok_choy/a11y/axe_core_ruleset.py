@@ -7,7 +7,7 @@ import os
 
 from textwrap import dedent, fill
 
-from .a11y_audit import A11yAudit, A11yAuditConfig, AccessibilityError
+from .a11y_audit import A11yAudit, A11yAuditConfig, AccessibilityError, A11yAuditConfigError
 from ..promise import Promise
 
 
@@ -22,12 +22,15 @@ class AxeCoreAuditConfig(A11yAuditConfig):
     def __init__(self, *args, **kwargs):
         super(AxeCoreAuditConfig, self).__init__(*args, **kwargs)
         self.rules, self.context = None, None
+        self.custom_rules = "customRules={}"
         self.rules_file = os.path.join(
             os.path.split(CUR_DIR)[0],
             'vendor/axe-core/axe.min.js'
         )
+
         self.set_rules({})
         self.set_scope()
+        self.customize_ruleset()
 
     def set_rules(self, rules):
         """
@@ -148,6 +151,59 @@ class AxeCoreAuditConfig(A11yAuditConfig):
 
         self.context = json.dumps(context) if context else 'document'
 
+    def customize_ruleset(self, custom_ruleset_file=None):
+        """
+        Updates the ruleset to include a set of custom rules. These rules will
+        be _added_ to the existing ruleset or replace the existing rule with
+        the same ID.
+
+        Args:
+
+            custom_ruleset_file (optional): The filepath to the custom rules.
+                Defaults to `None`. If `custom_ruleset_file` isn't passed, the
+                environment variable `BOKCHOY_A11Y_CUSTOM_RULES_FILE` will be
+                checked. If a filepath isn't specified by either of these
+                methods, the ruleset will not be updated.
+
+        Raises:
+
+            `IOError` if the specified file does not exist.
+
+        Examples:
+
+            To include the rules defined in `axe-core-custom-rules.js`::
+
+                page.a11y_audit.config.customize_ruleset(
+                    "axe-core-custom-rules.js"
+                )
+
+            Alternatively, use the environment variable `BOKCHOY_A11Y_CUSTOM_RULES_FILE`
+            to specify the path to the file containing the custom rules.
+
+        Documentation for how to write rules:
+
+            https://github.com/dequelabs/axe-core/blob/master/doc/developer-guide.md
+
+        An example of a custom rules file can be found at
+        https://github.com/edx/bok-choy/tree/master/tests/a11y_custom_rules.js
+        """
+        custom_file = custom_ruleset_file or os.environ.get(
+            "BOKCHOY_A11Y_CUSTOM_RULES_FILE"
+        )
+
+        if not custom_file:
+            return
+
+        with open(custom_file, "r") as additional_rules:
+            custom_rules = additional_rules.read()
+
+        if not custom_rules.startswith("var customRules"):
+            raise A11yAuditConfigError(
+                "Custom rules file must start with \"var customRules\""
+            )
+
+        self.custom_rules = custom_rules
+
 
 class AxeCoreAudit(A11yAudit):
     """
@@ -187,6 +243,8 @@ class AxeCoreAudit(A11yAudit):
         """
         audit_run_script = dedent("""
             {rules_js}
+            {custom_rules}
+            axe.configure(customRules);
             var updatedResults = function(r) {{
                 window.a11yAuditResults = JSON.stringify(r);
                 window.console.log(window.a11yAuditResults);
@@ -194,6 +252,7 @@ class AxeCoreAudit(A11yAudit):
             axe.a11yCheck({context}, {options}, updatedResults);
         """).format(
             rules_js=rules_js,
+            custom_rules=config.custom_rules,
             context=config.context,
             options=config.rules
         )
@@ -266,21 +325,35 @@ class AxeCoreAudit(A11yAudit):
 
         Returns: The errors as a formatted string.
         """
+
+        def _get_message(node):
+            """
+            Get the message to display in the error output.
+            """
+            messages = set()
+
+            try:
+                messages.update([node['message']])
+            except KeyError:
+                pass
+
+            for check_group in ['any', 'all', 'none']:
+                try:
+                    for check in node[check_group]:
+                        messages.update([check.get('message')])
+                except KeyError:
+                    pass
+
+            messages = messages.difference([''])
+            return '; '.join(messages)
+
         lines = []
         for error_type in errors:
             lines.append("Rule ID: {}".format(error_type.get("id")))
             lines.append("Help URL: {}\n".format(error_type.get('helpUrl')))
 
             for node in error_type['nodes']:
-                try:
-                    msg = node['message']
-                except KeyError:
-                    try:
-                        msg = node['any'][0]['message']
-                    except (KeyError, IndexError):
-                        msg = ''
-
-                msg = "Message: {}".format(msg)
+                msg = "Message: {}".format(_get_message(node))
                 html = "Html: {}".format(node.get('html').encode('utf-8'))
                 target = "Target: {}".format(node.get('target'))
                 fill_opts = {
