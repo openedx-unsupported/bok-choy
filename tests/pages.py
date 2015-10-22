@@ -217,6 +217,16 @@ class NextPage(SitePage):
         page.visit()
 
 
+class FocusedPage(SitePage):
+    """
+    Page that has a link to a focusable element.
+    """
+    name = "focused"
+
+    def focus_on_main_content(self):
+        self.browser.execute_script("$('#main-content').focus()")
+
+
 class VisiblePage(SitePage):
     """
     Page that has some elements visible and others invisible.
