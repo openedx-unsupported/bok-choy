@@ -445,6 +445,25 @@ class BrowserQuery(Query):
         """
         return self.present and not self.visible
 
+    def is_focused(self):
+        """
+        Checks that _at least one_ matched element is focused. More
+        specifically, it checks whether the element is document.activeElement.
+        If no matching element is focused, this returns `False`.
+
+        Returns:
+            bool
+        """
+        active_el = self.browser.execute_script("return document.activeElement")
+        query_results = self.map(lambda el: el == active_el, 'focused').results
+
+        if query_results:
+            return any(query_results)
+        else:
+            return False
+
+    focused = property(is_focused)
+
     def click(self):
         """
         Click each matched element.
