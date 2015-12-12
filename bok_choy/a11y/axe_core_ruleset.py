@@ -197,7 +197,7 @@ class AxeCoreAuditConfig(A11yAuditConfig):
         with open(custom_file, "r") as additional_rules:
             custom_rules = additional_rules.read()
 
-        if not "var customRules" in custom_rules:
+        if "var customRules" not in custom_rules:
             raise A11yAuditConfigError(
                 "Custom rules file must include \"var customRules\""
             )
