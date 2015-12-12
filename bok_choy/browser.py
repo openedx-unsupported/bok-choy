@@ -11,6 +11,7 @@ from needle.driver import (NeedleFirefox, NeedleChrome, NeedleIe,
                            NeedleSafari, NeedlePhantomJS)
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 from bok_choy.promise import Promise
 
@@ -230,6 +231,12 @@ def _local_browser_class(browser_name):
             browser_kwargs = {
                 'firefox_profile': firefox_profile,
             }
+            if os.environ.get('SELENIUM_FIREFOX_PATH', None):
+                binary_kwarg = {
+                    'firefox_binary': FirefoxBinary(firefox_path=os.environ.get('SELENIUM_FIREFOX_PATH'))
+                }
+                browser_kwargs.update(binary_kwarg)
+
         elif browser_name == 'chrome':
             chrome_options = Options()
 
