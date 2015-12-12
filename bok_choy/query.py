@@ -3,9 +3,9 @@ Tools for interacting with the DOM inside a browser.
 """
 
 from copy import copy
-from selenium.common.exceptions import WebDriverException
 from collections import Sequence
 from itertools import islice
+from selenium.common.exceptions import WebDriverException
 
 from bok_choy.promise import Promise
 

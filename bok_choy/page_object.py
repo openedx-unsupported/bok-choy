@@ -6,12 +6,12 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 from collections import defaultdict
 from functools import wraps
 from contextlib import contextmanager
-from lazy import lazy
 import logging
 import os
 import socket
-from textwrap import dedent
 import urlparse
+from textwrap import dedent
+from lazy import lazy
 
 from selenium.common.exceptions import WebDriverException
 
@@ -362,7 +362,7 @@ class PageObject(object):
         ).fulfill()
 
         if self.verify_accessibility:
-            self.a11y_audit.check_for_accessibility_errors()
+            self.a11y_audit.check_for_accessibility_errors()  # pylint: disable=no-member
 
         return result
 
