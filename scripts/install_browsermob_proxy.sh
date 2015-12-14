@@ -27,7 +27,7 @@ fi
 
     echo "Finishing installation of browsermob-proxy."
     # make sure the packages main script is executable
-    chmod 0755 $TEMP_BROWSERMOB_DIR/browsermob-proxy/bin
+    chmod 0755 $BROWSERMOB_INSTALL_LOC/bin
 
 
     if [ -z $TRAVIS ]; then
