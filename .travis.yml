@@ -1,5 +1,6 @@
 language: python
 python: "2.7"
+sudo: false
 branches:
     only:
         - master
@@ -12,9 +13,10 @@ install:
     - "pip install -r test_requirements.txt"
     - "pip install -r requirements.txt"
     - "pip install -r doc_requirements.txt"
-    - "sudo ./scripts/install_browsermob_proxy.sh"
+    - "./scripts/install_browsermob_proxy.sh"
 script:
     - "pylint bok_choy"
+    - "export PATH=browsermobtemp/browsermob-proxy/bin:$PATH"
     - "./run_tests.sh"
 after_success:
     - "pip install coveralls"
