@@ -28,6 +28,16 @@ class TestBrowser(TestCase):
         with self.assertRaises(bok_choy.browser.BrowserConfigError):
             bok_choy.browser.browser()
 
+    @patch.dict(os.environ, {'SELENIUM_FIREFOX_PATH': '/foo/path'})
+    def test_custom_firefox_path(self):
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')
+        self.assertTrue('firefox_binary' in browser_kwargs_tuple[2])
+
+    @patch.dict(os.environ, {'SELENIUM_FIREFOX_PATH': ''})
+    def test_no_custom_firefox_path(self):
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')
+        self.assertFalse('firefox_binary' in browser_kwargs_tuple[2])
+
     def test_save_screenshot(self):
 
         # Create a temp directory to save the screenshot to
