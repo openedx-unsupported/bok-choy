@@ -17,6 +17,18 @@ class TestBrowser(TestCase):
         self.addCleanup(browser.quit)
         self.assertIsInstance(browser, webdriver.Firefox)
 
+    @patch.dict(os.environ, {'SELENIUM_BROWSER': 'firefox'})
+    def test_firefox_preferences(self):
+        browser = bok_choy.browser.browser()
+        self.addCleanup(browser.quit)
+        # In-spite of the name, 'default_preferences' represents the preferences
+        # that are in place on the browser. (The underlying preferences start
+        # with default_preferences and are updated in-place.)
+        preferences = browser.profile.default_preferences
+        self.assertEqual(preferences['browser.startup.homepage'], 'about:blank')
+        self.assertEqual(preferences['startup.homepage_welcome_url'], 'about:blank')
+        self.assertEqual(preferences['startup.homepage_welcome_url.additional'], 'about:blank')
+
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'phantomjs'})
     def test_phantom_browser(self):
         browser = bok_choy.browser.browser()
