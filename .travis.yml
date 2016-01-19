@@ -21,3 +21,11 @@ script:
 after_success:
     - "pip install coveralls"
     - coveralls
+deploy:
+    provider: pypi
+    user: edx
+    password:
+        secure: foo
+    distributions: "sdist"
+    on:
+        tags: true
