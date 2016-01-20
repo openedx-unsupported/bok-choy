@@ -31,16 +31,16 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'bok-choy'
-copyright = u'2015, EdX'
+copyright = u'2016, EdX'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '0.4.7'
+version = '0.4.8'
 # The full version, including alpha/beta/rc tags.
-release = '0.4.7'
+release = '0.4.8'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
