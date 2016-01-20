@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-VERSION = '0.4.8'
+VERSION = '0.4.9'
 DESCRIPTION = 'UI-level acceptance test framework'
 REQUIREMENTS = [
     line.strip() for line in open("requirements.txt").readlines()
