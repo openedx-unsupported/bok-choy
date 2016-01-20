@@ -1,4 +1,7 @@
-v0.4.8 (1/19/16)
+v0.4.9 (01/20/16)
+* Ability to release to pypi via Travis
+
+v0.4.8 (01/19/16)
 * Improved check for custom rules file format [a11y rules]
 * Use docker for Travis builds, some fixed linting
 * Capability for custom firefox path using the SELENIUM_FIREFOX_PATH environment variable
