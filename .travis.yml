@@ -21,11 +21,3 @@ script:
 after_success:
 - pip install coveralls
 - coveralls
-deploy:
-  provider: pypi
-  user: edx
-  password:
-    secure: o6nRxgpLeCLLh1yerbXvWOi95wyPGzuP+d1CpjeSq5bLYKpij+IDzpWZxSO+OzQWoUFVmFkv+3h1U9W2Awzc6ptl0MCJjTBxBmMmrrgodPPg1gHhQe0Da+Fqw2MTcv5UK4yUoJ5AGtj0N2XZhKMl00pvU10AVSVV1Izm61CLn9c=
-  distributions: sdist
-  on:
-    tags: true
