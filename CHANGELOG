@@ -1,5 +1,5 @@
 v0.4.10 (01/21/16)
-* No changes. Just getting it up to pypi via automation.
+* No changes. Just deploying to pypi via automation.
 
 v0.4.9 (01/20/16)
 * Ability to release to pypi via Travis
