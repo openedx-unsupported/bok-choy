@@ -127,10 +127,15 @@ def browser(tags=None, proxy=None):
     There are three cases:
 
     1. Local browsers: If the proper environment variables are not all set for the second case,
-        then we use a local browser.  The environment variable `SELENIUM_BROWSER` can be set to
-        specify which local browser to use, but the default is firefox.  Additionally, if a proxy
-        instance is passed and the browser choice is either chrome or firefox, then the browser will
+        then we use a local browser.
+
+        * The environment variable `SELENIUM_BROWSER` can be set to
+        specify which local browser to use. The default is Firefox.
+        * Additionally, if a proxy
+        instance is passed and the browser choice is either Chrome or Firefox, then the browser will
         be initialized with the proxy server set.
+        * The environment variable `SELENIUM_FIREFOX_PATH` can be used for specifying a path to the
+        Firefox binary. Default behavior is to use the system location.
 
     2. Remote browser (not SauceLabs): Set all of the following environment variables, but not all of
         the ones needed for SauceLabs:
