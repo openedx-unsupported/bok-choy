@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Long Page</title>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#fixture input").click(function(theEvent) {
+                $("#output").html("button was clicked");
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <p id="long_part"></p>
+    <p id="element_after_long_part">scroll here</p>
+    <p id="next_long_part"></p>
+    <script>
+        counter = 0;
+        content = ' ';
+        while (counter < 100) { content = content + counter + "<br>"; counter++; }
+        document.getElementById("long_part").innerHTML = content;
+    </script>
+    <script>
+        counter = 100;
+        content = ' ';
+        while (counter < 200) { content = content + counter + "<br>"; counter++; }
+        document.getElementById("next_long_part").innerHTML = content;
+    </script>
+
+</body>
+</html>
