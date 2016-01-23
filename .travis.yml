@@ -17,6 +17,7 @@ install:
 script:
 - pylint bok_choy
 - pep8 bok_choy
+- pep8 tests
 - export PATH=browsermobtemp/browsermob-proxy/bin:$PATH
 - ./run_tests.sh
 after_success:

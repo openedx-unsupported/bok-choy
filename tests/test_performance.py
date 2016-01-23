@@ -17,6 +17,7 @@ import os
 os.environ['BOK_CHOY_HAR_MODE'] = 'error'
 os.environ['BROWSERMOB_PROXY_PORT'] = '8000'
 
+
 def har_files():
     return os.listdir(os.environ.get('BOK_CHOY_HAR_DIR', ''))
 
@@ -95,14 +96,13 @@ class ExplicitHarCaptureTest(HarCaptureTestBase):
         self.har_capturer.add_page(self.browser, 'ButtonPage')
         page = ButtonPage(self.browser)
         page.visit()
-        self.har_capturer.save_har(self.browser, self.id()+'_1')
-
+        self.har_capturer.save_har(self.browser, self.id() + '_1')
 
         self.har_capturer.add_page(self.browser, 'TextFieldPage')
         page2 = TextFieldPage(self.browser)
         page2.visit()
         page2.enter_text('testing')
-        self.har_capturer.save_har(self.browser, self.id()+'_2')
+        self.har_capturer.save_har(self.browser, self.id() + '_2')
 
 
 @attr(har_mode='auto')
@@ -134,7 +134,7 @@ class AutoHarCaptureTest(HarCaptureTestBase):
 class ErrorHarCaptureTest(HarCaptureTestBase):
     """
     How the har_mode is set: using environment var `BOK_CHOY_HAR_MODE`. This can
-    be overridden for an individual test class using the @attr decorator from 
+    be overridden for an individual test class using the @attr decorator from
     the nose.plugin.attrib module.
     """
     @expectedFailure

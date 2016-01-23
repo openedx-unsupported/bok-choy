@@ -369,6 +369,7 @@ class AccessibilityPage(SitePage):
     """
     name = "accessibility"
 
+
 class ImagePage(SitePage):
     """
     Page for testing image capture and comparison.

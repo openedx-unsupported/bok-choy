@@ -170,5 +170,5 @@ class EmptyPromise(Promise):
         Returns:
             EmptyPromise
         """
-        full_check_func = lambda: (check_func(), None)  # noqa
+        full_check_func = lambda: (check_func(), None)
         super(EmptyPromise, self).__init__(full_check_func, description, **kwargs)
