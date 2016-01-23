@@ -1,4 +1,5 @@
 coverage==3.7
 nose==1.3.0
 mock==1.0.1
+pep8==1.7.0
 git+https://github.com/edx/edx-lint.git@8bf82a32ecb8598c415413df66f5232ab8d974e9#egg=edx_lint==0.2.1

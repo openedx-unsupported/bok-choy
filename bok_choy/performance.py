@@ -21,6 +21,7 @@ class MethodNotEnabledInCurrentMode(Exception):
             "explicit') or BOK_CHOY_HAR_MODE='explicit'."
         )
 
+
 class UnknownHarCaptureMode(Exception):
     """
     An exception for when the mode selected doesn't match any defined
@@ -155,7 +156,6 @@ class HarCapturer(object):
         # Capture the timings from the browser via javascript
         timings = driver.execute_script(script)
         self._page_timings.append(timings)
-
 
     def har_name(self, name_override=None):
         """
