@@ -112,6 +112,7 @@ class AxsAuditConfig(A11yAuditConfig):
             "The ability to customize the ruleset has not been implemented."
         )
 
+
 class AxsAudit(A11yAudit):
     """
     Use Google's Accessibility Developer Tools to audit a

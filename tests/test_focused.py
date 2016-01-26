@@ -22,4 +22,3 @@ class FocusedTest(WebAppTest):
             self.page.q(css="#main-content").is_focused,
             "main content should be focused"
         )
-

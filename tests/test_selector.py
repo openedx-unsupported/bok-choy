@@ -44,7 +44,7 @@ class SelectorTest(WebAppTest):
 
     def test_filtered_query(self):
         outer_id_list = self.selector.ids_of_outer_divs_with_inner_text('Match This')
-        self.assertEquals(outer_id_list,['o2', 'o3'])
+        self.assertEquals(outer_id_list, ['o2', 'o3'])
 
     def test_filtered_query_no_match(self):
         outer_id_list = self.selector.ids_of_outer_divs_with_inner_text('This does not match anything')

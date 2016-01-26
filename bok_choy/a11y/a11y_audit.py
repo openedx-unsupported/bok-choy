@@ -11,11 +11,13 @@ class AccessibilityError(Exception):
     """
     pass
 
+
 class A11yAuditConfigError(Exception):
     """
     An error in A11yAuditConfig.
     """
     pass
+
 
 class A11yAuditConfig(object):
     """

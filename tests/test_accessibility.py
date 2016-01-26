@@ -50,7 +50,7 @@ class GoogleAxsAccessibilityTestMixin(object):
 
     def test_axs_audit_no_rules(self):
         page = AccessibilityPage(self.browser)
-        page.a11y_audit.config.set_rules({"apply": None,})
+        page.a11y_audit.config.set_rules({"apply": None, })
         page.visit()
         report = page.a11y_audit.do_audit()
         self.assertIsNone(report)
@@ -319,7 +319,7 @@ class AxeCoreTestMixin(object):
 
     def test_customize_ruleset_via_env_var(self):
         with patch.dict(os.environ,
-            {'BOKCHOY_A11Y_CUSTOM_RULES_FILE': 'tests/a11y_custom_rules.js'}):
+                        {'BOKCHOY_A11Y_CUSTOM_RULES_FILE': 'tests/a11y_custom_rules.js'}):
             self.page.a11y_audit.config.customize_ruleset()
             self._do_audit_and_check_errors(7)
 

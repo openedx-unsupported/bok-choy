@@ -100,4 +100,3 @@ class PageObjectTest(TestCase):
         # If the page doesn't load before the timeout, PageLoadError is raised
         with self.assertRaises(PageLoadError):
             NeverOnPage(Mock()).visit()
-
