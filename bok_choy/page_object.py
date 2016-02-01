@@ -20,6 +20,10 @@ from .promise import Promise, EmptyPromise, BrokenPromise
 from .a11y import AxeCoreAudit, AxsAudit
 
 
+# String that can be used (in conjunction with the PageObject "q" method) to test for XSS vulnerabilities.
+XSS_INJECTION = "'';!--\"<XSS>=&{()}"
+
+
 class WrongPageError(Exception):
     """
     The page object reports that we're on the wrong page!
@@ -385,6 +389,19 @@ class PageObject(object):
         Returns:
             BrowserQuery
         """
+        # TODO: allow disabling of these XSS and double-escaping checks via kwargs.
+
+        # Use innerHTML to get dynamically injected HTML as well as server-side HTML.
+        html_source = self.browser.execute_script(
+            "return document.documentElement.innerHTML.toLowerCase()"
+        )
+
+        assert '<xss' not in html_source, "page contains XSS vulnerability"
+        # Running with these checks resulted in 416 test failures.
+        # assert '&amp;lt;' not in html_source, "page contains double-escaping"
+        # assert '&amp;gt;' not in html_source, "page contains double-escaping"
+        # assert '&amp;amp;' not in html_source, "page contains double-escaping"
+
         return BrowserQuery(self.browser, **kwargs)
 
     @contextmanager
