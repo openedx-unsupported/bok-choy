@@ -10,6 +10,7 @@ import logging
 import os
 import socket
 import urlparse
+import re
 from textwrap import dedent
 from lazy import lazy
 
@@ -18,6 +19,15 @@ from selenium.common.exceptions import WebDriverException
 from .query import BrowserQuery
 from .promise import Promise, EmptyPromise, BrokenPromise
 from .a11y import AxeCoreAudit, AxsAudit
+
+
+# String that can be used to test for XSS vulnerabilities.
+# Taken from https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet#XSS_Locator.
+XSS_INJECTION = "'';!--\"<XSS>=&{()}"
+
+EXPECTED_INPUT_VALUE_FORMAT = re.compile(r'value="\'\';!--.*<xss.*{\(\)}"')
+
+XSS_HTML = "<xss"
 
 
 class WrongPageError(Exception):
@@ -30,6 +40,13 @@ class WrongPageError(Exception):
 class PageLoadError(Exception):
     """
     An error occurred while loading the page.
+    """
+    pass
+
+
+class XSSExposureError(Exception):
+    """
+    An XSS issue has been found on the current page.
     """
     pass
 
@@ -179,6 +196,8 @@ class PageObject(object):
         self.browser = browser
         a11y_flag = os.environ.get('VERIFY_ACCESSIBILITY', 'False')
         self.verify_accessibility = a11y_flag.lower() == 'true'
+        xss_flag = os.environ.get('VERIFY_XSS', 'False')
+        self.verify_xss = xss_flag.lower() == 'true'
 
     @lazy
     def a11y_audit(self):
@@ -330,6 +349,30 @@ class PageObject(object):
             )
             raise WrongPageError(msg)
 
+    def _verify_xss_exposure(self):
+        """
+        Verify that there are no obvious XSS exposures on the page (based on test authors
+        including XSS_INJECTION in content rendered on the page).
+
+        If an xss issue is found, raise a 'XSSExposureError'.
+        """
+        # Use innerHTML to get dynamically injected HTML as well as server-side HTML.
+        html_source = self.browser.execute_script(
+            "return document.documentElement.innerHTML.toLowerCase()"
+        )
+
+        # Check taken from https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet#XSS_Locator.
+        all_hits_count = html_source.count(XSS_HTML)
+        if all_hits_count > 0:
+            safe_hits_count = len(EXPECTED_INPUT_VALUE_FORMAT.findall(html_source))
+            if all_hits_count > safe_hits_count:
+                potential_hits = re.findall('<[^<]+<xss', html_source)
+                raise XSSExposureError(
+                    "{} XSS issue(s) found on page. Potential places are {}".format(
+                        all_hits_count - safe_hits_count, potential_hits
+                    )
+                )
+
     @unguarded
     def wait_for_page(self, timeout=30):
         """
@@ -385,6 +428,8 @@ class PageObject(object):
         Returns:
             BrowserQuery
         """
+        if self.verify_xss:
+            self._verify_xss_exposure()
         return BrowserQuery(self.browser, **kwargs)
 
     @contextmanager

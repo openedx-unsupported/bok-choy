@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS JS</title>
+</head>
+<body>
+    <script>
+        window.unescaped = "'';!--"<XSS>=&{()}";
+    </script>
+    <div id="fixture"/>
+</body>
+</html>
