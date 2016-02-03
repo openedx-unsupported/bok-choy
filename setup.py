@@ -2,11 +2,10 @@
 
 from setuptools import setup
 
-VERSION = '0.4.10'
+VERSION = '0.4.11'
 DESCRIPTION = 'UI-level acceptance test framework'
-REQUIREMENTS = [
-    line.strip() for line in open("requirements.txt").readlines()
-]
+with open('requirements.txt') as f:
+    REQUIREMENTS = f.read().splitlines()
 
 setup(
     name='bok_choy',
@@ -21,6 +20,8 @@ setup(
                  'License :: OSI Approved :: Apache Software License',
                  'Operating System :: OS Independent',
                  'Programming Language :: Python',
+                 'Programming Language :: Python :: 2',
+                 'Programming Language :: Python :: 2.7',
                  'Topic :: Software Development :: Testing',
                  'Topic :: Software Development :: Quality Assurance'],
     packages=['bok_choy', 'bok_choy/a11y'],
