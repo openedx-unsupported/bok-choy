@@ -568,7 +568,7 @@ class PageObject(object):
     @unguarded
     def scroll_to_element(self, element_selector, timeout=60):
         """
-        Scrolls browser such that the element specified appears at the top. Before scrolling, waits for
+        Scrolls the browser such that the element specified appears at the top. Before scrolling, waits for
         the element to be present.
 
         Example usage:
@@ -579,7 +579,10 @@ class PageObject(object):
 
         Arguments:
             element_selector (str): css selector of the element.
-            timeout (float): Maximum number of seconds to wait for the Promise to be satisfied before timing out
+            timeout (float): Maximum number of seconds to wait for the element to be present on the
+                page before timing out.
+
+        Raises: BrokenPromise if the element does not exist (and therefore scrolling to it is not possible)
 
         """
         # Ensure element exists
