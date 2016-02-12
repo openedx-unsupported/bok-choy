@@ -4,6 +4,8 @@ Tests for retrieving values from the page using CSS selectors.
 
 from bok_choy.web_app_test import WebAppTest
 from .pages import SelectorPage
+from .pages import LongPage
+from bok_choy.promise import BrokenPromise
 
 
 class SelectorTest(WebAppTest):
@@ -49,3 +51,33 @@ class SelectorTest(WebAppTest):
     def test_filtered_query_no_match(self):
         outer_id_list = self.selector.ids_of_outer_divs_with_inner_text('This does not match anything')
         self.assertEquals(outer_id_list, [])
+
+
+class ScrollTest(WebAppTest):
+    """
+    Test scrolling to element
+    """
+
+    def setUp(self):
+        super(ScrollTest, self).setUp()
+
+        self.long_page = LongPage(self.browser)
+        self.long_page.visit()
+
+    def test_scroll(self):
+        self.assertEquals(self._get_window_position(), 0)
+        self.long_page.scroll_to_element('#element_after_long_part')
+        # Different browsers, CI systems, and resolutions may present the
+        # element in varying locations. Use a greater-than instead of an equals.
+        self.assertGreaterEqual(self._get_window_position(), 1900)
+
+    def test_scroll_false_element(self):
+        """
+        When scroll_to_element is given a non-existent element, it should
+        raise a BrokenPromise
+        """
+        with self.assertRaises(BrokenPromise):
+            self.long_page.scroll_to_element('.foo', timeout=1)
+
+    def _get_window_position(self):
+        return self.browser.execute_script("return window.scrollY;")

@@ -564,3 +564,31 @@ class PageObject(object):
 
         """
         self.wait_for(lambda: self.q(css=element_selector).invisible, description=description, timeout=timeout)
+
+    @unguarded
+    def scroll_to_element(self, element_selector, timeout=60):
+        """
+        Scrolls the browser such that the element specified appears at the top. Before scrolling, waits for
+        the element to be present.
+
+        Example usage:
+
+        .. code:: python
+
+            self.scroll_to_element('.far-down', 'Scroll to far-down')
+
+        Arguments:
+            element_selector (str): css selector of the element.
+            timeout (float): Maximum number of seconds to wait for the element to be present on the
+                page before timing out.
+
+        Raises: BrokenPromise if the element does not exist (and therefore scrolling to it is not possible)
+
+        """
+        # Ensure element exists
+        msg = "Element '{element}' is present".format(element=element_selector)
+        self.wait_for(lambda: self.q(css=element_selector).present, msg, timeout=timeout)
+
+        # Obtain coordinates and use those for JavaScript call
+        loc = self.q(css=element_selector).first.results[0].location
+        self.browser.execute_script("window.scrollTo({x},{y})".format(x=loc['x'], y=loc['y']))

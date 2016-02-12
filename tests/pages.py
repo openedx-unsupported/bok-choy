@@ -16,7 +16,7 @@ class SitePage(PageObject):
 
     # Get the server port from the environment
     # (set by the test runner script)
-    SERVER_PORT = os.environ.get("SERVER_PORT", 8003)
+    SERVER_PORT = os.environ.get("SERVER_PORT", 8005)
 
     def is_browser_on_page(self):
         title = self.name.lower().replace('_', ' ')
@@ -375,3 +375,10 @@ class ImagePage(SitePage):
     Page for testing image capture and comparison.
     """
     name = "image"
+
+
+class LongPage(SitePage):
+    """
+    Page that requires scrolling to get to certain elements.
+    """
+    name = "long_page"

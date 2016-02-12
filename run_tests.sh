@@ -14,7 +14,7 @@ function echo_task {
 }
 
 REPO_ROOT=`dirname $BASH_SOURCE`
-SERVER_PORT=8003
+SERVER_PORT=8005
 
 export BOK_CHOY_HAR_DIR=$REPO_ROOT/hars
 export LOG_DIR=$REPO_ROOT/logs
