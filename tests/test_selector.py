@@ -60,7 +60,6 @@ class ScrollTest(WebAppTest):
 
     def setUp(self):
         super(ScrollTest, self).setUp()
-
         self.long_page = LongPage(self.browser)
         self.long_page.visit()
 

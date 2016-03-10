@@ -232,6 +232,12 @@ def _local_browser_class(browser_name):
             # access a media device (e.g., a webcam)
             firefox_profile.set_preference('media.navigator.permission.disabled', True)
 
+            # Disable the initial url fetch to 'learn more' from mozilla (so you don't have to
+            # be online to run bok-choy on firefox)
+            firefox_profile.set_preference('browser.startup.homepage', 'about:blank')
+            firefox_profile.set_preference('startup.homepage_welcome_url', 'about:blank')
+            firefox_profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
+
             browser_args = []
             browser_kwargs = {
                 'firefox_profile': firefox_profile,
