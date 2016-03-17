@@ -38,7 +38,5 @@ Please do not report security issues in public. Please email security@edx.org
 Mailing List and IRC Channel
 ----------------------------
 
-You can discuss this code on the `edx-code Google Group`__ or in the
-``edx-code`` IRC channel on Freenode.
-
-__ https://groups.google.com/forum/#!forum/edx-code
+You can discuss this code on the `edx-code Google Group <https://groups.google.com/forum/#!forum/edx-code>`_
+or in the **testing** channel on the `Open edX Slack <https://openedx.slack.com>`_.
