@@ -1,8 +1,16 @@
+"""
+Tests browser instantiation, selection, etc
+"""
+
 import tempfile
 import shutil
 import os
+import socket
+
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 import bok_choy.browser
+from bok_choy.promise import BrokenPromise
 from unittest import TestCase
 from mock import patch
 
@@ -10,6 +18,9 @@ from .pages import ButtonPage, JavaScriptPage
 
 
 class TestBrowser(TestCase):
+    """
+    Tests browser functionality (starting browser, choosing browser, etc)
+    """
 
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'firefox'})
     def test_local_browser(self):
@@ -95,3 +106,29 @@ class TestBrowser(TestCase):
         for log_type in log_types:
             expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
             self.assertTrue(os.path.isfile(expected_file))
+
+    def test_profile_error(self):
+        """
+        If there is a WebDriverException when instantiating the driver,
+         it should be tried again.
+        """
+        patcher = patch('bok_choy.browser._local_browser_class')
+        patch_object = patcher.start()
+        patch_object.side_effect = WebDriverException(msg='oops', screen=None, stacktrace=None)
+        self.addCleanup(patch.stopall)
+        with self.assertRaises(BrokenPromise):
+            bok_choy.browser.browser()
+        self.assertEqual(patch_object.call_count, 3)
+
+    def test_socket_error(self):
+        """
+        If there is a socket error when instantiating the driver,
+         it should be tried again.
+        """
+        patcher = patch('bok_choy.browser._local_browser_class')
+        patch_object = patcher.start()
+        patch_object.side_effect = socket.error(61, 'socket error message')
+        self.addCleanup(patch.stopall)
+        with self.assertRaises(BrokenPromise):
+            bok_choy.browser.browser()
+        self.assertEqual(patch_object.call_count, 3)

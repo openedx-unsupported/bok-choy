@@ -10,6 +10,7 @@ import socket
 from needle.driver import (NeedleFirefox, NeedleChrome, NeedleIe,
                            NeedleSafari, NeedlePhantomJS)
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
@@ -200,19 +201,20 @@ def browser(tags=None, proxy=None):
 
             return True, browser_class(*browser_args, **browser_kwargs)
 
-        except socket.error as err:
-            LOGGER.debug('Failed to instantiate browser: ' + err.strerror)
+        except (socket.error, WebDriverException) as err:
+            msg = str(err)
+            LOGGER.debug('Failed to instantiate browser: ' + msg)
             return False, None
 
     browser_instance = Promise(
-        browser_check_func, "Browser is instantiated successfully.", timeout=30).fulfill()
+        browser_check_func, "Browser is instantiated successfully.", try_limit=3).fulfill()
 
     return browser_instance
 
 
 def _local_browser_class(browser_name):
     """
-    Returns class, kwargs, and args needed to instatiate the local browser.
+    Returns class, kwargs, and args needed to instantiate the local browser.
     """
 
     # Log name of local browser
