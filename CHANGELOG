@@ -1,4 +1,4 @@
-v0.4.12 (3/22/16)
+v0.5.0 (3/22/16)
 * Added `scroll_to_element(element_selector)`
 * Make bok-choy more resilient to transient webdriver failures
 * Disable default promo tabs on firefox profile
