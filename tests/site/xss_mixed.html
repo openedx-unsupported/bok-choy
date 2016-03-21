@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS Mixed</title>
+</head>
+<body>
+    <div id="fixture">
+        <div class="unescaped">'';!--\"<XSS>=&{()}</div>
+        <div>'';!--\"<XSS>=&{()}</div>
+        <div class="escaped">&#39;&#39;;!--&#34;&lt;XSS&gt;=&amp;{()}</div>
+    </div>
+</body>
+</html>

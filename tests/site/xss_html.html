@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS HTML</title>
+</head>
+<body>
+    <div id="fixture">
+        <div class="unescaped">'';!--\"<XSS>=&{()}</div>
+        <div>'';!--\"<XSS>=&{()}</div>
+    </div>
+</body>
+</html>

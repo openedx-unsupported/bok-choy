@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS Safe</title>
+</head>
+<body>
+    <script>
+        window.escaped = "\u0027\u0027\u003B!\u002D\u002D\u0022\u003CXSS\u003E\u003D\u0026{()}";
+    </script>
+    <div id="fixture">
+        <div class="escaped">&#39;&#39;;!--&#34;&lt;XSS&gt;=&amp;{()}</div>
+        <input type="text" value="&#39;&#39;;!--&#34;&lt;XSS&gt;=&amp;{()}">
+    </div>
+</body>
+</html>
