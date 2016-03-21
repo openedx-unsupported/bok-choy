@@ -1,5 +1,17 @@
+v0.4.12 (3/22/16)
+* Added `scroll_to_element(element_selector)`
+* Make bok-choy more resilient to transient webdriver failures
+* Disable default promo tabs on firefox profile
+* Optional XSS vulnerability check
+* Updates for contributors (i.e. we use Slack now, not IRC)
+* Various improvements for how the bok-choy repo itself is tested
+* Python version compatibility improvements
+
+v0.4.11 (n/a)
+* Skipped this release version due to infrastructure udpates (not releasing via Travis)
+
 v0.4.10 (01/21/16)
-* No changes. Just deploying to pypi via automation.
+* No changes. Infrastructure updates.
 
 v0.4.9 (01/20/16)
 * Ability to release to pypi via Travis
