@@ -25,7 +25,11 @@ from .a11y import AxeCoreAudit, AxsAudit
 # Taken from https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet#XSS_Locator.
 XSS_INJECTION = "'';!--\"<XSS>=&{()}"
 
-EXPECTED_INPUT_VALUE_FORMAT = re.compile(r'value="\'\';!--.*<xss.*{\(\)}"')
+# When the injected string appears within an attribute (for instance, value of an input tag,
+# or alt of an img tag), if it is properly escaped this is the format we will see from
+# document.documentElement.innerHTML. To avoid false positives, we need to allow this
+# specific string, which hopefully is unique/odd enough that it would never appear accidentally.
+EXPECTED_ATTRIBUTE_FORMAT = re.compile(r'\'\';!--&quot;<xss>=&amp;{\(\)}')
 
 XSS_HTML = "<xss"
 
@@ -364,7 +368,7 @@ class PageObject(object):
         # Check taken from https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet#XSS_Locator.
         all_hits_count = html_source.count(XSS_HTML)
         if all_hits_count > 0:
-            safe_hits_count = len(EXPECTED_INPUT_VALUE_FORMAT.findall(html_source))
+            safe_hits_count = len(EXPECTED_ATTRIBUTE_FORMAT.findall(html_source))
             if all_hits_count > safe_hits_count:
                 potential_hits = re.findall('<[^<]+<xss', html_source)
                 raise XSSExposureError(
