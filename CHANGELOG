@@ -1,3 +1,6 @@
+v0.5.1 (03/28/16)
+* Bug fix to XSS vulnerability auditing feature
+
 v0.5.0 (3/22/16)
 * Implement feature for XSS (cross-site scripting) vulnerability auditing
 * Added `scroll_to_element(element_selector)`
