@@ -4,10 +4,13 @@ a configurable delay that can be passed as a
 query parameter in a GET request.
 """
 
-import BaseHTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
-from urlparse import urlparse, parse_qs
+import sys
 from time import sleep
+
+import six
+from six.moves import BaseHTTPServer
+from six.moves.SimpleHTTPServer import SimpleHTTPRequestHandler
+from six.moves.urllib_parse import urlparse, parse_qs
 
 
 class DelayedRequestHandler(SimpleHTTPRequestHandler):
@@ -38,9 +41,16 @@ class DelayedRequestHandler(SimpleHTTPRequestHandler):
 
 
 def main():
+    kwargs = {}
+    if six.PY3:
+        kwargs["port"] = int(sys.argv[1]) if sys.argv[1:] else None
     HANDLER_CLASS = DelayedRequestHandler
     SERVER_CLASS = BaseHTTPServer.HTTPServer
-    BaseHTTPServer.test(HandlerClass=HANDLER_CLASS, ServerClass=SERVER_CLASS)
+    BaseHTTPServer.test(
+        HandlerClass=HANDLER_CLASS,
+        ServerClass=SERVER_CLASS,
+        **kwargs
+    )
 
 if __name__ == "__main__":
     main()

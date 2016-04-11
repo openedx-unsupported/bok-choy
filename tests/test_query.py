@@ -7,13 +7,13 @@ from bok_choy.query import Query, BrowserQuery
 
 class TestQuery(TestCase):
     def setUp(self):
-        self.query = Query(lambda: range(5))
+        self.query = Query(lambda: list(range(5)))
 
     def test_initial_identify(self):
         self.assertEquals([0, 1, 2, 3, 4], self.query.results)
 
     def test_replace(self):
-        clone = self.query.replace(seed_fn=lambda: range(3))
+        clone = self.query.replace(seed_fn=lambda: list(range(3)))
         self.assertNotEquals(id(clone), id(self.query))
         self.assertEquals([0, 1, 2], clone.results)
         self.assertEquals([0, 1, 2, 3, 4], self.query.results)
@@ -91,7 +91,7 @@ class TestQuery(TestCase):
         self.assertEquals(u"Query(<lambda>)", repr(self.query))
 
         def integers():
-            return range(100)
+            return list(range(100))
 
         self.assertEquals(u"Query(integers)", repr(Query(integers)))
 
@@ -111,7 +111,7 @@ class TestQuery(TestCase):
         )
 
     def test_first(self):
-        query = Query(lambda: range(2))
+        query = Query(lambda: list(range(2)))
         self.assertEqual([0], query.first.results)
         self.assertEqual([0], query.first.first.results)
 
@@ -120,7 +120,7 @@ class TestQuery(TestCase):
         self.assertEqual([], query.first.results)
 
     def test_nth(self):
-        query = Query(lambda: range(2))
+        query = Query(lambda: list(range(2)))
         self.assertEqual([], query.nth(-1).results)
         self.assertEqual([0], query.nth(0).results)
         self.assertEqual([1], query.nth(1).results)
@@ -130,8 +130,8 @@ class TestQuery(TestCase):
 class TestBrowserQuery(TestCase):
     def setUp(self):
         self.browser = Mock(
-            find_elements_by_css_selector=Mock(return_value=range(3)),
-            find_elements_by_xpath=Mock(return_value=range(10))
+            find_elements_by_css_selector=Mock(return_value=list(range(3))),
+            find_elements_by_xpath=Mock(return_value=list(range(10)))
         )
 
     def test_error_cases(self):
