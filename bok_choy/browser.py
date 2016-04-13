@@ -8,7 +8,7 @@ import os
 import socket
 
 from needle.driver import (NeedleFirefox, NeedleChrome, NeedleIe,
-                           NeedleSafari, NeedlePhantomJS)
+                           NeedleSafari, NeedlePhantomJS, NeedleOpera)
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.options import Options
@@ -43,7 +43,8 @@ BROWSERS = {
     'chrome': NeedleChrome,
     'internet explorer': NeedleIe,
     'safari': NeedleSafari,
-    'phantomjs': NeedlePhantomJS
+    'phantomjs': NeedlePhantomJS,
+    'opera': NeedleOpera,
 }
 
 
