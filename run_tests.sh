@@ -39,7 +39,7 @@ python -m tests.http_server $SERVER_PORT 2> /dev/null &
 echo "Running test server on port $SERVER_PORT"
 
 echo_task "Run unit test suite"
-coverage run -m nose $REPO_ROOT/tests/$1
+coverage run -m nose $REPO_ROOT/tests/$1 --processes=2 --process-timeout=62
 
 # Skip other tests if we've specified a particular unit test
 if [ -z $1 ]; then
