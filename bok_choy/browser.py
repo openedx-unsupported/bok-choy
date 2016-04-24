@@ -208,7 +208,10 @@ def browser(tags=None, proxy=None):
             return False, None
 
     browser_instance = Promise(
-        browser_check_func, "Browser is instantiated successfully.", try_limit=3).fulfill()
+        # There are cases where selenium takes 30s to return with a failure, so in order to try 3
+        # times, we set a long timeout. If there is a hang on the first try, the timeout will
+        # be enforced.
+        browser_check_func, "Browser is instantiated successfully.", try_limit=3, timeout=95).fulfill()
 
     return browser_instance
 
