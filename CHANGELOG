@@ -1,3 +1,7 @@
+v0.5.2 (04/25/16)
+* Support Opera browser
+* Improve browser instantiation logic to include retries
+
 v0.5.1 (03/28/16)
 * Bug fix to XSS vulnerability auditing feature
 
