@@ -349,6 +349,7 @@ class AxeCoreAudit(A11yAudit):
 
         lines = []
         for error_type in errors:
+            lines.append("Severity: {}".format(error_type.get("impact")))
             lines.append("Rule ID: {}".format(error_type.get("id")))
             lines.append("Help URL: {}\n".format(error_type.get('helpUrl')))
 
