@@ -7,6 +7,8 @@ from collections import Sequence
 from itertools import islice
 from selenium.common.exceptions import WebDriverException
 
+import six
+
 from bok_choy.promise import Promise
 
 
@@ -267,7 +269,7 @@ class Query(Sequence):
         """
         def _transform(xs):  # pylint: disable=missing-docstring, invalid-name
             try:
-                return [iter(xs).next()]
+                return [six.next(iter(xs))]
             except StopIteration:
                 return []
 
@@ -333,7 +335,7 @@ class BrowserQuery(Query):
         if not kwargs:
             raise TypeError('Must pass a query keyword argument to BrowserQuery().')
 
-        query_name, query_value = kwargs.items()[0]
+        query_name, query_value = list(kwargs.items())[0]
 
         if query_name not in QUERY_TYPES:
             raise TypeError('{} is not a supported query type for BrowserQuery()'.format(query_name))
