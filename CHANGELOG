@@ -1,3 +1,7 @@
+v0.5.3 (06/07/16)
+* Updated the a11y-custom-rules output to include the severity of the a11y failure
+* Added Chris Rodriguez to AUTHORS file
+
 v0.5.2 (04/25/16)
 * Support Opera browser
 * Improve browser instantiation logic to include retries
