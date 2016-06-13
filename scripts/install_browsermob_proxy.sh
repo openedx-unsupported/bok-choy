@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-BMP_VERSION="2.1.0-beta-3"
+BMP_VERSION="2.1.1"
 BMP_NAME="browsermob-proxy-$BMP_VERSION"
 BMP_URL="https://github.com/lightbody/browsermob-proxy/releases/download/$BMP_NAME/$BMP_NAME-bin.zip"
 TEMP_BROWSERMOB_DIR="/var/tmp"
