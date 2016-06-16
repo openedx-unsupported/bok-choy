@@ -1,0 +1,39 @@
+# Indirect dependencies first
+
+# astroid, edx-lint
+six==1.10.0
+
+# astroid
+lazy-object-proxy==1.2.2
+wrapt==1.10.8
+
+# pylint
+colorama==0.3.7
+
+# pylint-plugin-utils
+astroid==1.4.6
+pylint==1.5.4
+
+# pylint-celery, pylint-django
+pylint-plugin-utils
+
+# edx-lint
+pylint-celery==0.3
+pylint-django==0.7.2
+
+# Then the direct dependencies
+
+# For code coverage statistics
+coverage==3.7
+
+# pylint plug-ins for additional code quality checks
+edx_lint==0.5.1
+
+# For mocking functionality in assorted tests
+mock==1.0.1
+
+# Test runner
+nose==1.3.7
+
+# For checking compliance with PEP 8 coding style guidelines
+pycodestyle==2.0.0

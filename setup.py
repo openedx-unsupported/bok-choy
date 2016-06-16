@@ -1,18 +1,27 @@
 #!/usr/bin/env python
 
+import codecs
 from setuptools import setup
 
 VERSION = '0.5.3'
 DESCRIPTION = 'UI-level acceptance test framework'
-with open('requirements.txt') as f:
-    REQUIREMENTS = f.read().splitlines()
+REQUIREMENTS = (
+    'lazy',
+    'needle',
+    'selenium',
+)
+
+with codecs.open('README.rst', 'r', 'utf-8') as f:
+    LONG_DESCRIPTION = f.read()
 
 setup(
     name='bok_choy',
     version=VERSION,
     author='edX',
+    author_email='oscm@edx.org',
     url='http://github.com/edx/bok-choy',
     description=DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
     license='Apache 2.0',
     classifiers=['Development Status :: 3 - Alpha',
                  'Environment :: Console',

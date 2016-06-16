@@ -12,6 +12,35 @@ Overview
 A Python framework for writing robust Selenium tests.
 
 
+Installation
+------------
+
+As Bok Choy is a Python framework, you first need to install Python.
+If you’re running Linux or Mac OS X, you probably already have it installed.
+We recommend that you use `pip <http://www.pip-installer.org/>`_ to install your Python
+packages:
+
+.. code-block:: bash
+
+   pip install bok_choy
+
+
+Running Tests
+-------------
+
+To run the test suite for bok-choy itself:
+
+* Install Firefox, `version 46.0.1 <https://ftp.mozilla.org/pub/firefox/releases/46.0.1/>`_
+  or earlier (later versions require a different selenium driver)
+* Install `phantomjs <http://phantomjs.org/download.html>`_
+* Create a virtualenv which uses Python 2.7
+* With that virtualenv activated, run ``pip -r requirements/tox.txt`` to
+  install the `tox <http://tox.testrun.org/>`_ testing tool and its
+  dependencies
+* Run ``tox -e py27``
+* To test and build the documentation, run ``tox -e doc``
+
+
 License
 -------
 

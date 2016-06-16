@@ -1,3 +1,0 @@
-selenium
-needle==0.3
-lazy>=1.0

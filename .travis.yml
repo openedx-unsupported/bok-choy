@@ -10,14 +10,10 @@ before_install:
 addons:
   firefox: '42.0'
 install:
-- pip install -r test_requirements.txt
-- pip install -r requirements.txt
-- pip install -r doc_requirements.txt
+- pip install -r requirements/tox.txt
 script:
-- pylint bok_choy
-- pycodestyle bok_choy
-- pycodestyle tests
-- ./run_tests.sh
+- tox -e py27
+- tox -e doc
 after_success:
 - pip install coveralls
 - coveralls
