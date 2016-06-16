@@ -87,6 +87,7 @@ def _decorator(store_name, store_values):
 
         # Add a `wait_for_js` method to the class
         if not hasattr(clz, 'wait_for_js'):
+            # pylint: disable= literal-used-as-attribute
             setattr(clz, 'wait_for_js', _wait_for_js)
 
         # Store the RequireJS module names in the class
