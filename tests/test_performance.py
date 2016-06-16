@@ -9,7 +9,7 @@ from bok_choy.web_app_test import WebAppTest, with_cache
 from bok_choy.performance import MethodNotEnabledInCurrentMode
 from .pages import ButtonPage, TextFieldPage
 from nose.plugins.attrib import attr
-from unittest import expectedFailure
+from unittest import skip
 import json
 
 import os
@@ -72,7 +72,7 @@ class ExplicitHarCaptureTest(HarCaptureTestBase):
     any environment setting. Note that this will only work if the `TestClass` is
     decorated, not the `test_case`.
     """
-    @expectedFailure
+    @skip  # Expected Failure. TODO.
     def test_har_is_not_captured_in_explicit_mode(self):
         self.should_capture = 0
         self.visit_pages()
@@ -118,7 +118,7 @@ class AutoHarCaptureTest(HarCaptureTestBase):
         self.visit_pages()
         self.assertTrue(True)
 
-    @expectedFailure
+    @skip  # Expected Failure. TODO.
     def test_har_is_captured_on_failure_in_auto_mode(self):
         self.should_capture = 1
         self.visit_pages()
@@ -137,13 +137,13 @@ class ErrorHarCaptureTest(HarCaptureTestBase):
     be overridden for an individual test class using the @attr decorator from
     the nose.plugin.attrib module.
     """
-    @expectedFailure
+    @skip  # Expected Failure. TODO.
     def test_har_is_captured_on_error_in_error_mode(self):
         self.should_capture = 1
         self.visit_pages()
         raise Exception('Raising generic exception so that this test will error.')
 
-    @expectedFailure
+    @skip  # Expected Failure. TODO.
     def test_har_is_captured_on_failure_in_error_mode(self):
         self.should_capture = 1
         self.visit_pages()
