@@ -6,6 +6,7 @@ import os
 import logging
 from json import dumps
 import socket
+import errno
 
 from needle.driver import (NeedleFirefox, NeedleChrome, NeedleIe,
                            NeedleSafari, NeedlePhantomJS, NeedleOpera)
@@ -267,7 +268,22 @@ def _local_browser_class(browser_name):
 
             if profile_dir:
                 LOGGER.info("Using firefox profile: %s", profile_dir)
-                firefox_profile = webdriver.FirefoxProfile(profile_dir)
+                try:
+                    firefox_profile = webdriver.FirefoxProfile(profile_dir)
+                except OSError as err:
+                    if err.errno == errno.ENOENT:
+                        raise BrowserConfigError(
+                            "Firefox profile directory {env_var}={profile_dir} does not exist".format(
+                                env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
+                    elif err.errno == errno.EACCES:
+                        raise BrowserConfigError(
+                            "Firefox profile directory {env_var}={profile_dir} has incorrect permissions. It must be \
+                            readable and executable.".format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
+                    else:
+                        # Some other OSError:
+                        raise BrowserConfigError(
+                            "Problem with firefox profile directory {env_var}={profile_dir}: {msg}"
+                            .format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir, msg=str(err)))
             else:
                 LOGGER.info("Using default firefox profile")
                 firefox_profile = webdriver.FirefoxProfile()
