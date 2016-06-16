@@ -11,6 +11,7 @@ UI-level acceptance test framework.
    guidelines
    accessibility
    visual_diff
+   xss
    api_reference
 
 

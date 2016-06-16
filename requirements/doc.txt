@@ -1,0 +1,33 @@
+# Indirect dependencies first
+
+# babel
+pytz==2016.4
+
+# bleach, html5lib, readme_renderer, Sphinx
+six==1.10.0
+
+# Jinja2
+MarkupSafe==0.23
+
+# readme_renderer, Sphinx
+docutils==0.12
+Pygments==2.1.3
+
+# readme_renderer
+bleach==1.4.3
+html5lib==0.9999999
+
+# Sphinx
+alabaster==0.7.8
+babel==2.3.4
+imagesize==0.7.1
+Jinja2==2.8
+snowballstemmer==1.2.1
+
+# Then the direct dependencies
+
+# For verifying that the README will display correctly on PyPI
+readme_renderer==0.7.0
+
+# Documentation generator
+Sphinx==1.4.4

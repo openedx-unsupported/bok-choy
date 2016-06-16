@@ -1,2 +1,0 @@
-sphinx==1.2.2
-sphinxcontrib-napoleon==0.2.4

@@ -16,11 +16,6 @@ page_object
 .. automodule:: bok_choy.page_object
    :members:
 
-performance
-------------
-.. automodule:: bok_choy.performance
-   :members:
-
 accessibility
 -------------
 

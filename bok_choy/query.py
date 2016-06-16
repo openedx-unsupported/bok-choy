@@ -447,7 +447,7 @@ class BrowserQuery(Query):
 
     def is_focused(self):
         """
-        Checks that _at least one_ matched element is focused. More
+        Checks that *at least one* matched element is focused. More
         specifically, it checks whether the element is document.activeElement.
         If no matching element is focused, this returns `False`.
 
