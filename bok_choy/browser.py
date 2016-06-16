@@ -2,9 +2,9 @@
 Use environment variables to configure Selenium remote WebDriver.
 For use with SauceLabs (via SauceConnect) or local browsers.
 """
+import os
 import logging
 from json import dumps
-import os
 import socket
 
 from needle.driver import (NeedleFirefox, NeedleChrome, NeedleIe,
@@ -56,6 +56,34 @@ class BrowserConfigError(Exception):
     pass
 
 
+def save_source(driver, name):
+    """
+    Save the rendered HTML of the browser.
+
+    The location of the source can be configured
+    by the environment variable `SAVED_SOURCE_DIR`.  If not set,
+    this defaults to the current working directory.
+
+    Args:
+        driver (selenium.webdriver): The Selenium-controlled browser.
+        name (str): A name to use in the output file name.
+            Note that ".html" is appended automatically
+
+    Returns:
+        None
+    """
+    source = driver.page_source
+    file_name = os.path.join(os.environ.get('SAVED_SOURCE_DIR'),
+                             '{name}.html'.format(name=name))
+
+    try:
+        with open(file_name, 'w') as output_file:
+            output_file.write(source.encode('utf-8'))
+    except Exception:  # pylint: disable=broad-except
+        msg = "Could not save the browser page source to {}.".format(file_name)
+        LOGGER.warning(msg)
+
+
 def save_screenshot(driver, name):
     """
     Save a screenshot of the browser.
@@ -73,7 +101,7 @@ def save_screenshot(driver, name):
     """
     if hasattr(driver, 'save_screenshot'):
         image_name = os.path.join(
-            os.environ.get('SCREENSHOT_DIR', ''), name + '.png'
+            os.environ.get('SCREENSHOT_DIR'), name + '.png'
         )
         driver.save_screenshot(image_name)
 
@@ -106,7 +134,7 @@ def save_driver_logs(driver, prefix):
         try:
             log = driver.get_log(log_type)
             file_name = os.path.join(
-                os.environ.get('SELENIUM_DRIVER_LOG_DIR', ''), '{}_{}.log'.format(
+                os.environ.get('SELENIUM_DRIVER_LOG_DIR'), '{}_{}.log'.format(
                     prefix, log_type)
             )
             with open(file_name, 'w') as output_file:
