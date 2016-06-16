@@ -42,6 +42,5 @@ docs/**/*.png
 # Output from tests
 screenshots
 logs
-hars
 ghostdriver.log
 server.log

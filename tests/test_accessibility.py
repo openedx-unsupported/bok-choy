@@ -4,7 +4,6 @@ Test accessibility auditing.
 import os
 
 from mock import patch, Mock
-from requests import Response
 
 from bok_choy.web_app_test import WebAppTest
 from bok_choy.a11y.a11y_audit import AccessibilityError, A11yAuditConfigError
