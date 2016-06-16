@@ -15,8 +15,8 @@ install:
 - pip install -r doc_requirements.txt
 script:
 - pylint bok_choy
-- pep8 bok_choy
-- pep8 tests
+- pycodestyle bok_choy
+- pycodestyle tests
 - ./run_tests.sh
 after_success:
 - pip install coveralls
