@@ -1,3 +1,10 @@
+v0.5.4 (06/16/16)
+* Remove browsermobproxy and HAR capture feature
+* Add ability to save browser page source to disk
+* Update from pep8 to pycodestyle
+* Clean up requirements and setup.py, start using tox
+* Build and distribute wheels
+
 v0.5.3 (06/07/16)
 * Updated the a11y-custom-rules output to include the severity of the a11y failure
 * Added Chris Rodriguez to AUTHORS file
