@@ -260,17 +260,24 @@ def _local_browser_class(browser_name):
                 name=browser_name, options=", ".join(BROWSERS.keys())))
     else:
         if browser_name == 'firefox':
-            firefox_profile = webdriver.FirefoxProfile()
+            profile_dir = os.environ.get('FIREFOX_PROFILE')
 
-            # Bypasses the security prompt displayed by the browser when it attempts to
-            # access a media device (e.g., a webcam)
-            firefox_profile.set_preference('media.navigator.permission.disabled', True)
+            if profile_dir:
+                LOGGER.info("Using firefox profile: %s", profile_dir)
+                firefox_profile = webdriver.FirefoxProfile(profile_dir)
+            else:
+                LOGGER.info("Using default firefox profile")
+                firefox_profile = webdriver.FirefoxProfile()
 
-            # Disable the initial url fetch to 'learn more' from mozilla (so you don't have to
-            # be online to run bok-choy on firefox)
-            firefox_profile.set_preference('browser.startup.homepage', 'about:blank')
-            firefox_profile.set_preference('startup.homepage_welcome_url', 'about:blank')
-            firefox_profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
+                # Bypasses the security prompt displayed by the browser when it attempts to
+                # access a media device (e.g., a webcam)
+                firefox_profile.set_preference('media.navigator.permission.disabled', True)
+
+                # Disable the initial url fetch to 'learn more' from mozilla (so you don't have to
+                # be online to run bok-choy on firefox)
+                firefox_profile.set_preference('browser.startup.homepage', 'about:blank')
+                firefox_profile.set_preference('startup.homepage_welcome_url', 'about:blank')
+                firefox_profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
 
             browser_args = []
             browser_kwargs = {
