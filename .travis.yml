@@ -15,6 +15,7 @@ install:
 - pip install -r requirements/tox.txt
 script:
 - tox -e py27
+- tox -e py35
 - tox -e doc
 after_success:
 - pip install coveralls
