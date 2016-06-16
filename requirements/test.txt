@@ -7,6 +7,9 @@ six==1.10.0
 lazy-object-proxy==1.2.2
 wrapt==1.10.8
 
+# cov-core
+coverage==3.7.1
+
 # pylint
 colorama==0.3.7
 
@@ -21,10 +24,14 @@ pylint-plugin-utils
 pylint-celery==0.3
 pylint-django==0.7.2
 
-# Then the direct dependencies
+# pytest
+py==1.4.31
 
-# For code coverage statistics
-coverage==3.7
+# pytest-cov
+cov-core==1.15.0
+pytest==2.9.2
+
+# Then the direct dependencies
 
 # pylint plug-ins for additional code quality checks
 edx_lint==0.5.1
@@ -32,8 +39,11 @@ edx_lint==0.5.1
 # For mocking functionality in assorted tests
 mock==1.0.1
 
-# Test runner
-nose==1.3.7
-
 # For checking compliance with PEP 8 coding style guidelines
 pycodestyle==2.0.0
+
+# Show log output for test failures
+pytest-catchlog==1.2.2
+
+# For code coverage statistics generation
+pytest-cov==2.2.1

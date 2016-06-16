@@ -5,6 +5,7 @@ query parameter in a GET request.
 """
 
 import BaseHTTPServer
+import os
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 from urlparse import urlparse, parse_qs
 from time import sleep
@@ -38,9 +39,16 @@ class DelayedRequestHandler(SimpleHTTPRequestHandler):
 
 
 def main():
-    HANDLER_CLASS = DelayedRequestHandler
-    SERVER_CLASS = BaseHTTPServer.HTTPServer
-    BaseHTTPServer.test(HandlerClass=HANDLER_CLASS, ServerClass=SERVER_CLASS)
+    handler_class = DelayedRequestHandler
+    handler_class.protocol_version = "HTTP/1.0"
+    server_class = BaseHTTPServer.HTTPServer
+    port = int(os.environ['SERVER_PORT'])
+    server_address = ('', port)
+    httpd = server_class(server_address, handler_class)
+
+    sa = httpd.socket.getsockname()
+    print("Serving HTTP on", sa[0], "port", sa[1], "...")
+    httpd.serve_forever()
 
 if __name__ == "__main__":
     main()

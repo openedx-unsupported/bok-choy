@@ -1,6 +1,6 @@
 # Indirect dependencies first
 
-# needle (selenium is also used directly, and nose for tests)
+# needle (selenium is also used directly)
 nose==1.3.7
 Pillow==3.2.0
 selenium==2.53.5
