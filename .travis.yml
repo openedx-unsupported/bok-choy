@@ -13,9 +13,9 @@ addons:
   firefox: '42.0'
 install:
 - pip install -r requirements/tox.txt
+- pip install tox-travis
 script:
-- tox -e py27
-- tox -e py35
+- tox
 - tox -e doc
 after_success:
 - pip install coveralls
