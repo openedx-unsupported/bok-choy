@@ -1,3 +1,10 @@
+v0.6.0 (06/17/16)
+* Support Python 3
+* Use pytest to run tests
+* Save browser page source on failure
+* Allow configuration of the firefox profile
+* Upgrade dependencies, improve test coverage
+
 v0.5.4 (06/16/16)
 * Remove browsermobproxy and HAR capture feature
 * Add ability to save browser page source to disk
