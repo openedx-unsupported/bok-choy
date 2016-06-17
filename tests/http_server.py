@@ -4,11 +4,13 @@ a configurable delay that can be passed as a
 query parameter in a GET request.
 """
 
-import BaseHTTPServer
 import os
-from SimpleHTTPServer import SimpleHTTPRequestHandler
-from urlparse import urlparse, parse_qs
+import sys
 from time import sleep
+import six
+from six.moves import BaseHTTPServer
+from six.moves.SimpleHTTPServer import SimpleHTTPRequestHandler
+from six.moves.urllib_parse import urlparse, parse_qs
 
 
 class DelayedRequestHandler(SimpleHTTPRequestHandler):

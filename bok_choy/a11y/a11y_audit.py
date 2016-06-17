@@ -3,6 +3,7 @@ Interface for running accessibility audits on a PageObject.
 """
 import os
 from abc import abstractmethod, abstractproperty, ABCMeta
+import six
 
 
 class AccessibilityError(Exception):
@@ -19,12 +20,12 @@ class A11yAuditConfigError(Exception):
     pass
 
 
+@six.add_metaclass(ABCMeta)
 class A11yAuditConfig(object):
     """
     The `A11yAuditConfig` object defines the options available in an
     accessibility ruleset.
     """
-    __metaclass__ = ABCMeta
 
     def __init__(self, *args, **kwargs):
         super(A11yAuditConfig, self).__init__(*args, **kwargs)
@@ -88,6 +89,7 @@ class A11yAuditConfig(object):
         )
 
 
+@six.add_metaclass(ABCMeta)
 class A11yAudit(object):
     """
     Allows auditing of a page for accessibility issues.
@@ -106,7 +108,6 @@ class A11yAudit(object):
         * Ruleset class: AxsAudit
         * Ruleset config: AxsAuditConfig
     """
-    __metaclass__ = ABCMeta
 
     def __init__(self, browser, url, config=None, *args, **kwargs):
         """

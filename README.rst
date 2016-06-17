@@ -34,7 +34,7 @@ To run the test suite for bok-choy itself:
   or earlier (later versions require a different selenium driver)
 * Install `phantomjs <http://phantomjs.org/download.html>`_
 * Create a virtualenv which uses Python 2.7
-* With that virtualenv activated, run ``pip -r requirements/tox.txt`` to
+* With that virtualenv activated, run ``pip install -r requirements/tox.txt`` to
   install the `tox <http://tox.testrun.org/>`_ testing tool and its
   dependencies
 * Run ``tox -e py27``

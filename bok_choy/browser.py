@@ -80,7 +80,7 @@ def save_source(driver, name):
                              '{name}.html'.format(name=name))
 
     try:
-        with open(file_name, 'w') as output_file:
+        with open(file_name, 'wb') as output_file:
             output_file.write(source.encode('utf-8'))
     except Exception:  # pylint: disable=broad-except
         msg = "Could not save the browser page source to {}.".format(file_name)
@@ -261,7 +261,7 @@ def _local_browser_class(browser_name):
     if browser_class is None:
         raise BrowserConfigError(
             "Invalid browser name {name}.  Options are: {options}".format(
-                name=browser_name, options=", ".join(BROWSERS.keys())))
+                name=browser_name, options=", ".join(list(BROWSERS.keys()))))
     else:
         if browser_name == 'firefox':
             profile_dir = os.environ.get(FIREFOX_PROFILE_ENV_VAR)
@@ -418,7 +418,7 @@ def _required_envs(env_vars):
     }
 
     # Check for missing keys
-    missing = [key for key, val in envs.items() if val is None]
+    missing = [key for key, val in list(envs.items()) if val is None]
     if len(missing) > 0:
         msg = (
             "These environment variables must be set: " +
