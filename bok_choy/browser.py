@@ -149,7 +149,7 @@ def save_driver_logs(driver, prefix):
                 "It may be that the browser does not support it."
             ).format(log_type=log_type)
 
-            LOGGER.warning(msg, exec_info=True)
+            LOGGER.warning(msg, exc_info=True)
 
 
 def browser(tags=None, proxy=None):
@@ -330,7 +330,7 @@ def _local_browser_class(browser_name):
 
 def _remote_browser_class(env_vars, tags=None):
     """
-    Returns class, kwargs, and args needed to instatiate the remote browser.
+    Returns class, kwargs, and args needed to instantiate the remote browser.
     """
     if tags is None:
         tags = []
