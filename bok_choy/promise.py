@@ -43,7 +43,14 @@ class Promise(object):
             * The promise runs out of tries (checks more than `try_limit` times)
             * The promise runs out of time (takes longer than `timeout` seconds)
 
-        In the second two cases, the promise is "broken" and an exception will be raised.
+        If the try_limit or timeout is reached without success, then the promise is "broken" and
+        an exception will be raised.
+
+        Note that if you specify a try_limit but not a timeout, the default timeout is still used.
+        This is to prevent an inadvertent infinite loop. If you want to make sure that the
+        try_limit expires first (and thus that many attempts will be made), then you should also
+        pass in a larger value for timeout.
+
         `description` is a string that will be included in the exception to make debugging easier.
 
         Example:
