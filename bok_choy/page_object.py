@@ -9,9 +9,10 @@ from contextlib import contextmanager
 import logging
 import os
 import socket
-import urlparse
 import re
 from textwrap import dedent
+import six
+from six.moves import urllib_parse
 from lazy import lazy
 
 from selenium.common.exceptions import WebDriverException
@@ -100,7 +101,7 @@ class _PageObjectMetaclass(ABCMeta):
     ALWAYS_UNGUARDED = ['url', 'is_browser_on_page']
 
     def __new__(mcs, cls_name, cls_bases, cls_attrs):
-        for name, attr in cls_attrs.items():
+        for name, attr in list(cls_attrs.items()):
             # Skip methods marked as unguarded
             if getattr(attr, '_unguarded', False) or name in mcs.ALWAYS_UNGUARDED:
                 continue
@@ -137,6 +138,7 @@ class _PageObjectMetaclass(ABCMeta):
         return super(_PageObjectMetaclass, mcs).__new__(mcs, cls_name, cls_bases, cls_attrs)
 
 
+@six.add_metaclass(_PageObjectMetaclass)
 class PageObject(object):
     """
     Encapsulates user interactions with a specific part
@@ -183,8 +185,6 @@ class PageObject(object):
         def foo(self):
             return self._foo
     """
-
-    __metaclass__ = _PageObjectMetaclass
 
     def __init__(self, browser, *args, **kwargs):
         """
@@ -324,7 +324,7 @@ class PageObject(object):
         Returns:
             Boolean indicating whether the URL has a protocol and hostname.
         """
-        result = urlparse.urlsplit(url)
+        result = urllib_parse.urlsplit(url)
 
         # Check that we have a protocol and hostname
         if not result.scheme or not result.netloc:
