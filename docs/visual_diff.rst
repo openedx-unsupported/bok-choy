@@ -15,7 +15,7 @@ consists of the following steps.
 * `Advanced Features`_
 
 Write Your Page Object and Test Case Code to Navigate the System Under Test
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 
 If you are not familiar with how to write a bok-choy page object and test case,
 first check out the Tutorial. 
@@ -96,6 +96,13 @@ saving" mode by specifying the nose parameter ``--with-save-baseline``.
 
     $ nosetests my_test.py --with-save-baseline
 
+If using pytest, you can instead set the environment variable
+``NEEDLE_SAVE_BASELINE``.
+
+.. code-block:: bash
+
+    $ NEEDLE_SAVE_BASELINE=true py.test my_test.py
+
 The folder in which the baseline and actual (output) screenshots are saved is
 determined using the following environment variables.
 
@@ -108,7 +115,7 @@ open it up and check that it looks okay.
 
 
 Execute Your Test Cases After Changes to the System Under Test
----------------------------------------------------------------
+--------------------------------------------------------------
 
 Now if we run our tests, it will take the same screenshot and check it against
 the saved baseline screenshot on disk.

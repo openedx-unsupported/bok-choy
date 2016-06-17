@@ -9,6 +9,7 @@ REQUIREMENTS = (
     'lazy',
     'needle',
     'selenium',
+    'six',
 )
 
 with codecs.open('README.rst', 'r', 'utf-8') as f:
