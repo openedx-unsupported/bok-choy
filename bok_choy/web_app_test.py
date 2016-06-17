@@ -8,7 +8,7 @@ from uuid import uuid4
 
 from needle.cases import NeedleTestCase, import_from_string
 
-from .browser import browser, save_screenshot, save_driver_logs
+from .browser import browser, save_screenshot, save_driver_logs, save_source
 
 
 class WebAppTest(NeedleTestCase):
@@ -130,7 +130,7 @@ class WebAppTest(NeedleTestCase):
     def _save_artifacts(self):
         """
         On failure or error save a screenshot, the
-        selenium driver logs, and the captured har file.
+        source html, and the selenium driver logs.
         """
         # Determine whether the test case succeeded or failed
         result = sys.exc_info()
@@ -146,6 +146,11 @@ class WebAppTest(NeedleTestCase):
         if result != (None, None, None):
             try:
                 save_screenshot(self.browser, self.id())
+            except:  # pylint: disable=bare-except
+                pass
+
+            try:
+                save_source(self.browser, self.id())
             except:  # pylint: disable=bare-except
                 pass
 
