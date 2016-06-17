@@ -130,7 +130,7 @@ class WebAppTest(NeedleTestCase):
     def _save_artifacts(self):
         """
         On failure or error save a screenshot, the
-        selenium driver logs, and the captured har file.
+        source html, and the selenium driver logs.
         """
         # Determine whether the test case succeeded or failed
         result = sys.exc_info()
