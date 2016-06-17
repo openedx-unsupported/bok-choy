@@ -73,6 +73,22 @@ class TestBrowser(TestCase):
             bok_choy.browser.browser()
         self.assertEqual(patch_object.call_count, 3)
 
+    @patch.dict(os.environ, {'FIREFOX_PROFILE_PATH': '/foo/path'})
+    def test_custom_firefox_profile(self):
+        patch_object = patch.object(webdriver, 'FirefoxProfile').start()
+        self.addCleanup(patch.stopall)
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')
+        self.assertTrue('firefox_profile' in browser_kwargs_tuple[2])
+        patch_object.assert_called_with('/foo/path')
+
+    @patch.dict(os.environ, {'FIREFOX_PROFILE_PATH': ''})
+    def test_no_custom_firefox_profile(self):
+        patch_object = patch.object(webdriver, 'FirefoxProfile').start()
+        self.addCleanup(patch.stopall)
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')
+        self.assertTrue('firefox_profile' in browser_kwargs_tuple[2])
+        patch_object.assert_called_with()
+
     def test_socket_error(self):
         """
         If there is a socket error when instantiating the driver,

@@ -6,6 +6,7 @@ import os
 import logging
 from json import dumps
 import socket
+import errno
 
 from needle.driver import (NeedleFirefox, NeedleChrome, NeedleIe,
                            NeedleSafari, NeedlePhantomJS, NeedleOpera)
@@ -46,6 +47,8 @@ BROWSERS = {
     'phantomjs': NeedlePhantomJS,
     'opera': NeedleOpera,
 }
+
+FIREFOX_PROFILE_ENV_VAR = 'FIREFOX_PROFILE_PATH'
 
 
 class BrowserConfigError(Exception):
@@ -159,13 +162,14 @@ def browser(tags=None, proxy=None):
     1. Local browsers: If the proper environment variables are not all set for the second case,
         then we use a local browser.
 
-        * The environment variable `SELENIUM_BROWSER` can be set to
-          specify which local browser to use. The default is Firefox.
-        * Additionally, if a proxy
-          instance is passed and the browser choice is either Chrome or Firefox, then the browser will
-          be initialized with the proxy server set.
-        * The environment variable `SELENIUM_FIREFOX_PATH` can be used for specifying a path to the
-          Firefox binary. Default behavior is to use the system location.
+        * The environment variable `SELENIUM_BROWSER` can be set to specify which local browser to use. The default is \
+          Firefox.
+        * Additionally, if a proxy instance is passed and the browser choice is either Chrome or Firefox, then the \
+          browser will be initialized with the proxy server set.
+        * The environment variable `SELENIUM_FIREFOX_PATH` can be used for specifying a path to the Firefox binary. \
+          Default behavior is to use the system location.
+        * The environment variable `FIREFOX_PROFILE_PATH` can be used for specifying a path to the Firefox profile. \
+          Default behavior is to use a barebones default profile with a few useful preferences set.
 
     2. Remote browser (not SauceLabs): Set all of the following environment variables, but not all of
         the ones needed for SauceLabs:
@@ -260,17 +264,39 @@ def _local_browser_class(browser_name):
                 name=browser_name, options=", ".join(BROWSERS.keys())))
     else:
         if browser_name == 'firefox':
-            firefox_profile = webdriver.FirefoxProfile()
+            profile_dir = os.environ.get(FIREFOX_PROFILE_ENV_VAR)
 
-            # Bypasses the security prompt displayed by the browser when it attempts to
-            # access a media device (e.g., a webcam)
-            firefox_profile.set_preference('media.navigator.permission.disabled', True)
+            if profile_dir:
+                LOGGER.info("Using firefox profile: %s", profile_dir)
+                try:
+                    firefox_profile = webdriver.FirefoxProfile(profile_dir)
+                except OSError as err:
+                    if err.errno == errno.ENOENT:
+                        raise BrowserConfigError(
+                            "Firefox profile directory {env_var}={profile_dir} does not exist".format(
+                                env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
+                    elif err.errno == errno.EACCES:
+                        raise BrowserConfigError(
+                            "Firefox profile directory {env_var}={profile_dir} has incorrect permissions. It must be \
+                            readable and executable.".format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
+                    else:
+                        # Some other OSError:
+                        raise BrowserConfigError(
+                            "Problem with firefox profile directory {env_var}={profile_dir}: {msg}"
+                            .format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir, msg=str(err)))
+            else:
+                LOGGER.info("Using default firefox profile")
+                firefox_profile = webdriver.FirefoxProfile()
 
-            # Disable the initial url fetch to 'learn more' from mozilla (so you don't have to
-            # be online to run bok-choy on firefox)
-            firefox_profile.set_preference('browser.startup.homepage', 'about:blank')
-            firefox_profile.set_preference('startup.homepage_welcome_url', 'about:blank')
-            firefox_profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
+                # Bypasses the security prompt displayed by the browser when it attempts to
+                # access a media device (e.g., a webcam)
+                firefox_profile.set_preference('media.navigator.permission.disabled', True)
+
+                # Disable the initial url fetch to 'learn more' from mozilla (so you don't have to
+                # be online to run bok-choy on firefox)
+                firefox_profile.set_preference('browser.startup.homepage', 'about:blank')
+                firefox_profile.set_preference('startup.homepage_welcome_url', 'about:blank')
+                firefox_profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
 
             browser_args = []
             browser_kwargs = {
