@@ -8,14 +8,14 @@ lazy-object-proxy==1.2.2
 wrapt==1.10.8
 
 # cov-core
-coverage==3.7.1
+coverage==4.1
 
 # pylint
 colorama==0.3.7
 
 # pylint-plugin-utils
 astroid==1.4.6
-pylint==1.5.4
+pylint==1.5.6
 
 # pylint-celery, pylint-django
 pylint-plugin-utils
@@ -37,7 +37,7 @@ pytest==2.9.2
 edx_lint==0.5.1
 
 # For mocking functionality in assorted tests
-mock==1.0.1
+mock==2.0.0
 
 # For checking compliance with PEP 8 coding style guidelines
 pycodestyle==2.0.0

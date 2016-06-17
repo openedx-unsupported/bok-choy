@@ -103,20 +103,16 @@ class TestBrowser(TestCase):
         self.assertEqual(patch_object.call_count, 3)
 
 
-class TestSaveFiles(TestCase):
+class TestSaveFiles(object):
 
-    def setUp(self):
-        super(TestSaveFiles, self).setUp()
-
+    def setup(self):
         # Create a temp directory to save the files to
-        tempdir_path = tempfile.mkdtemp()
-        self.addCleanup(lambda: shutil.rmtree(tempdir_path))
+        self.tempdir_path = tempfile.mkdtemp()
+        self.browser = bok_choy.browser.browser()
 
-        # Take a screenshot of a page
-        browser = bok_choy.browser.browser()
-        self.addCleanup(browser.quit)
-        self.browser = browser
-        self.tempdir_path = tempdir_path
+    def teardown(self):
+        shutil.rmtree(self.tempdir_path)
+        self.browser.quit()
 
     def test_save_screenshot(self):
         browser = self.browser
@@ -129,10 +125,15 @@ class TestSaveFiles(TestCase):
 
         # Check that the file was created
         expected_file = os.path.join(tempdir_path, 'button_page.png')
-        self.assertTrue(os.path.isfile(expected_file))
+        assert os.path.isfile(expected_file)
 
         # Check that the file is not empty
-        self.assertGreater(os.stat(expected_file).st_size, 100)
+        assert os.stat(expected_file).st_size > 100
+
+    def test_save_screenshot_unsupported(self, caplog):
+        browser = 'Some driver without save_screenshot()'
+        bok_choy.browser.save_screenshot(browser, 'button_page')
+        assert 'Browser does not support screenshots.' in caplog.text
 
     def test_save_driver_logs(self):
         browser = self.browser
@@ -148,7 +149,24 @@ class TestSaveFiles(TestCase):
         log_types = ['browser', 'driver', 'client', 'server']
         for log_type in log_types:
             expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
-            self.assertTrue(os.path.isfile(expected_file))
+            assert os.path.isfile(expected_file)
+
+    def test_save_driver_logs_exception(self, caplog):
+        browser = self.browser
+        tempdir_path = self.tempdir_path
+
+        # Configure the driver log directory using an environment variable
+        os.environ['SELENIUM_DRIVER_LOG_DIR'] = tempdir_path
+        JavaScriptPage(browser).visit()
+        with patch.object(browser, 'get_log', side_effect=Exception):
+            bok_choy.browser.save_driver_logs(browser, 'js_page')
+
+        # Check that no files were created.
+        log_types = ['browser', 'driver', 'client', 'server']
+        for log_type in log_types:
+            expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
+            assert not os.path.exists(expected_file)
+            assert "Could not save browser log of type '{}'.".format(log_type) in caplog.text
 
     def test_save_source(self):
         browser = self.browser
@@ -161,7 +179,16 @@ class TestSaveFiles(TestCase):
 
         # Check that the file was created
         expected_file = os.path.join(tempdir_path, 'button_page.html')
-        self.assertTrue(os.path.isfile(expected_file))
+        assert os.path.isfile(expected_file)
 
         # Check that the file is not empty
-        self.assertGreater(os.stat(expected_file).st_size, 100)
+        assert os.stat(expected_file).st_size > 100
+
+    def test_save_source_missing_directory(self, caplog):
+        os.environ['SAVED_SOURCE_DIR'] = '/does_not_exist'
+        ButtonPage(self.browser).visit()
+        bok_choy.browser.save_source(self.browser, 'button_page')
+
+        expected_file = os.path.join(self.tempdir_path, 'button_page.html')
+        assert not os.path.exists(expected_file)
+        assert 'Could not save the browser page source' in caplog.text
