@@ -50,6 +50,9 @@ BROWSERS = {
 
 FIREFOX_PROFILE_ENV_VAR = 'FIREFOX_PROFILE_PATH'
 
+# A list of functions accepting one FirefoxProfile argument
+FIREFOX_PROFILE_CUSTOMIZERS = []
+
 
 class BrowserConfigError(Exception):
 
@@ -248,6 +251,56 @@ def browser(tags=None, proxy=None):
     return browser_instance
 
 
+def add_profile_customizer(func):
+    """Add a new function that modifies the preferences of the firefox profile object it receives as an argument"""
+    FIREFOX_PROFILE_CUSTOMIZERS.append(func)
+
+
+def clear_profile_customizers():
+    """Remove any previously-configured functions for customizing the firefox profile"""
+    FIREFOX_PROFILE_CUSTOMIZERS[:] = []
+
+
+def _firefox_profile():
+    """Configure the Firefox profile, respecting FIREFOX_PROFILE_PATH if set"""
+    profile_dir = os.environ.get(FIREFOX_PROFILE_ENV_VAR)
+
+    if profile_dir:
+        LOGGER.info("Using firefox profile: %s", profile_dir)
+        try:
+            firefox_profile = webdriver.FirefoxProfile(profile_dir)
+        except OSError as err:
+            if err.errno == errno.ENOENT:
+                raise BrowserConfigError(
+                    "Firefox profile directory {env_var}={profile_dir} does not exist".format(
+                        env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
+            elif err.errno == errno.EACCES:
+                raise BrowserConfigError(
+                    "Firefox profile directory {env_var}={profile_dir} has incorrect permissions. It must be \
+                    readable and executable.".format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
+            else:
+                # Some other OSError:
+                raise BrowserConfigError(
+                    "Problem with firefox profile directory {env_var}={profile_dir}: {msg}"
+                    .format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir, msg=str(err)))
+    else:
+        LOGGER.info("Using default firefox profile")
+        firefox_profile = webdriver.FirefoxProfile()
+
+        # Bypasses the security prompt displayed by the browser when it attempts to
+        # access a media device (e.g., a webcam)
+        firefox_profile.set_preference('media.navigator.permission.disabled', True)
+
+        # Disable the initial url fetch to 'learn more' from mozilla (so you don't have to
+        # be online to run bok-choy on firefox)
+        firefox_profile.set_preference('browser.startup.homepage', 'about:blank')
+        firefox_profile.set_preference('startup.homepage_welcome_url', 'about:blank')
+        firefox_profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
+    for function in FIREFOX_PROFILE_CUSTOMIZERS:
+        function(firefox_profile)
+    return firefox_profile
+
+
 def _local_browser_class(browser_name):
     """
     Returns class, kwargs, and args needed to instantiate the local browser.
@@ -264,43 +317,9 @@ def _local_browser_class(browser_name):
                 name=browser_name, options=", ".join(list(BROWSERS.keys()))))
     else:
         if browser_name == 'firefox':
-            profile_dir = os.environ.get(FIREFOX_PROFILE_ENV_VAR)
-
-            if profile_dir:
-                LOGGER.info("Using firefox profile: %s", profile_dir)
-                try:
-                    firefox_profile = webdriver.FirefoxProfile(profile_dir)
-                except OSError as err:
-                    if err.errno == errno.ENOENT:
-                        raise BrowserConfigError(
-                            "Firefox profile directory {env_var}={profile_dir} does not exist".format(
-                                env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
-                    elif err.errno == errno.EACCES:
-                        raise BrowserConfigError(
-                            "Firefox profile directory {env_var}={profile_dir} has incorrect permissions. It must be \
-                            readable and executable.".format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
-                    else:
-                        # Some other OSError:
-                        raise BrowserConfigError(
-                            "Problem with firefox profile directory {env_var}={profile_dir}: {msg}"
-                            .format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir, msg=str(err)))
-            else:
-                LOGGER.info("Using default firefox profile")
-                firefox_profile = webdriver.FirefoxProfile()
-
-                # Bypasses the security prompt displayed by the browser when it attempts to
-                # access a media device (e.g., a webcam)
-                firefox_profile.set_preference('media.navigator.permission.disabled', True)
-
-                # Disable the initial url fetch to 'learn more' from mozilla (so you don't have to
-                # be online to run bok-choy on firefox)
-                firefox_profile.set_preference('browser.startup.homepage', 'about:blank')
-                firefox_profile.set_preference('startup.homepage_welcome_url', 'about:blank')
-                firefox_profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
-
             browser_args = []
             browser_kwargs = {
-                'firefox_profile': firefox_profile,
+                'firefox_profile': _firefox_profile(),
             }
             if os.environ.get('SELENIUM_FIREFOX_PATH', None):
                 binary_kwarg = {
@@ -359,6 +378,8 @@ def _remote_browser_class(env_vars, tags=None):
         'command_executor': url,
         'desired_capabilities': caps,
     }
+    if caps['browserName'] == 'firefox':
+        browser_kwargs['browser_profile'] = _firefox_profile()
 
     return webdriver.Remote, browser_args, browser_kwargs
 
