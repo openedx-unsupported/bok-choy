@@ -1,4 +1,8 @@
-from __future__ import unicode_literals
+"""
+pytest configuration and fixtures
+"""
+
+from __future__ import absolute_import, unicode_literals
 
 from multiprocessing import Process
 import os
@@ -10,7 +14,7 @@ from .http_server import main as start_test_server
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 
-def pytest_configure(config):
+def pytest_configure(config):  # pylint: disable=unused-argument
     """Set some environment variables to default values if absent"""
     if 'SCREENSHOT_DIR' not in os.environ:
         os.environ['SCREENSHOT_DIR'] = REPO_ROOT
@@ -26,6 +30,7 @@ def test_server(request):
     server = Process(target=start_test_server)
 
     def fin():
+        """Stop the test server"""
         server.terminate()
     request.addfinalizer(fin)
     server.start()

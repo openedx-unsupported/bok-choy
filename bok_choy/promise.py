@@ -2,6 +2,8 @@
 Variation on the "promise" design pattern.
 Promises make it easier to handle asynchronous operations correctly.
 """
+from __future__ import absolute_import
+
 import time
 import logging
 

@@ -1,15 +1,17 @@
 """
 Tests browser instantiation, selection, etc
 """
+from __future__ import absolute_import
 
 import tempfile
 import shutil
 import os
 import socket
+from unittest import TestCase
+
 from mock import patch
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
-from unittest import TestCase
 
 import bok_choy.browser
 from bok_choy.promise import BrokenPromise
@@ -42,6 +44,9 @@ class TestBrowser(TestCase):
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'firefox'})
     def test_customize_firefox_preferences(self):
         def customize_preferences(profile):
+            """
+            Disable the limits on script execution time.
+            """
             profile.set_preference('dom.max_chrome_script_run_time', 0)
             profile.set_preference('dom.max_script_run_time', 0)
         bok_choy.browser.add_profile_customizer(customize_preferences)
@@ -68,13 +73,13 @@ class TestBrowser(TestCase):
 
     @patch.dict(os.environ, {'SELENIUM_FIREFOX_PATH': '/foo/path'})
     def test_custom_firefox_path(self):
-        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')
-        self.assertTrue('firefox_binary' in browser_kwargs_tuple[2])
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
+        assert 'firefox_binary' in browser_kwargs_tuple[2]
 
     @patch.dict(os.environ, {'SELENIUM_FIREFOX_PATH': ''})
     def test_no_custom_firefox_path(self):
-        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')
-        self.assertFalse('firefox_binary' in browser_kwargs_tuple[2])
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
+        assert 'firefox_binary' not in browser_kwargs_tuple[2]
 
     def test_profile_error(self):
         """
@@ -93,16 +98,16 @@ class TestBrowser(TestCase):
     def test_custom_firefox_profile(self):
         patch_object = patch.object(webdriver, 'FirefoxProfile').start()
         self.addCleanup(patch.stopall)
-        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')
-        self.assertTrue('firefox_profile' in browser_kwargs_tuple[2])
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
+        assert 'firefox_profile' in browser_kwargs_tuple[2]
         patch_object.assert_called_with('/foo/path')
 
     @patch.dict(os.environ, {'FIREFOX_PROFILE_PATH': ''})
     def test_no_custom_firefox_profile(self):
         patch_object = patch.object(webdriver, 'FirefoxProfile').start()
         self.addCleanup(patch.stopall)
-        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')
-        self.assertTrue('firefox_profile' in browser_kwargs_tuple[2])
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
+        assert 'firefox_profile' in browser_kwargs_tuple[2]
         patch_object.assert_called_with()
 
     def test_socket_error(self):
@@ -120,13 +125,27 @@ class TestBrowser(TestCase):
 
 
 class TestSaveFiles(object):
+    """
+    Tests for saving files from the browser (including logs, page source, and
+    screenshots).
+    """
+
+    def __init__(self):
+        self.tempdir_path = None
+        self.browser = None
 
     def setup(self):
-        # Create a temp directory to save the files to
+        """
+        Create a temp directory to save the files to and instantiate the
+        browser.
+        """
         self.tempdir_path = tempfile.mkdtemp()
         self.browser = bok_choy.browser.browser()
 
     def teardown(self):
+        """
+        Remove the temp directory and quit the browser.
+        """
         shutil.rmtree(self.tempdir_path)
         self.browser.quit()
 

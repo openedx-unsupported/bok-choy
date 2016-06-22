@@ -1,15 +1,14 @@
 """
 Test accessibility auditing.
 """
+from __future__ import absolute_import
+
 import os
 
-from mock import patch, Mock
+from mock import patch
 
 from bok_choy.web_app_test import WebAppTest
 from bok_choy.a11y.a11y_audit import AccessibilityError, A11yAuditConfigError
-from bok_choy.a11y.axs_ruleset import AxsAudit
-from bok_choy.a11y.axe_core_ruleset import AxeCoreAudit
-from bok_choy.promise import BrokenPromise
 from .pages import AccessibilityPage
 
 
@@ -45,7 +44,7 @@ class GoogleAxsAccessibilityTestMixin(object):
         page.a11y_audit.config.set_rules_file("nonexistent_file")
         page.visit()
         with self.assertRaises(RuntimeError):
-            report = page.a11y_audit.do_audit()
+            page.a11y_audit.do_audit()
 
     def test_axs_audit_no_rules(self):
         page = AccessibilityPage(self.browser)
@@ -264,6 +263,10 @@ class AxeCoreTestMixin(object):
     Test cases for axe-core ruleset accessibility audit integration.
     """
     def _do_audit_and_check_errors(self, expected_errors):
+        """
+        Visit ``self.page``, run the accessibility audit, and verify that the
+        results match ``expected_errors``.
+        """
         self.page.visit()
         report = self.page.a11y_audit.do_audit()
         errors = self.page.a11y_audit.get_errors(report)
@@ -273,7 +276,7 @@ class AxeCoreTestMixin(object):
         self.page.a11y_audit.config.set_rules_file("nonexistent_file")
         self.page.visit()
         with self.assertRaises(RuntimeError):
-            report = self.page.a11y_audit.do_audit()
+            self.page.a11y_audit.do_audit()
 
     def test_default_config(self):
         self._do_audit_and_check_errors(6)

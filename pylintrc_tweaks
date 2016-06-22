@@ -1,0 +1,5 @@
+[MASTER]
+load-plugins = edx_lint.pylint
+
+[TYPECHECK]
+ignored-modules=six.moves

@@ -2,6 +2,8 @@
 Interface for using the axe-core ruleset.
 See: https://github.com/dequelabs/axe-core
 """
+from __future__ import absolute_import
+
 import json
 import os
 

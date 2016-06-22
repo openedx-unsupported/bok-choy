@@ -1,35 +1,46 @@
-from mock import Mock
+"""
+Tests of the ``bok_choy.query`` module
+"""
+
+from __future__ import absolute_import
+
 from unittest import TestCase
+
+from mock import Mock
 from selenium.common.exceptions import WebDriverException
 from bok_choy.query import Query, BrowserQuery
 
 
 class TestQuery(TestCase):
+    """
+    Tests of the ``Query`` class
+    """
     def setUp(self):
+        super(TestQuery, self).setUp()
         self.query = Query(lambda: list(range(5)))
 
     def test_initial_identify(self):
-        self.assertEquals([0, 1, 2, 3, 4], self.query.results)
+        assert self.query.results == [0, 1, 2, 3, 4]
 
     def test_replace(self):
         clone = self.query.replace(seed_fn=lambda: list(range(3)))
-        self.assertNotEquals(id(clone), id(self.query))
-        self.assertEquals([0, 1, 2], clone.results)
-        self.assertEquals([0, 1, 2, 3, 4], self.query.results)
+        assert id(self.query) != id(clone)
+        assert clone.results == [0, 1, 2]
+        assert self.query.results == [0, 1, 2, 3, 4]
 
         clone2 = self.query.replace(transforms=[lambda xs: (x + 1 for x in xs)])
-        self.assertNotEquals(id(clone2), id(self.query))
-        self.assertEquals([1, 2, 3, 4, 5], clone2.results)
-        self.assertEquals([0, 1, 2, 3, 4], self.query.results)
+        assert id(self.query) != id(clone2)
+        assert clone2.results == [1, 2, 3, 4, 5]
+        assert self.query.results == [0, 1, 2, 3, 4]
 
         with self.assertRaises(TypeError):
             self.query.replace(foo='bar')
 
     def test_transform(self):
         transformed = self.query.transform(lambda xs: (x + 1 for x in xs))
-        self.assertNotEquals(id(transformed), id(self.query))
-        self.assertEquals([1, 2, 3, 4, 5], transformed.results)
-        self.assertEquals([0, 1, 2, 3, 4], self.query.results)
+        assert id(self.query) != id(transformed)
+        assert transformed.results == [1, 2, 3, 4, 5]
+        assert self.query.results == [0, 1, 2, 3, 4]
 
     def test_transforms_stack(self):
         transformed = self.query.transform(
@@ -38,26 +49,26 @@ class TestQuery(TestCase):
             lambda xs: (x * 2 for x in xs)
         )
 
-        self.assertNotEquals(id(transformed), id(self.query))
-        self.assertEquals([2, 4, 6, 8, 10], transformed.results)
-        self.assertEquals([0, 1, 2, 3, 4], self.query.results)
+        assert id(self.query) != id(transformed)
+        assert transformed.results == [2, 4, 6, 8, 10]
+        assert self.query.results == [0, 1, 2, 3, 4]
 
     def test_map(self):
         mapped = self.query.map(lambda x: x + 1)
         transformed = self.query.transform(lambda xs: (x + 1 for x in xs))
-        self.assertNotEquals(id(self.query), id(mapped))
-        self.assertEquals(mapped.results, transformed.results)
+        assert id(self.query) != id(mapped)
+        assert transformed.results == mapped.results
 
     def test_filter(self):
         filtered = self.query.filter(lambda x: x % 2 == 0)
-        self.assertNotEquals(id(self.query), id(filtered))
-        self.assertEquals([0, 2, 4], filtered.results)
+        assert id(self.query) != id(filtered)
+        assert filtered.results == [0, 2, 4]
 
     def test_filter_shortcut(self):
         mapped = self.query.map(lambda x: Mock(text=str(x)))
         filtered = mapped.filter(text="3")
-        self.assertEquals(1, len(filtered))
-        self.assertEquals(mapped[3].text, filtered[0].text)
+        assert len(filtered) == 1
+        assert filtered[0].text == mapped[3].text
 
     def test_filter_invalid_args(self):
 
@@ -75,36 +86,39 @@ class TestQuery(TestCase):
         self.assertEqual(["success"], Query(seed_fn=seed).results)
 
     def test_length(self):
-        self.assertEquals(5, len(self.query))
-        self.assertEquals(3, len(self.query.filter(lambda x: x % 2 == 0)))
+        assert len(self.query) == 5
+        assert len(self.query.filter(lambda x: x % 2 == 0)) == 3
 
     def test_present(self):
         self.assertTrue(self.query.present)
         self.assertFalse(self.query.filter(lambda x: x > 10).present)
 
     def test_getitem(self):
-        self.assertEquals(3, self.query[3])
-        self.assertEquals(2, self.query.filter(lambda x: x % 2 == 0)[1])
+        assert self.query[3] == 3
+        assert self.query.filter(lambda x: x % 2 == 0)[1] == 2
 
     def test_repr(self):
-        self.assertEquals(u"Query(<lambda>)", repr(self.query))
+        assert repr(self.query) == u"Query(<lambda>)"
 
         def integers():
+            """
+            Return the first 100 integers
+            """
             return list(range(100))
 
-        self.assertEquals(u"Query(integers)", repr(Query(integers)))
+        assert repr(Query(integers)) == u"Query(integers)"
 
-        self.assertEquals(u"Query(<lambda>).map(<lambda>)", repr(self.query.map(lambda x: x + 1)))
-        self.assertEquals(u"Query(<lambda>).map(x + 1)", repr(self.query.map(lambda x: x + 1, 'x + 1')))
-        self.assertEquals(
+        assert repr(self.query.map(lambda x: x + 1)) == u"Query(<lambda>).map(<lambda>)"
+        assert repr(self.query.map(lambda x: x + 1, 'x + 1')) == u"Query(<lambda>).map(x + 1)"
+        self.assertEqual(
             u"Query(<lambda>).map(x + 1).filter(<lambda>)",
             repr(self.query.map(lambda x: x + 1, 'x + 1').filter(lambda x: x > 2))
         )
-        self.assertEquals(
+        self.assertEqual(
             u"Query(<lambda>).transform(<lambda>)",
             repr(self.query.transform(lambda xs: iter(xs).next(0)))
         )
-        self.assertEquals(
+        self.assertEqual(
             u"Query(<lambda>).filter(text='foo')",
             repr(self.query.filter(text='foo'))
         )
@@ -127,7 +141,11 @@ class TestQuery(TestCase):
 
 
 class TestBrowserQuery(TestCase):
+    """
+    Tests of the ``BrowserQuery`` class.
+    """
     def setUp(self):
+        super(TestBrowserQuery, self).setUp()
         self.browser = Mock(
             find_elements_by_css_selector=Mock(return_value=list(range(3))),
             find_elements_by_xpath=Mock(return_value=list(range(10)))
@@ -144,15 +162,15 @@ class TestBrowserQuery(TestCase):
             BrowserQuery(self.browser, foo='bar')
 
     def test_query_args(self):
-        self.assertEquals(
+        self.assertEqual(
             self.browser.find_elements_by_css_selector.return_value,
             BrowserQuery(self.browser, css='foo').results
         )
-        self.assertEquals(
+        self.assertEqual(
             self.browser.find_elements_by_xpath.return_value,
             BrowserQuery(self.browser, xpath='foo').results
         )
 
     def test_repr(self):
-        self.assertEquals(u"BrowserQuery(css='foo')", repr(BrowserQuery(self.browser, css='foo')))
-        self.assertEquals(u"BrowserQuery(xpath='foo')", repr(BrowserQuery(self.browser, xpath='foo')))
+        assert repr(BrowserQuery(self.browser, css='foo')) == u"BrowserQuery(css='foo')"
+        assert repr(BrowserQuery(self.browser, xpath='foo')) == u"BrowserQuery(xpath='foo')"

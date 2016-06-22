@@ -2,6 +2,8 @@
 Base implementation of the Page Object pattern.
 See https://code.google.com/p/selenium/wiki/PageObjects
 """
+from __future__ import absolute_import
+
 from abc import ABCMeta, abstractmethod, abstractproperty
 from collections import defaultdict
 from functools import wraps

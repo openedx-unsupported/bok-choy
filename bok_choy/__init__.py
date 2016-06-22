@@ -1,6 +1,8 @@
 """
 bok-choy is a UI-level acceptance test framework
 """
+from __future__ import absolute_import
+
 import logging
 
 # Suppress noisy loggers
