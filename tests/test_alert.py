@@ -1,6 +1,7 @@
 """
 Test handling of alerts.
 """
+from __future__ import absolute_import
 
 from bok_choy.web_app_test import WebAppTest
 from .pages import AlertPage
@@ -17,12 +18,12 @@ class AlertTest(WebAppTest):
 
     def test_confirm(self):
         self.alert.confirm()
-        self.assertEquals(self.alert.output, "confirmed")
+        assert self.alert.output == "confirmed"
 
     def test_cancel(self):
         self.alert.cancel()
-        self.assertEquals(self.alert.output, "cancelled")
+        assert self.alert.output == "cancelled"
 
     def test_dismiss(self):
         self.alert.dismiss()
-        self.assertEquals(self.alert.output, "Alert closed")
+        assert self.alert.output == "Alert closed"

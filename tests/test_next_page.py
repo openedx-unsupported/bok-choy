@@ -1,6 +1,7 @@
 """
 Test wait until next page loads.
 """
+from __future__ import absolute_import
 
 from bok_choy.web_app_test import WebAppTest
 from bok_choy.promise import BrokenPromise

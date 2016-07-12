@@ -1,6 +1,7 @@
 """
 Test waiting for elements to appear after a delay.
 """
+from __future__ import absolute_import
 
 from bok_choy.web_app_test import WebAppTest
 from bok_choy.promise import BrokenPromise
@@ -22,7 +23,7 @@ class DelayTest(WebAppTest):
         until after a delay.
         """
         self.delay.trigger_output()
-        self.assertEquals(self.delay.output, "Done")
+        assert self.delay.output == "Done"
 
     def test_broken_promise(self):
         broken_promise_raised = False

@@ -1,6 +1,7 @@
 """
 Page objects for interacting with the test site.
 """
+from __future__ import absolute_import
 
 import os
 import time
@@ -76,11 +77,14 @@ class SelectPage(SitePage):
 
     def select_car(self, car_value):
         """
-        Select the car with `value` in the drop-down list.
+        Select the car with ``car_value`` in the drop-down list.
         """
         self.q(css='select[name="cars"] option[value="{}"]'.format(car_value)).first.click()
 
     def is_car_selected(self, car):
+        """
+        Return ``True`` if the given ``car`` is selected, ``False`` otherwise.
+        """
         return self.q(css='select[name="cars"] option[value="{}"]'.format(car)).selected
 
 
@@ -104,14 +108,23 @@ class AlertPage(SitePage):
     name = "alert"
 
     def confirm(self):
+        """
+        Click the ``Confirm`` button and confirm the dialog.
+        """
         with self.handle_alert(confirm=True):
             self.q(css='button#confirm').first.click()
 
     def cancel(self):
+        """
+        Click the ``Confirm`` button and cancel the dialog.
+        """
         with self.handle_alert(confirm=False):
             self.q(css='button#confirm').first.click()
 
     def dismiss(self):
+        """
+        Click the ``Alert`` button and confirm the alert.
+        """
         with self.handle_alert():
             self.q(css='button#alert').first.click()
 
@@ -157,8 +170,7 @@ class SelectorPage(SitePage):
         the specified text in a child element.
         """
         return self.q(css='div.outer').filter(
-            lambda el:
-                child_text in [inner.text for inner in el.find_elements_by_css_selector('div.inner')]
+            lambda el: child_text in [inner.text for inner in el.find_elements_by_css_selector('div.inner')]
         ).attrs('id')
 
 
@@ -224,6 +236,9 @@ class FocusedPage(SitePage):
     name = "focused"
 
     def focus_on_main_content(self):
+        """
+        Give focus to the element with the ``main-content`` ID.
+        """
         self.browser.execute_script("$('#main-content').focus()")
 
 
@@ -267,7 +282,7 @@ class JavaScriptPage(SitePage):
         Reload the page, wait for JS, then trigger the output.
         """
         self.browser.refresh()
-        self.wait_for_js()
+        self.wait_for_js()  # pylint: disable=no-member
         self.q(css='div#fixture button').first.click()
 
 
@@ -299,6 +314,10 @@ class RequireJSPage(SitePage):
     @property
     @wait_for_js
     def output(self):
+        """
+        Wait for scripts to finish and then return the contents of the
+        ``#output`` div on the page.
+        """
         return super(RequireJSPage, self).output
 
 

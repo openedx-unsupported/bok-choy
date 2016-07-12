@@ -1,23 +1,25 @@
 """
 Base class for testing a web application.
 """
+from __future__ import absolute_import
+
 from abc import ABCMeta
 import sys
 from unittest import SkipTest
 from uuid import uuid4
 
 from needle.cases import NeedleTestCase, import_from_string
+import six
 
 from .browser import browser, save_screenshot, save_driver_logs, save_source
 
 
+@six.add_metaclass(ABCMeta)
 class WebAppTest(NeedleTestCase):
 
     """
     Base class for testing a web application.
     """
-
-    __metaclass__ = ABCMeta
 
     # Execute tests in parallel!
     _multiprocess_can_split_ = True

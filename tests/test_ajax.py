@@ -1,6 +1,7 @@
 """
 Test waiting for elements to appear after requesting via ajax.
 """
+from __future__ import absolute_import
 
 from bok_choy.promise import BrokenPromise
 from bok_choy.web_app_test import WebAppTest
@@ -23,7 +24,7 @@ class AjaxTest(WebAppTest):
         """
         self.ajax.click_button()
         self.ajax.wait_for_ajax()
-        self.assertEquals(self.ajax.output, "Loaded via an ajax call.")
+        assert self.ajax.output == "Loaded via an ajax call."
 
     def test_ajax_too_slow(self):
         """

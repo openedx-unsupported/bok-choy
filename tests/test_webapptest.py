@@ -1,6 +1,8 @@
 """
 Tests for the WebAppTest class.
 """
+from __future__ import absolute_import
+
 import os
 from unittest import expectedFailure
 
@@ -20,7 +22,7 @@ class ScreenshotAssertTest(WebAppTest):
         so we can monkeypatch it here in the testcase itself.
         """
         self.baseline_directory = os.path.realpath(os.path.join(os.getcwd(), 'tests', 'baseline'))
-        self.page = ImagePage(self.browser).visit()
+        ImagePage(self.browser).visit()
         self.assertScreenshot('#green_check', 'correct-icon')
 
     @expectedFailure
@@ -32,5 +34,5 @@ class ScreenshotAssertTest(WebAppTest):
         so we can monkeypatch it here in the testcase itself.
         """
         self.baseline_directory = os.path.realpath(os.path.join(os.getcwd(), 'tests', 'baseline'))
-        self.page = ImagePage(self.browser).visit()
+        ImagePage(self.browser).visit()
         self.assertScreenshot('#green_check', 'incorrect-icon')
