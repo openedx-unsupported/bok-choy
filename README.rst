@@ -39,7 +39,7 @@ To run the test suite for bok-choy itself:
   dependencies
 * Run ``tox -e py27`` (or ``tox -e py35``)
 * To test and build the documentation, run ``tox -e doc``
-* To run an individual test run ``py.test tests/<test file>::TestSaveFiles::<test name>``
+* To run an individual test, run ``py.test tests/<test file>::<test class>::<test name>``
 
 
 License
