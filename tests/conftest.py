@@ -20,8 +20,15 @@ def pytest_configure(config):  # pylint: disable=unused-argument
         os.environ['SCREENSHOT_DIR'] = REPO_ROOT
     if 'SELENIUM_DRIVER_LOG_DIR' not in os.environ:
         os.environ['SELENIUM_DRIVER_LOG_DIR'] = REPO_ROOT
-    if 'SERVER_PORT' not in os.environ:
-        os.environ['SERVER_PORT'] = '8005'
+    if 'SERVER_PORT' not in os.environ and not hasattr(config, 'slaveinput'):
+        config.server_ports = [str(port) for port in range(8020, 8040)]
+        # In case we're only using one node
+        os.environ['SERVER_PORT'] = '8020'
+
+
+def pytest_configure_node(node):
+    """Give each test node a distinct HTTP port to use"""
+    os.environ['SERVER_PORT'] = node.config.server_ports.pop()
 
 
 @pytest.fixture(scope='session')

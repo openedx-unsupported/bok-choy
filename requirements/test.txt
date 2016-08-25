@@ -10,26 +10,31 @@ wrapt==1.10.8
 # cov-core
 coverage==4.1
 
+# execnet
+apipkg==1.4
+
 # pylint
 colorama==0.3.7
 
 # pylint-plugin-utils
-astroid==1.4.6
+astroid==1.4.7
 pylint==1.5.6
 
 # pylint-celery, pylint-django
-pylint-plugin-utils
+pylint-plugin-utils==0.2.4
 
 # edx-lint
 pylint-celery==0.3
 pylint-django==0.7.2
 
-# pytest
+# pytest, pytest-xdist
 py==1.4.31
 
-# pytest-cov
-cov-core==1.15.0
+# pytest-cov, pytest-xdist
 pytest==2.9.2
+
+# pytest-xdist
+execnet==1.4.1
 
 # Then the direct dependencies
 
@@ -47,3 +52,6 @@ pytest-catchlog==1.2.2
 
 # For code coverage statistics generation
 pytest-cov==2.2.1
+
+# For parallel test execution
+pytest-xdist==1.14

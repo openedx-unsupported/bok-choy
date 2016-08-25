@@ -30,14 +30,16 @@ Running Tests
 
 To run the test suite for bok-choy itself:
 
-* Install Firefox, `version 46.0.1 <https://ftp.mozilla.org/pub/firefox/releases/46.0.1/>`_
-  or earlier (later versions require a different selenium driver)
+* Install Firefox; as of this writing, the current `version 47.0.1 <https://ftp.mozilla.org/pub/firefox/releases/47.0.1/>`_
+  works with the latest selenium Python package (2.53.6)
 * Install `phantomjs <http://phantomjs.org/download.html>`_
 * Create a virtualenv which uses Python 2.7 (or Python 3.5)
 * With that virtualenv activated, run ``pip install -r requirements/tox.txt`` to
   install the `tox <http://tox.testrun.org/>`_ testing tool and its
   dependencies
-* Run ``tox -e py27`` (or ``tox -e py35``)
+* Run ``tox -e py27`` (or ``tox -e py35``).  If you want to run the tests in
+  parallel, add the desired number of worker processes like ``tox -e py27 -- -n 5``
+  or ``tox -e py35 -- -n auto``.
 * To test and build the documentation, run ``tox -e doc``
 * To run an individual test, run ``py.test tests/<test file>::<test class>::<test name>``
 
