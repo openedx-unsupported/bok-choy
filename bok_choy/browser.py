@@ -323,11 +323,22 @@ def _local_browser_class(browser_name):
             browser_kwargs = {
                 'firefox_profile': _firefox_profile(),
             }
-            if os.environ.get('SELENIUM_FIREFOX_PATH', None):
-                binary_kwarg = {
-                    'firefox_binary': FirefoxBinary(firefox_path=os.environ.get('SELENIUM_FIREFOX_PATH'))
-                }
-                browser_kwargs.update(binary_kwarg)
+
+            firefox_path = os.environ.get('SELENIUM_FIREFOX_PATH')
+            firefox_log = os.environ.get('SELENIUM_FIREFOX_LOG')
+            if firefox_path and firefox_log:
+                browser_kwargs.update({
+                    'firefox_binary': FirefoxBinary(
+                        firefox_path=firefox_path, log_file=firefox_log)
+                })
+            elif firefox_path:
+                browser_kwargs.update({
+                    'firefox_binary': FirefoxBinary(firefox_path=firefox_path)
+                })
+            elif firefox_log:
+                browser_kwargs.update({
+                    'firefox_binary': FirefoxBinary(log_file=firefox_log)
+                })
 
         elif browser_name == 'chrome':
             chrome_options = Options()
