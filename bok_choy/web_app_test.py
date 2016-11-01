@@ -27,6 +27,9 @@ class WebAppTest(NeedleTestCase):
     def __init__(self, *args, **kwargs):
         super(WebAppTest, self).__init__(*args, **kwargs)
 
+        # Make all test failures show actual and expected values
+        self.longMessage = True  # pylint: disable=invalid-name
+
         # This allows using the @attr() decorator from nose to set these on a
         # test by test basis
         self.proxy = getattr(self, 'proxy', None)
