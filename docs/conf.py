@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import sys, os
+import os
+import sys
+import edx_theme
+
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -11,7 +14,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon', 'edx_theme']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -31,7 +34,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'bok-choy'
-copyright = u'2016, EdX'
+copyright = edx_theme.COPYRIGHT
+author = edx_theme.AUTHOR
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -54,7 +58,9 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'edx_theme'
+html_theme_path = [edx_theme.get_html_theme_path()]
+html_favicon = os.path.join(html_theme_path[0], 'edx_theme', 'static', 'css', 'favicon.ico')
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'bok-choydoc'
@@ -68,7 +74,7 @@ latex_elements = {}
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
   ('index', 'bok-choy.tex', u'bok-choy Documentation',
-   u'EdX', 'manual'),
+   author, 'manual'),
 ]
 
 
@@ -78,7 +84,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'bok-choy', u'bok-choy Documentation',
-     [u'EdX'], 1)
+     [author], 1)
 ]
 
 
@@ -89,7 +95,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'bok-choy', u'bok-choy Documentation',
-   u'EdX', 'bok-choy', 'One line description of project.',
+   author, 'bok-choy', 'One line description of project.',
    'Miscellaneous'),
 ]
 
