@@ -11,7 +11,7 @@ DESCRIPTION = 'UI-level acceptance test framework'
 REQUIREMENTS = (
     'lazy',
     'needle',
-    'selenium==2.53.6',
+    'selenium>=2,<3',
     'six',
 )
 
