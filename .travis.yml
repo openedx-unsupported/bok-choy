@@ -16,7 +16,7 @@ install:
 - pip install -r requirements/tox.txt
 - pip install tox-travis
 script:
-- tox -- -n 2 --durations=10
+- tox -- --durations=10
 - tox -e doc
 after_success:
 - pip install coveralls
