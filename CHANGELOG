@@ -1,3 +1,8 @@
+v0.6.1 (12/19/16)
+* Add support for programmatic customization of the Firefox profile preferences
+* edX best practices - Update doc theme; add yaml file for OEP2 compliance tracking
+* Improve linting and test execution
+
 v0.6.0 (06/17/16)
 * Support Python 3
 * Use pytest to run tests

@@ -3,7 +3,7 @@
 import codecs
 from setuptools import setup
 
-VERSION = '0.6.0'
+VERSION = '0.6.1'
 DESCRIPTION = 'UI-level acceptance test framework'
 
 # Version for selenium added since needle has a max version which is lower than the current default. If needle ever
