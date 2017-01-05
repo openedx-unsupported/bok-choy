@@ -37,7 +37,9 @@ To run the test suite for bok-choy itself:
 * With that virtualenv activated, run ``pip install -r requirements/tox.txt`` to
   install the `tox <http://tox.testrun.org/>`_ testing tool and its
   dependencies
-* Run ``tox -e py27`` (or ``tox -e py35``).
+* Run ``tox -e py27`` (or ``tox -e py35``).  If you want to run the tests in
+  parallel, add the desired number of worker processes like ``tox -e py27 -- -n 5``
+  or ``tox -e py35 -- -n auto``.
 * To test and build the documentation, run ``tox -e doc``
 * To run an individual test, run ``py.test tests/<test file>::<test class>::<test name>``
 
