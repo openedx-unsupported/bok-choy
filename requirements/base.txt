@@ -15,7 +15,7 @@ selenium==2.53.6
 lazy==1.2
 
 # For test assertions involving screenshots and visual diffs
-needle==0.3
+needle==0.4.1
 
 # For Python 2 & 3 compatibility
 six==1.10.0
