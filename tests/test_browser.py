@@ -81,6 +81,21 @@ class TestBrowser(TestCase):
         browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
         assert 'firefox_binary' not in browser_kwargs_tuple[2]
 
+    @patch.dict(os.environ, [('SELENIUM_FIREFOX_LOG', '/foo/file.log')])
+    def test_custom_firefox_log(self):
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
+        assert 'firefox_binary' in browser_kwargs_tuple[2]
+
+    @patch.dict(os.environ, [('SELENIUM_FIREFOX_LOG', '')])
+    def test_no_custom_firefox_log(self):
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
+        assert 'firefox_binary' not in browser_kwargs_tuple[2]
+
+    @patch.dict(os.environ, [('SELENIUM_FIREFOX_PATH', '/foo/path'), ('SELENIUM_FIREFOX_LOG', '/foo/file.log')])
+    def test_custom_firefox_path_and_log(self):
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
+        assert 'firefox_binary' in browser_kwargs_tuple[2]
+
     def test_profile_error(self):
         """
         If there is a WebDriverException when instantiating the driver,
