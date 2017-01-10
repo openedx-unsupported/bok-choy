@@ -40,6 +40,11 @@ class TestBrowser(TestCase):
         self.assertEqual(preferences['browser.startup.homepage'], 'about:blank')
         self.assertEqual(preferences['startup.homepage_welcome_url'], 'about:blank')
         self.assertEqual(preferences['startup.homepage_welcome_url.additional'], 'about:blank')
+        self.assertFalse(preferences['app.update.enabled'])
+        self.assertTrue(preferences['plugins.hide_infobar_for_outdated_plugin'])
+        self.assertFalse(preferences['datareporting.healthreport.service.enabled'])
+        self.assertFalse(preferences['datareporting.policy.dataSubmissionEnabled'])
+        self.assertFalse(preferences['toolkit.crashreporter.enabled'])
 
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'firefox'})
     def test_customize_firefox_preferences(self):

@@ -298,6 +298,22 @@ def _firefox_profile():
         firefox_profile.set_preference('browser.startup.homepage', 'about:blank')
         firefox_profile.set_preference('startup.homepage_welcome_url', 'about:blank')
         firefox_profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
+
+        # Disable fetching an updated version of firefox
+        firefox_profile.set_preference('app.update.enabled', False)
+
+        # Disable plugin checking
+        firefox_profile.set_preference('plugins.hide_infobar_for_outdated_plugin', True)
+
+        # Disable health reporter
+        firefox_profile.set_preference('datareporting.healthreport.service.enabled', False)
+
+        # Disable all data upload (Telemetry and FHR)
+        firefox_profile.set_preference('datareporting.policy.dataSubmissionEnabled', False)
+
+        # Disable crash reporter
+        firefox_profile.set_preference('toolkit.crashreporter.enabled', False)
+
     for function in FIREFOX_PROFILE_CUSTOMIZERS:
         function(firefox_profile)
     return firefox_profile
