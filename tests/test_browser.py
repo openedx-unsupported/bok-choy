@@ -76,31 +76,6 @@ class TestBrowser(TestCase):
         with self.assertRaises(bok_choy.browser.BrowserConfigError):
             bok_choy.browser.browser()
 
-    @patch.dict(os.environ, {'SELENIUM_FIREFOX_PATH': '/foo/path'})
-    def test_custom_firefox_path(self):
-        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
-        assert 'firefox_binary' in browser_kwargs_tuple[2]
-
-    @patch.dict(os.environ, {'SELENIUM_FIREFOX_PATH': ''})
-    def test_no_custom_firefox_path(self):
-        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
-        assert 'firefox_binary' not in browser_kwargs_tuple[2]
-
-    @patch.dict(os.environ, [('SELENIUM_FIREFOX_LOG', '/foo/file.log')])
-    def test_custom_firefox_log(self):
-        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
-        assert 'firefox_binary' in browser_kwargs_tuple[2]
-
-    @patch.dict(os.environ, [('SELENIUM_FIREFOX_LOG', '')])
-    def test_no_custom_firefox_log(self):
-        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
-        assert 'firefox_binary' not in browser_kwargs_tuple[2]
-
-    @patch.dict(os.environ, [('SELENIUM_FIREFOX_PATH', '/foo/path'), ('SELENIUM_FIREFOX_LOG', '/foo/file.log')])
-    def test_custom_firefox_path_and_log(self):
-        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
-        assert 'firefox_binary' in browser_kwargs_tuple[2]
-
     def test_profile_error(self):
         """
         If there is a WebDriverException when instantiating the driver,
@@ -142,6 +117,54 @@ class TestBrowser(TestCase):
         with self.assertRaises(BrokenPromise):
             bok_choy.browser.browser()
         self.assertEqual(patch_object.call_count, 3)
+
+
+class TestFirefoxBrowserConfig(TestCase):
+    """ Tests for configuring the firefox path and log file."""
+    @staticmethod
+    def verify_config(custom_path=None, custom_log=None):
+        """Verify that the configurations were applied correctly."""
+        browser_kwargs_tuple = bok_choy.browser._local_browser_class('firefox')  # pylint: disable=protected-access
+        if not custom_path and not custom_log:
+            assert 'firefox_binary' not in browser_kwargs_tuple[2]
+
+        else:
+            ffb = browser_kwargs_tuple[2].get('firefox_binary')
+
+            # Verifications for path handling
+            if custom_path:
+                assert ffb._start_cmd == custom_path  # pylint: disable=protected-access
+            else:
+                assert ffb._start_cmd == ffb._get_firefox_start_cmd()  # pylint: disable=protected-access
+
+            # Verifications for log file handling
+            log_file = ffb._log_file  # pylint: disable=protected-access
+            if hasattr(log_file, 'read'):
+                log_file = log_file.name
+            if custom_log:
+                assert log_file == custom_log
+            else:
+                assert log_file == '/dev/null'
+
+    @patch.dict(os.environ, [('SELENIUM_FIREFOX_PATH', '/foo/path')])
+    def test_custom_firefox_path(self):
+        self.verify_config(custom_path='/foo/path')
+
+    @patch.dict(os.environ, [('SELENIUM_FIREFOX_LOG', '/foo/file.log')])
+    def test_custom_firefox_log(self):
+        self.verify_config(custom_log='/foo/file.log')
+
+    @patch.dict(os.environ, [('SELENIUM_FIREFOX_PATH', '/foo/path'), ('SELENIUM_FIREFOX_LOG', '/foo/file.log')])
+    def test_custom_firefox_path_and_log(self):
+        self.verify_config(custom_path='/foo/path', custom_log='/foo/file.log')
+
+    @patch.dict(os.environ, {'SELENIUM_FIREFOX_PATH': ''})
+    def test_empty_string_custom_ff_path(self):
+        self.verify_config()
+
+    @patch.dict(os.environ, [('SELENIUM_FIREFOX_LOG', '')])
+    def test_empty_string_custom_ff_log(self):
+        self.verify_config()
 
 
 class TestSaveFiles(object):
