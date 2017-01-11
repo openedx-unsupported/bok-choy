@@ -298,6 +298,22 @@ def _firefox_profile():
         firefox_profile.set_preference('browser.startup.homepage', 'about:blank')
         firefox_profile.set_preference('startup.homepage_welcome_url', 'about:blank')
         firefox_profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
+
+        # Disable fetching an updated version of firefox
+        firefox_profile.set_preference('app.update.enabled', False)
+
+        # Disable plugin checking
+        firefox_profile.set_preference('plugins.hide_infobar_for_outdated_plugin', True)
+
+        # Disable health reporter
+        firefox_profile.set_preference('datareporting.healthreport.service.enabled', False)
+
+        # Disable all data upload (Telemetry and FHR)
+        firefox_profile.set_preference('datareporting.policy.dataSubmissionEnabled', False)
+
+        # Disable crash reporter
+        firefox_profile.set_preference('toolkit.crashreporter.enabled', False)
+
     for function in FIREFOX_PROFILE_CUSTOMIZERS:
         function(firefox_profile)
     return firefox_profile
@@ -323,11 +339,22 @@ def _local_browser_class(browser_name):
             browser_kwargs = {
                 'firefox_profile': _firefox_profile(),
             }
-            if os.environ.get('SELENIUM_FIREFOX_PATH', None):
-                binary_kwarg = {
-                    'firefox_binary': FirefoxBinary(firefox_path=os.environ.get('SELENIUM_FIREFOX_PATH'))
-                }
-                browser_kwargs.update(binary_kwarg)
+
+            firefox_path = os.environ.get('SELENIUM_FIREFOX_PATH')
+            firefox_log = os.environ.get('SELENIUM_FIREFOX_LOG')
+            if firefox_path and firefox_log:
+                browser_kwargs.update({
+                    'firefox_binary': FirefoxBinary(
+                        firefox_path=firefox_path, log_file=firefox_log)
+                })
+            elif firefox_path:
+                browser_kwargs.update({
+                    'firefox_binary': FirefoxBinary(firefox_path=firefox_path)
+                })
+            elif firefox_log:
+                browser_kwargs.update({
+                    'firefox_binary': FirefoxBinary(log_file=firefox_log)
+                })
 
         elif browser_name == 'chrome':
             chrome_options = Options()

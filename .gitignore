@@ -43,6 +43,7 @@ docs/_build
 docs/**/*.png
 
 # Output from tests
+.cache
 screenshots
 logs
 ghostdriver.log
