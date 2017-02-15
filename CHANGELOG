@@ -1,3 +1,9 @@
+v0.6.2 (02/15/17)
+* Update Needle version
+* Run tests in parallel
+* Improvement in speed and network usage with Firefox default settings
+* Add the ability to save the Firefox log
+
 v0.6.1 (12/19/16)
 * Add support for programmatic customization of the Firefox profile preferences
 * edX best practices - Update doc theme; add yaml file for OEP2 compliance tracking
