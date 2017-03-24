@@ -46,5 +46,7 @@ docs/**/*.png
 .cache
 screenshots
 logs
+geckodriver.log
 ghostdriver.log
 server.log
+tests.*.png
