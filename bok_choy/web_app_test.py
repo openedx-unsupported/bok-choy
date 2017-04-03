@@ -9,6 +9,7 @@ from unittest import SkipTest
 from uuid import uuid4
 
 from needle.cases import NeedleTestCase, import_from_string
+from needle.driver import NeedlePhantomJS
 import six
 
 from .browser import browser, save_screenshot, save_driver_logs, save_source
@@ -73,6 +74,16 @@ class WebAppTest(NeedleTestCase):
         """
         return self.browser
 
+    def quit_browser(self):
+        """
+        Terminate the web browser which was launched to run the tests.
+        """
+        if isinstance(self.browser, NeedlePhantomJS):
+            # Workaround for https://github.com/SeleniumHQ/selenium/issues/767
+            self.browser.service.send_remote_shutdown_command()
+            self.browser.service._cookie_temp_file = None  # pylint:disable=protected-access
+        self.browser.quit()
+
     def set_viewport_size(self, width, height):
         """
         Override NeedleTestCases's set_viewport_size class method because we need it to operate
@@ -116,7 +127,7 @@ class WebAppTest(NeedleTestCase):
         # Cleanups are executed in LIFO order.
         # This ensures that the screenshot is taken and the driver logs are saved
         # BEFORE the browser quits.
-        self.addCleanup(self.browser.quit)
+        self.addCleanup(self.quit_browser)
         self.addCleanup(self._save_artifacts)
 
     @property
