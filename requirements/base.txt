@@ -3,11 +3,7 @@
 # needle (selenium is also used directly)
 nose==1.3.7
 Pillow==3.3.0
-
-# Note that to get setup.py to work correctly with needle we have
-# version constraints specified in setup.py as well. We will need
-# to change both to upgrade to selenium 3 or above.
-selenium==2.53.6
+selenium==3.3.1
 
 # Then the direct dependencies
 
@@ -15,7 +11,7 @@ selenium==2.53.6
 lazy==1.2
 
 # For test assertions involving screenshots and visual diffs
-needle==0.4.1
+needle==0.5.0
 
 # For Python 2 & 3 compatibility
 six==1.10.0
