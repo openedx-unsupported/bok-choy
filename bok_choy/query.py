@@ -3,6 +3,8 @@ Tools for interacting with the DOM inside a browser.
 """
 from __future__ import absolute_import
 
+import logging
+
 from copy import copy
 from collections import Sequence
 from itertools import islice
@@ -10,6 +12,8 @@ from selenium.common.exceptions import WebDriverException
 import six
 from bok_choy.promise import Promise
 
+
+LOGGER = logging.getLogger(__name__)
 
 # Mapping of query type to Selenium webdriver query method names
 QUERY_TYPES = {
@@ -39,9 +43,10 @@ def no_error(func):
         try:
             return_val = func(*args, **kwargs)
         except WebDriverException:
-            return (False, None)
+            LOGGER.warning(u'Exception ignored during retry loop:', exc_info=True)
+            return False, None
         else:
-            return (True, return_val)
+            return True, return_val
 
     return _inner
 

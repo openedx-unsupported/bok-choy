@@ -24,6 +24,8 @@ from .promise import Promise, EmptyPromise, BrokenPromise
 from .a11y import AxeCoreAudit, AxsAudit
 
 
+LOGGER = logging.getLogger(__name__)
+
 # String that can be used to test for XSS vulnerabilities.
 # Taken from https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet#XSS_Locator.
 XSS_INJECTION = "'';!--\"<XSS>=&{()}"
@@ -79,6 +81,7 @@ def no_selenium_errors(func):
         try:
             return_val = func(*args, **kwargs)
         except WebDriverException:
+            LOGGER.warning(u'Exception ignored during retry loop:', exc_info=True)
             return False
         else:
             return return_val
