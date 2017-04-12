@@ -1,3 +1,10 @@
+v0.7.0 (04/12/17)
+* Support selenium 3.x
+* Support new FireFox version (with geckodriver)
+* Update Needle to 0.5.0
+* Catch WebDriverExceptions while waiting for PageObject conditions
+* Miscellaneous cleanup
+
 v0.6.2 (02/15/17)
 * Update Needle version
 * Run tests in parallel
