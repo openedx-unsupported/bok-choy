@@ -19,10 +19,12 @@ from lazy import lazy
 
 from selenium.common.exceptions import WebDriverException
 
-from .query import BrowserQuery
+from .query import BrowserQuery, no_error
 from .promise import Promise, EmptyPromise, BrokenPromise
 from .a11y import AxeCoreAudit, AxsAudit
 
+
+LOGGER = logging.getLogger(__name__)
 
 # String that can be used to test for XSS vulnerabilities.
 # Taken from https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet#XSS_Locator.
@@ -56,6 +58,35 @@ class XSSExposureError(Exception):
     An XSS issue has been found on the current page.
     """
     pass
+
+
+def no_selenium_errors(func):
+    """
+    Decorator to create an `EmptyPromise` check function that is satisfied
+    only when `func` executes without a Selenium error.
+
+    This protects against many common test failures due to timing issues.
+    For example, accessing an element after it has been modified by JavaScript
+    ordinarily results in a `StaleElementException`.  Methods decorated
+    with `no_selenium_errors` will simply retry if that happens, which makes tests
+    more robust.
+
+    Args:
+        func (callable): The function to execute, with retries if an error occurs.
+
+    Returns:
+        Decorated function
+    """
+    def _inner(*args, **kwargs):  # pylint: disable=missing-docstring
+        try:
+            return_val = func(*args, **kwargs)
+        except WebDriverException:
+            LOGGER.warning(u'Exception ignored during retry loop:', exc_info=True)
+            return False
+        else:
+            return return_val
+
+    return _inner
 
 
 def unguarded(method):
@@ -517,7 +548,8 @@ class PageObject(object):
     @unguarded
     def wait_for(self, promise_check_func, description, result=False, timeout=60):
         """
-        Calls the method provided as an argument until the Promise satisfied or BrokenPromise
+        Calls the method provided as an argument until the Promise satisfied or BrokenPromise.
+        Retries if a WebDriverException is encountered (until the timeout is reached).
 
         Arguments:
             promise_check_func (callable):
@@ -536,9 +568,9 @@ class PageObject(object):
 
         """
         if result:
-            return Promise(promise_check_func, description, timeout=timeout).fulfill()
+            return Promise(no_error(promise_check_func), description, timeout=timeout).fulfill()
         else:
-            return EmptyPromise(promise_check_func, description, timeout=timeout).fulfill()
+            return EmptyPromise(no_selenium_errors(promise_check_func), description, timeout=timeout).fulfill()
 
     @unguarded
     def wait_for_element_presence(self, element_selector, description, timeout=60):
