@@ -9,6 +9,7 @@ from copy import copy
 from collections import Sequence
 from itertools import islice
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
 import six
 from bok_choy.promise import Promise
 
@@ -17,8 +18,14 @@ LOGGER = logging.getLogger(__name__)
 
 # Mapping of query type to Selenium webdriver query method names
 QUERY_TYPES = {
-    'css': 'find_elements_by_css_selector',
-    'xpath': 'find_elements_by_xpath',
+    'css': By.CSS_SELECTOR,
+    'xpath': By.XPATH,
+    'class': By.CLASS_NAME,
+    'id': By.ID,
+    'link': By.LINK_TEXT,
+    'name': By.NAME,
+    'partial_link': By.PARTIAL_LINK_TEXT,
+    'tag': By.TAG_NAME,
 }
 
 
@@ -144,6 +151,26 @@ class Query(Sequence):
         desc = u'map({})'.format(desc)
 
         return self.transform(lambda xs: (map_fn(x) for x in xs), desc=desc)
+
+    def flat_map(self, map_fn, desc=None):
+        """
+        Return a copy of this query, with the values mapped through `map_fn`, and then the resulting list flattened.
+
+        Args:
+            map_fn (callable): A callable that takes a single argument and returns a new value.
+
+        Keyword Args:
+            desc (str): A description of the mapping transform, for use in log message.
+                Defaults to the name of the map function.
+
+        Returns:
+            Query
+        """
+        if desc is None:
+            desc = getattr(map_fn, '__name__', '')
+        desc = u'flat_map({})'.format(desc)
+
+        return self.transform(lambda xs: sum((map_fn(x) for x in xs), []), desc=desc)
 
     def filter(self, filter_fn=None, desc=None, **kwargs):
         """
@@ -312,46 +339,91 @@ class Query(Sequence):
         return u".".join([self.desc] + self.desc_stack)
 
 
-class BrowserQuery(Query):
+class QueryableQuery(Query):
     """
-    A Query that operates on a browser.
+    A Query that operates on a WebDriver queryable object (a browser or an element).
     """
-    def __init__(self, browser, **kwargs):
+    def __init__(self, browser, queryable, **kwargs):
         """
-        Generate a query over a browser.
+        Generate a query over a queryable.
 
         Args:
-            browser (selenium.webdriver): A Selenium-controlled browser.
+            browser (WebDriver): A Selenium-controlled browser.
+            queryable (WebDriver or WebElement): A Selenium-controlled queryable.
 
         Keyword Args:
             css (str): A CSS selector.
             xpath (str): An XPath selector.
+            class (str): A css class name.
+            id (str): An element id.
+            link (str): Link text.
+            name (str): An element name
+            partial_link (str): Partial link text
+            tag (str): A tag name
 
         Returns:
-            BrowserQuery
+            QueryableQuery
 
         Raises:
             TypeError: The query must be passed either a CSS or XPath selector, but not both.
         """
         if len(kwargs) > 1:
-            raise TypeError('BrowserQuery() takes at most 1 keyword argument.')
+            raise TypeError('QueryableQuery() takes at most 1 keyword argument.')
 
         if not kwargs:
-            raise TypeError('Must pass a query keyword argument to BrowserQuery().')
+            raise TypeError('Must pass a query keyword argument to QueryableQuery().')
 
-        query_name, query_value = list(kwargs.items())[0]
+        query_name, query_value = kwargs.popitem()
 
         if query_name not in QUERY_TYPES:
-            raise TypeError('{} is not a supported query type for BrowserQuery()'.format(query_name))
+            raise TypeError('{} is not a supported query type for QueryableQuery()'.format(query_name))
 
         def query_fn():  # pylint: disable=missing-docstring
-            return getattr(browser, QUERY_TYPES[query_name])(query_value)
+            return queryable.find_elements(QUERY_TYPES[query_name], query_value)
 
-        super(BrowserQuery, self).__init__(
+        super(QueryableQuery, self).__init__(
             query_fn,
-            desc=u"BrowserQuery({}={!r})".format(query_name, query_value),
+            desc=u"QueryableQuery({}={!r})".format(query_name, query_value),
         )
+        self.queryable = queryable
         self.browser = browser
+
+    def q(self, **kwargs):  # pylint: disable=invalid-name
+        """
+        Construct a subquery from this one.
+
+        Example usages:
+
+        .. code:: python
+
+            self.q(css="div.foo").q(tag='button').first.click()
+            self.q(xpath="/foo/bar").text
+
+        Keyword Args:
+            css (str): A CSS selector.
+            xpath (str): An XPath selector.
+            class (str): A css class name.
+            id (str): An element id.
+            link (str): Link text.
+            name (str): An element name
+            partial_link (str): Partial link text
+            tag (str): A tag name
+
+        Returns:
+            QueryableQuery
+        """
+        if len(kwargs) > 1:
+            raise TypeError('q() takes at most 1 keyword argument.')
+
+        if not kwargs:
+            raise TypeError('Must pass a query keyword argument to q().')
+
+        query_name, query_value = kwargs.popitem()
+
+        if query_name not in QUERY_TYPES:
+            raise TypeError('{} is not a supported query type for q()'.format(query_name))
+
+        return self.flat_map(lambda ele: ele.find_elements(QUERY_TYPES[query_name], query_value))
 
     def attrs(self, attribute_name):
         """
@@ -508,3 +580,8 @@ class BrowserQuery(Query):
             elem.send_keys(text)
 
         self.map(_fill, 'fill({!r})'.format(text)).execute()
+
+
+class BrowserQuery(QueryableQuery):
+    def __init__(self, browser, **kwargs):
+        super(BrowserQuery, self).__init__(browser, browser, **kwargs)
