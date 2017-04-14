@@ -10,6 +10,7 @@ from collections import Sequence
 from itertools import islice
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
 import six
 from bok_choy.promise import Promise
 
@@ -556,7 +557,7 @@ class QueryableQuery(Query):
         Returns:
             None
         """
-        self.map(lambda el: el.click(), 'click()').execute()
+        self.map(lambda el: ActionChains(self.browser).move_to_element(el).click(el).perform(), 'click()').execute()
 
     def fill(self, text):
         """
