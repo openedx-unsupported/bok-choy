@@ -426,6 +426,28 @@ class QueryableQuery(Query):
 
         return self.flat_map(lambda ele: ele.find_elements(QUERY_TYPES[query_name], query_value))
 
+    def attrs_query(self, attribute_name):
+        """
+        Retrieve HTML attribute values from the elements matched by the query.
+
+        Example usage:
+
+        .. code:: python
+
+            # Assume that the query matches html elements:
+            # <div class="foo"> and <div class="bar">
+            >> q.attrs_query('class').results
+            ['foo', 'bar']
+
+        Args:
+            attribute_name (str): The name of the attribute values to retrieve.
+
+        Returns:
+            A Query of attribute values for `attribute_name`.
+        """
+        desc = 'attrs_query({!r})'.format(attribute_name)
+        return self.map(lambda el: el.get_attribute(attribute_name), desc)
+
     def attrs(self, attribute_name):
         """
         Retrieve HTML attribute values from the elements matched by the query.
@@ -445,8 +467,7 @@ class QueryableQuery(Query):
         Returns:
             A list of attribute values for `attribute_name`.
         """
-        desc = 'attrs({!r})'.format(attribute_name)
-        return self.map(lambda el: el.get_attribute(attribute_name), desc).results
+        return self.attrs_query(attribute_name).results
 
     @property
     def text(self):
