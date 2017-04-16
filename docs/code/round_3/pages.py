@@ -55,5 +55,3 @@ class GitHubSearchPage(PageObject):
         """
         self.enter_search_terms(text)
         self.search()
-
-
