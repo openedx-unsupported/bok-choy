@@ -101,7 +101,8 @@ class WebAppTest(NeedleTestCase):
         measured = self.driver.execute_script(script)
         delta = width - measured['width']
 
-        self.driver.set_window_size(width + delta, height)
+        if delta > 0:
+            self.driver.set_window_size(width + delta, height)
 
     def setUp(self):
         """
