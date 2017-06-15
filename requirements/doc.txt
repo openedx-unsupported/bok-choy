@@ -12,7 +12,7 @@ MarkupSafe==0.23
 # needle (selenium is also used directly)
 nose==1.3.7
 Pillow==3.3.0
-selenium==3.3.1
+selenium==3.4.3
 
 # readme_renderer, Sphinx
 docutils==0.12
