@@ -1,3 +1,7 @@
+v0.7.1 (06/16/19)
+* Avoid second browser window resize when the dimensions are unchanged
+* Disable the JSON Viewer in Firefox 53+
+
 v0.7.0 (04/12/17)
 * Support selenium 3.x
 * Support new FireFox version (with geckodriver)
