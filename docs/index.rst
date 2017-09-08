@@ -13,6 +13,7 @@ UI-level acceptance test framework.
    visual_diff
    xss
    customization
+   testing
    api_reference
 
 
