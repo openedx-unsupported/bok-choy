@@ -30,8 +30,8 @@ Running Tests
 
 To run the test suite for bok-choy itself:
 
-* Install Firefox; as of this writing, the current `version 52.0.1 <https://ftp.mozilla.org/pub/firefox/releases/52.0.1/>`_
-  works with the latest selenium Python package (3.3.1)
+* Install Firefox; as of this writing, the current `version 59.0.1 <https://ftp.mozilla.org/pub/firefox/releases/59.0.1/>`_
+  works with the latest selenium Python package (3.11.0)
 * Install `phantomjs <http://phantomjs.org/download.html>`_
 * Create a virtualenv which uses Python 2.7 (or Python 3.5)
 * With that virtualenv activated, run ``pip install -r requirements/tox.txt`` to
