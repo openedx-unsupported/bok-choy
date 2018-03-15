@@ -272,6 +272,7 @@ def _firefox_profile():
         LOGGER.info("Using firefox profile: %s", profile_dir)
         try:
             firefox_profile = webdriver.FirefoxProfile(profile_dir)
+            firefox_profile.set_preference('accessibility.indicator.enabled', False)
         except OSError as err:
             if err.errno == errno.ENOENT:
                 raise BrowserConfigError(
