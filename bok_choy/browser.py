@@ -317,6 +317,8 @@ def _firefox_profile():
 
         # Disable the JSON Viewer
         firefox_profile.set_preference('devtools.jsonview.enabled', False)
+
+        firefox_profile.set_preference('accessibility.indicator.enabled', False)
     for function in FIREFOX_PROFILE_CUSTOMIZERS:
         function(firefox_profile)
     return firefox_profile
