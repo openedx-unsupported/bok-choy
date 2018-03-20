@@ -272,7 +272,7 @@ def _firefox_profile():
         LOGGER.info("Using firefox profile: %s", profile_dir)
         try:
             firefox_profile = webdriver.FirefoxProfile(profile_dir)
-            firefox_profile.set_preference('accessibility.indicator.enabled', False)
+            firefox_profile.set_preference('accessibility.force_disabled', 1)
         except OSError as err:
             if err.errno == errno.ENOENT:
                 raise BrowserConfigError(
@@ -319,7 +319,7 @@ def _firefox_profile():
         # Disable the JSON Viewer
         firefox_profile.set_preference('devtools.jsonview.enabled', False)
 
-        firefox_profile.set_preference('accessibility.indicator.enabled', False)
+        firefox_profile.set_preference('accessibility.force_disabled', 1)
     for function in FIREFOX_PROFILE_CUSTOMIZERS:
         function(firefox_profile)
     return firefox_profile
