@@ -137,24 +137,25 @@ def save_driver_logs(driver, prefix):
     Returns:
         None
     """
-    log_types = ['browser', 'driver', 'client', 'server']
-    for log_type in log_types:
-        try:
-            log = driver.get_log(log_type)
-            file_name = os.path.join(
-                os.environ.get('SELENIUM_DRIVER_LOG_DIR'), '{}_{}.log'.format(
-                    prefix, log_type)
-            )
-            with open(file_name, 'w') as output_file:
-                for line in log:
-                    output_file.write("{}{}".format(dumps(line), '\n'))
-        except:  # pylint: disable=bare-except
-            msg = (
-                "Could not save browser log of type '{log_type}'. "
-                "It may be that the browser does not support it."
-            ).format(log_type=log_type)
+    pass
+    # log_types = ['browser', 'driver', 'client', 'server']
+    # for log_type in log_types:
+        # try:
+            # log = driver.get_log(log_type)
+            # file_name = os.path.join(
+                # os.environ.get('SELENIUM_DRIVER_LOG_DIR'), '{}_{}.log'.format(
+                    # prefix, log_type)
+            # )
+            # with open(file_name, 'w') as output_file:
+                # for line in log:
+                    # output_file.write("{}{}".format(dumps(line), '\n'))
+        # except:  # pylint: disable=bare-except
+            # msg = (
+                # "Could not save browser log of type '{log_type}'. "
+                # "It may be that the browser does not support it."
+            # ).format(log_type=log_type)
 
-            LOGGER.warning(msg, exc_info=True)
+            # LOGGER.warning(msg, exc_info=True)
 
 
 def browser(tags=None, proxy=None):
@@ -271,6 +272,7 @@ def _firefox_profile():
         LOGGER.info("Using firefox profile: %s", profile_dir)
         try:
             firefox_profile = webdriver.FirefoxProfile(profile_dir)
+            firefox_profile.set_preference('accessibility.force_disabled', 1)
         except OSError as err:
             if err.errno == errno.ENOENT:
                 raise BrowserConfigError(
@@ -316,6 +318,8 @@ def _firefox_profile():
 
         # Disable the JSON Viewer
         firefox_profile.set_preference('devtools.jsonview.enabled', False)
+
+        firefox_profile.set_preference('accessibility.force_disabled', 1)
     for function in FIREFOX_PROFILE_CUSTOMIZERS:
         function(firefox_profile)
     return firefox_profile
