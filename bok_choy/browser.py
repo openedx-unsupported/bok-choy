@@ -125,19 +125,35 @@ def save_screenshot(driver, name):
 def save_driver_logs(driver, prefix):
     """
     Save the selenium driver logs.
-
     The location of the driver log files can be configured
     by the environment variable `SELENIUM_DRIVER_LOG_DIR`.  If not set,
     this defaults to the current working directory.
-
     Args:
         driver (selenium.webdriver): The Selenium-controlled browser.
         prefix (str): A prefix which will be used in the output file names for the logs.
-
     Returns:
         None
     """
-    pass
+    browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')
+    if browser_name != "firefox":
+        log_types = ['browser', 'driver', 'client', 'server']
+        for log_type in log_types:
+            try:
+                log = driver.get_log(log_type)
+                file_name = os.path.join(
+                    os.environ.get('SELENIUM_DRIVER_LOG_DIR'), '{}_{}.log'.format(
+                        prefix, log_type)
+                )
+                with open(file_name, 'w') as output_file:
+                    for line in log:
+                        output_file.write("{}{}".format(dumps(line), '\n'))
+            except:  # pylint: disable=bare-except
+                msg = (
+                    "Could not save browser log of type '{log_type}'. "
+                    "It may be that the browser does not support it."
+                ).format(log_type=log_type)
+
+                LOGGER.warning(msg, exc_info=True)
 
 
 def browser(tags=None, proxy=None):
