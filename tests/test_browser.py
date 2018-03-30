@@ -8,6 +8,7 @@ import shutil
 import os
 import socket
 from unittest import TestCase
+import pytest
 
 from mock import patch
 from selenium import webdriver
@@ -172,10 +173,8 @@ class TestSaveFiles(object):
     Tests for saving files from the browser (including logs, page source, and
     screenshots).
     """
-
-    def __init__(self):
-        self.tempdir_path = None
-        self.browser = None
+    tempdir_path = None
+    browser = None
 
     def setup(self):
         """
@@ -213,6 +212,23 @@ class TestSaveFiles(object):
         bok_choy.browser.save_screenshot(browser, 'button_page')
         assert 'Browser does not support screenshots.' in caplog.text
 
+    def test_save_driver_logs_unsupported(self):
+        browser = self.browser
+        tempdir_path = self.tempdir_path
+
+        # Configure the driver log directory using an environment variable
+        os.environ['SELENIUM_DRIVER_LOG_DIR'] = tempdir_path
+        JavaScriptPage(browser).visit()
+        bok_choy.browser.save_driver_logs(browser, 'js_page')
+
+        # Check that no files were created.
+        log_types = ['browser', 'driver', 'client', 'server']
+        for log_type in log_types:
+            expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
+            assert not os.path.exists(expected_file)
+
+    @pytest.mark.skipif(os.environ.get('SELENIUM_BROWSER', 'firefox') == "firefox",
+                        reason="Selenium driver logs no longer supported on firefox")
     def test_save_driver_logs(self):
         browser = self.browser
         tempdir_path = self.tempdir_path
@@ -229,6 +245,8 @@ class TestSaveFiles(object):
             expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
             assert os.path.isfile(expected_file)
 
+    @pytest.mark.skipif(os.environ.get('SELENIUM_BROWSER', 'firefox') == "firefox",
+                        reason="Selenium driver logs no longer supported on firefox")
     def test_save_driver_logs_exception(self, caplog):
         browser = self.browser
         tempdir_path = self.tempdir_path

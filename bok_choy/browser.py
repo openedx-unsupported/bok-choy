@@ -137,6 +137,10 @@ def save_driver_logs(driver, prefix):
     Returns:
         None
     """
+    browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')
+    if browser_name == "firefox":
+        return
+
     log_types = ['browser', 'driver', 'client', 'server']
     for log_type in log_types:
         try:
