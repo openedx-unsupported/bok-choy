@@ -1,4 +1,9 @@
-v0.7.1 (06/16/19)
+v0.7.2 (04/02/18)
+* Disable selenium webdriver logging for firefox
+* Update selenium to 3.11.0 and geckodriver to 0.20
+* Doc improvements
+
+v0.7.1 (06/16/17)
 * Avoid second browser window resize when the dimensions are unchanged
 * Disable the JSON Viewer in Firefox 53+
 
