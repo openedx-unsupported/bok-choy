@@ -38,6 +38,7 @@ SAUCE_ENV_VARS = REMOTE_ENV_VARS + [
 OPTIONAL_ENV_VARS = [
     'JOB_NAME',
     'BUILD_NUMBER',
+    'SELENIUM_INSECURE_CERTS',
 ]
 
 
@@ -523,6 +524,7 @@ def _capabilities_dict(envs, tags):
     """
     capabilities = {
         'browserName': envs['SELENIUM_BROWSER'],
+        'acceptInsecureCerts': bool(envs.get('SELENIUM_INSECURE_CERTS', False)),
         'video-upload-on-pass': False,
         'sauce-advisor': False,
         'capture-html': True,
