@@ -1,3 +1,6 @@
+v0.7.3 (05/21/18)
+* Modified wait for page logic
+
 v0.7.2 (04/02/18)
 * Disable selenium webdriver logging for firefox
 * Update selenium to 3.11.0 and geckodriver to 0.20
