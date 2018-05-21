@@ -423,6 +423,14 @@ class PageObject(object):
         Raises:
             BrokenPromise: The timeout is exceeded without the page loading successfully.
         """
+
+        def _is_document_interactive():
+            """
+            Check the loading state of the document to ensure the document is in interactive mode
+            """
+            return self.browser.execute_script(
+                "return document.readyState=='interactive'")
+
         def _is_document_ready():
             """
             Check the loading state of the document to ensure the document and all sub-resources
@@ -431,11 +439,25 @@ class PageObject(object):
             return self.browser.execute_script(
                 "return document.readyState=='complete'")
 
-        EmptyPromise(
-            _is_document_ready,
-            "The document and all sub-resources have finished loading.",
-            timeout=timeout
-        ).fulfill()
+        try:
+            # Wait for page to laod completely i.e. for document.readyState to become complete
+            EmptyPromise(
+                _is_document_ready,
+                "The document and all sub-resources have finished loading.",
+                timeout=timeout
+            ).fulfill()
+        except BrokenPromise:
+            LOGGER.warning(
+                u'document.readyState does not become complete for following url: {}'.format(self.url),
+                exc_info=True
+            )
+            # If document.readyState does not become complete after a specific time relax the
+            # condition and check for interactive state
+            EmptyPromise(
+                _is_document_interactive,
+                "The document is in interactive mode.",
+                timeout=timeout
+            ).fulfill()
 
         result = Promise(
             lambda: (self.is_browser_on_page(), self), "loaded page {!r}".format(self),
