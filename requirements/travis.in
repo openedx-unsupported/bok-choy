@@ -1,0 +1,7 @@
+# Packages needed in order to run tox.
+# Installed by Travis and dev environments.
+
+codecov                   # Code coverage reporting
+tox                       # Virtualenv management for tests
+tox-battery               # Makes tox aware of requirements file changes
+tox-travis                # Match Travis jobs to tox environments

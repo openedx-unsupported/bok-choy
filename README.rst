@@ -1,6 +1,30 @@
 bok-choy
 ========
 
+.. image:: https://img.shields.io/pypi/v/bok_choy.svg
+    :target: https://pypi.python.org/pypi/bok_choy/
+    :alt: PyPI
+
+.. image:: https://travis-ci.org/edx/bok-choy.svg?branch=master
+    :target: https://travis-ci.org/edx/bok-choy
+    :alt: Travis
+
+.. image:: http://codecov.io/github/edx/bok-choy/coverage.svg?branch=master
+    :target: http://codecov.io/github/edx/bok-choy?branch=master
+    :alt: Codecov
+
+.. image:: https://readthedocs.org/projects/bok-choy/badge/?version=latest
+    :target: http://bok-choy.readthedocs.io/en/latest/
+    :alt: Documentation
+
+.. image:: https://img.shields.io/pypi/pyversions/bok_choy.svg
+    :target: https://pypi.python.org/pypi/bok_choy/
+    :alt: Supported Python versions
+
+.. image:: https://img.shields.io/github/license/edx/bok-choy.svg
+    :target: https://github.com/edx/bok-choy/blob/master/LICENSE.txt
+    :alt: License
+
 UI-level acceptance test framework.  `Full documentation available on ReadTheDocs`__.
 
 __ http://bok-choy.readthedocs.org/en/latest/
@@ -33,11 +57,11 @@ To run the test suite for bok-choy itself:
 * Install Firefox; as of this writing, the current `version 59.0.1 <https://ftp.mozilla.org/pub/firefox/releases/59.0.1/>`_
   works with the latest selenium Python package (3.11.0)
 * Install `phantomjs <http://phantomjs.org/download.html>`_
-* Create a virtualenv which uses Python 2.7 (or Python 3.5)
+* Create a virtualenv which uses Python 2.7, 3.5, or 3.6
 * With that virtualenv activated, run ``pip install -r requirements/tox.txt`` to
   install the `tox <http://tox.testrun.org/>`_ testing tool and its
   dependencies
-* Run ``tox -e py27`` (or ``tox -e py35``).  If you want to run the tests in
+* Run ``tox -e py27`` (or ``tox -e py35``, etc.).  If you want to run the tests in
   parallel, add the desired number of worker processes like ``tox -e py27 -- -n 5``
   or ``tox -e py35 -- -n auto``.
 * To test and build the documentation, run ``tox -e doc``

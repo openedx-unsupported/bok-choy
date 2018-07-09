@@ -321,6 +321,9 @@ def _firefox_profile():
 
         # Disable the JSON Viewer
         firefox_profile.set_preference('devtools.jsonview.enabled', False)
+
+        # Grant OS focus to the launched browser so focus-related tests function correctly
+        firefox_profile.set_preference('focusmanager.testmode', True)
     for function in FIREFOX_PROFILE_CUSTOMIZERS:
         function(firefox_profile)
     return firefox_profile
@@ -476,10 +479,9 @@ def _required_envs(env_vars):
 
     # Check for missing keys
     missing = [key for key, val in list(envs.items()) if val is None]
-    if len(missing) > 0:
+    if missing:
         msg = (
-            "These environment variables must be set: " +
-            ", ".join(missing)
+            "These environment variables must be set: " + ", ".join(missing)
         )
         raise BrowserConfigError(msg)
 

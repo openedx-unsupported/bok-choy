@@ -38,8 +38,7 @@ class SitePage(PageObject):
 
         if len(text_list) < 1:
             return None
-        else:
-            return text_list[0]
+        return text_list[0]
 
 
 class ButtonPage(SitePage):

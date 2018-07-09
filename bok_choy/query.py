@@ -56,7 +56,7 @@ class Query(Sequence):
     General mechanism for selecting and transforming values.
     """
 
-    def __init__(self, seed_fn, desc=None):
+    def __init__(self, seed_fn, desc=None):  # pylint: disable=super-init-not-called
         """
         Configure the `Query`.
 
@@ -424,8 +424,7 @@ class BrowserQuery(Query):
         query_results = self.map(lambda el: el.is_selected(), 'selected').results
         if query_results:
             return all(query_results)
-        else:
-            return False
+        return False
 
     @property
     def visible(self):
@@ -438,8 +437,7 @@ class BrowserQuery(Query):
         query_results = self.map(lambda el: el.is_displayed(), 'visible').results
         if query_results:
             return all(query_results)
-        else:
-            return False
+        return False
 
     @property
     def invisible(self):
@@ -465,8 +463,7 @@ class BrowserQuery(Query):
 
         if query_results:
             return any(query_results)
-        else:
-            return False
+        return False
 
     focused = property(is_focused)
 
