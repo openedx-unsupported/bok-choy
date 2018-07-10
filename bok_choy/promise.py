@@ -148,8 +148,7 @@ class Promise(object):
         """
         if self._try_limit is None:
             return True
-        else:
-            return self._num_tries < self._try_limit
+        return self._num_tries < self._try_limit
 
 
 class EmptyPromise(Promise):

@@ -134,7 +134,7 @@ class _PageObjectMetaclass(ABCMeta):
     """
     ALWAYS_UNGUARDED = ['url', 'is_browser_on_page']
 
-    def __new__(mcs, cls_name, cls_bases, cls_attrs):
+    def __new__(mcs, cls_name, cls_bases, cls_attrs, **kwargs):  # pylint: disable=arguments-differ,unused-argument
         for name, attr in list(cls_attrs.items()):
             # Skip methods marked as unguarded
             if getattr(attr, '_unguarded', False) or name in mcs.ALWAYS_UNGUARDED:
@@ -592,8 +592,7 @@ class PageObject(object):
         """
         if result:
             return Promise(no_error(promise_check_func), description, timeout=timeout).fulfill()
-        else:
-            return EmptyPromise(no_selenium_errors(promise_check_func), description, timeout=timeout).fulfill()
+        return EmptyPromise(no_selenium_errors(promise_check_func), description, timeout=timeout).fulfill()
 
     @unguarded
     def wait_for_element_presence(self, element_selector, description, timeout=60):

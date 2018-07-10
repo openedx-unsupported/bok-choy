@@ -1,0 +1,7 @@
+# Requirements for documentation generation
+
+-r base.txt               # Core bok-choy dependencies
+
+edx-sphinx-theme          # edX theme for Sphinx output
+readme_renderer           # Validates README.rst for usage on PyPI
+Sphinx                    # Documentation builder

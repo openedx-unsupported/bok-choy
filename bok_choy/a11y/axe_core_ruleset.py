@@ -285,8 +285,7 @@ class AxeCoreAudit(A11yAudit):
 
             if results:
                 return True, results
-            else:
-                return False, None
+            return False, None
 
         result = Promise(
             audit_results_check_func,

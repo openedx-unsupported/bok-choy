@@ -44,6 +44,7 @@ docs/**/*.png
 
 # Output from tests
 .cache
+.pytest_cache
 screenshots
 logs
 geckodriver.log

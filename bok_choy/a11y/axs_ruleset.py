@@ -159,7 +159,7 @@ class AxsAudit(A11yAudit):
         # this page are specified, as the default behavior of the js is to
         # run all rules.
         rules = config.rules_to_run
-        if len(rules) > 0:
+        if rules:
             rules_config = "auditConfig.auditRulesToRun = {rules};".format(
                 rules=rules)
         else:
