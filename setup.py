@@ -3,7 +3,7 @@
 import codecs
 from setuptools import setup
 
-VERSION = '0.7.3'
+VERSION = '0.8.0'
 DESCRIPTION = 'UI-level acceptance test framework'
 
 

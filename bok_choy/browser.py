@@ -2,20 +2,22 @@
 Use environment variables to configure Selenium remote WebDriver.
 For use with SauceLabs (via SauceConnect) or local browsers.
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 
-import os
-import logging
-from json import dumps
-import socket
 import errno
+import logging
+import os
+import socket
+from json import dumps
+from shutil import copyfile
 
 from needle.driver import (NeedleFirefox, NeedleChrome, NeedleIe,
                            NeedleSafari, NeedlePhantomJS, NeedleOpera)
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 from bok_choy.promise import Promise
 
@@ -109,9 +111,13 @@ def save_screenshot(driver, name):
         None
     """
     if hasattr(driver, 'save_screenshot'):
-        image_name = os.path.join(
-            os.environ.get('SCREENSHOT_DIR'), name + '.png'
-        )
+        screenshot_dir = os.environ.get('SCREENSHOT_DIR')
+        if not screenshot_dir:
+            LOGGER.warning('The SCREENSHOT_DIR environment variable was not set; not saving a screenshot')
+            return
+        elif not os.path.exists(screenshot_dir):
+            os.makedirs(screenshot_dir)
+        image_name = os.path.join(screenshot_dir, name + '.png')
         driver.save_screenshot(image_name)
 
     else:
@@ -139,7 +145,20 @@ def save_driver_logs(driver, prefix):
         None
     """
     browser_name = os.environ.get('SELENIUM_BROWSER', 'firefox')
-    if browser_name == "firefox":
+    log_dir = os.environ.get('SELENIUM_DRIVER_LOG_DIR')
+    if not log_dir:
+        LOGGER.warning('The SELENIUM_DRIVER_LOG_DIR environment variable was not set; not saving logs')
+        return
+    elif not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    if browser_name == 'firefox':
+        # Firefox doesn't yet provide logs to Selenium, but does log to a separate file
+        # https://github.com/mozilla/geckodriver/issues/284
+        # https://firefox-source-docs.mozilla.org/testing/geckodriver/geckodriver/TraceLogs.html
+        log_path = os.path.join(os.getcwd(), 'geckodriver.log')
+        if os.path.exists(log_path):
+            dest_path = os.path.join(log_dir, '{}_geckodriver.log'.format(prefix))
+            copyfile(log_path, dest_path)
         return
 
     log_types = ['browser', 'driver', 'client', 'server']
@@ -147,8 +166,7 @@ def save_driver_logs(driver, prefix):
         try:
             log = driver.get_log(log_type)
             file_name = os.path.join(
-                os.environ.get('SELENIUM_DRIVER_LOG_DIR'), '{}_{}.log'.format(
-                    prefix, log_type)
+                log_dir, '{}_{}.log'.format(prefix, log_type)
             )
             with open(file_name, 'w') as output_file:
                 for line in log:
@@ -345,9 +363,17 @@ def _local_browser_class(browser_name):
                 name=browser_name, options=", ".join(list(BROWSERS.keys()))))
     else:
         if browser_name == 'firefox':
+            # Remove geckodriver log data from previous test cases
+            log_path = os.path.join(os.getcwd(), 'geckodriver.log')
+            if os.path.exists(log_path):
+                os.remove(log_path)
+
+            firefox_options = FirefoxOptions()
+            firefox_options.log.level = 'trace'
             browser_args = []
             browser_kwargs = {
                 'firefox_profile': _firefox_profile(),
+                'options': firefox_options,
             }
 
             firefox_path = os.environ.get('SELENIUM_FIREFOX_PATH')
@@ -367,7 +393,7 @@ def _local_browser_class(browser_name):
                 })
 
         elif browser_name == 'chrome':
-            chrome_options = Options()
+            chrome_options = ChromeOptions()
 
             # Emulate webcam and microphone for testing purposes
             chrome_options.add_argument('--use-fake-device-for-media-stream')

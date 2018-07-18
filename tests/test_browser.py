@@ -207,10 +207,22 @@ class TestSaveFiles(object):
         # Check that the file is not empty
         assert os.stat(expected_file).st_size > 100
 
+    def test_save_screenshot_dir_not_set(self, caplog, monkeypatch):
+        browser = self.browser
+        monkeypatch.delenv('SCREENSHOT_DIR')
+        bok_choy.browser.save_screenshot(browser, 'empty')
+        assert 'The SCREENSHOT_DIR environment variable was not set; not saving a screenshot' in caplog.text
+
     def test_save_screenshot_unsupported(self, caplog):
         browser = 'Some driver without save_screenshot()'
         bok_choy.browser.save_screenshot(browser, 'button_page')
         assert 'Browser does not support screenshots.' in caplog.text
+
+    def test_save_driver_logs_dir_not_set(self, caplog, monkeypatch):
+        browser = self.browser
+        monkeypatch.delenv('SELENIUM_DRIVER_LOG_DIR')
+        bok_choy.browser.save_driver_logs(browser, 'empty')
+        assert 'The SELENIUM_DRIVER_LOG_DIR environment variable was not set; not saving logs' in caplog.text
 
     def test_save_driver_logs_unsupported(self):
         browser = self.browser
