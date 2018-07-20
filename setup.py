@@ -1,6 +1,9 @@
 #!/usr/bin/env python
+from __future__ import absolute_import, print_function
 
 import codecs
+import os
+import sys
 from setuptools import setup
 
 VERSION = '0.8.0'
@@ -34,6 +37,12 @@ def is_requirement(line):
         line.startswith('git+')
     )
 
+
+if sys.argv[-1] == 'tag':
+    print("Tagging the version on github:")
+    os.system("git tag -a v%s -m 'v%s'" % (VERSION, VERSION))
+    os.system("git push --tags")
+    sys.exit()
 
 with codecs.open('README.rst', 'r', 'utf-8') as f:
     LONG_DESCRIPTION = f.read()
