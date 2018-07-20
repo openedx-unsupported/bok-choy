@@ -4,13 +4,23 @@ Tests the representation of site pages.
 
 from __future__ import absolute_import
 
+import logging
 from unittest import TestCase
 
+import pytest
 from mock import Mock
+from selenium.common.exceptions import WebDriverException
 
 from bok_choy.page_object import PageObject, PageLoadError, unguarded, WrongPageError
 from bok_choy.promise import BrokenPromise
-from tests.pages import SitePage
+from tests.pages import ButtonPage, SitePage
+
+
+class InvalidPortPage(SitePage):
+    """
+    Create a page that will return a URL with an invalid port.
+    """
+    url = "http://localhost:8o/invalid"
 
 
 class InvalidURLPage(SitePage):
@@ -20,11 +30,19 @@ class InvalidURLPage(SitePage):
     url = "http://localhost:/invalid"
 
 
+class MissingHostnamePage(SitePage):
+    """
+    Create a page that will return a URL with no hostname.
+    """
+    url = "http:///invalid"
+
+
 class NeverOnPage(SitePage):
     """
     Create a page that never successfully loads.
     """
     url = "http://localhost/never_on"
+    class_attr = ButtonPage
 
     def is_browser_on_page(self):
         return False
@@ -129,3 +147,51 @@ class PageObjectTest(TestCase):
         # If the page doesn't load before the timeout, PageLoadError is raised
         with self.assertRaises(PageLoadError):
             NeverOnPage(Mock()).visit()
+
+
+def test_invalid_port_exception(caplog):
+    with pytest.raises(PageLoadError):
+        InvalidPortPage(Mock()).visit()
+    assert u'uses an invalid port' in caplog.text
+
+
+def test_missing_hostname_exception(caplog):
+    with pytest.raises(PageLoadError):
+        MissingHostnamePage(Mock()).visit()
+    assert u'is missing a hostname' in caplog.text
+
+
+def test_never_loads(caplog):
+    attrs = {'execute_script.return_value': False}
+    browser = Mock(**attrs)
+    page = ButtonPage(browser)
+    with pytest.raises(BrokenPromise):
+        page.wait_for_page(timeout=1)
+    assert u'document.readyState does not become complete for following url' in caplog.text
+
+
+def test_page_load_exception(caplog):
+    attrs = {'get.side_effect': WebDriverException('Boom!')}
+    browser = Mock(**attrs)
+    page = ButtonPage(browser)
+    with pytest.raises(PageLoadError):
+        page.visit()
+    assert u'Unexpected page load exception' in caplog.text
+
+
+def test_retry_errors(caplog):
+    def promise_check_func():
+        """
+        Check function which continuously fails with a WebDriverException until timeout
+        """
+        raise WebDriverException('Boom!')
+    page = ButtonPage(Mock())
+    with pytest.raises(BrokenPromise):
+        page.wait_for(promise_check_func, 'Never succeeds', timeout=1)
+    assert u'Exception ignored during retry loop' in caplog.text
+
+
+def test_warning(caplog):
+    page = SitePage(Mock())
+    page.warning(u'Scary stuff')
+    assert ('SitePage', logging.WARN, u'Scary stuff') in caplog.record_tuples

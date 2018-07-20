@@ -328,6 +328,7 @@ class PageObject(object):
         try:
             self.browser.get(self.url)
         except (WebDriverException, socket.gaierror):
+            LOGGER.warning(u"Unexpected page load exception:", exc_info=True)
             raise PageLoadError("Could not load page '{!r}' at URL '{}'".format(
                 self, self.url
             ))
@@ -361,7 +362,11 @@ class PageObject(object):
         result = urllib_parse.urlsplit(url)
 
         # Check that we have a protocol and hostname
-        if not result.scheme or not result.netloc:
+        if not result.scheme:
+            LOGGER.warning(u"%s is missing a protocol", url)
+            return False
+        if not result.netloc:
+            LOGGER.warning(u"%s is missing a hostname", url)
             return False
 
         # Check that the port is an integer
@@ -370,8 +375,10 @@ class PageObject(object):
                 int(result.port)
             elif result.netloc.endswith(':'):
                 # Valid URLs do not end with colons.
+                LOGGER.warning(u"%s has a colon after the hostname but no port", url)
                 return False
         except ValueError:
+            LOGGER.warning(u"%s uses an invalid port", url)
             return False
         else:
             return True
@@ -440,7 +447,7 @@ class PageObject(object):
                 "return document.readyState=='complete'")
 
         try:
-            # Wait for page to laod completely i.e. for document.readyState to become complete
+            # Wait for page to load completely i.e. for document.readyState to become complete
             EmptyPromise(
                 _is_document_ready,
                 "The document and all sub-resources have finished loading.",

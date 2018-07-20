@@ -1,3 +1,9 @@
+v0.8.0 (07/18/18)
+* Preserve geckodriver log for Firefox test failures
+* Better handling of screenshot and log directory settings
+* Log more information on page load failures
+* Python 3.6 support
+
 v0.7.3 (05/21/18)
 * Modified wait for page logic
 
