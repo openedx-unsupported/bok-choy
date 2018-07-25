@@ -24,3 +24,12 @@ script:
 - tox -e doc
 after_success:
 - codecov
+deploy:
+  provider: pypi
+  user: edx
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
+    python: 3.6
+  password:
+    secure: o6earhHeqUFjY2d9Xrn3w2KpQ9ej96S+BnL0Us8XiTQtvgvhdkAKdH0xIxBWwQiWYT6ZyN8XzDQrvPTM6jnhEuGkY2Qv7GVnPXNu2YimvUm9gkmMtzphII/KSNnqrAMPzHL1ICUKe73fLFxi9ipBWcfN2UDi3Lw1BG78zTmmaGc=
