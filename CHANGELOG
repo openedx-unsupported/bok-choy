@@ -1,3 +1,7 @@
+v0.8.1 (08/01/18)
+* Support use of headless Chrome and Firefox by setting the BOKCHOY_HEADLESS environment variable to "true"
+* Only try to save logs which are available for the browser in use
+
 v0.8.0 (07/18/18)
 * Preserve geckodriver log for Firefox test failures
 * Better handling of screenshot and log directory settings

@@ -224,6 +224,8 @@ class TestSaveFiles(object):
         bok_choy.browser.save_driver_logs(browser, 'empty')
         assert 'The SELENIUM_DRIVER_LOG_DIR environment variable was not set; not saving logs' in caplog.text
 
+    @pytest.mark.skipif(os.environ.get('SELENIUM_BROWSER', 'firefox') != "firefox",
+                        reason="Selenium driver logs are supported on non-firefox browsers")
     def test_save_driver_logs_unsupported(self):
         browser = self.browser
         tempdir_path = self.tempdir_path
@@ -252,7 +254,7 @@ class TestSaveFiles(object):
 
         # Check that the files were created.
         # Note that the 'client' and 'server' log files will be empty.
-        log_types = ['browser', 'driver', 'client', 'server']
+        log_types = browser.log_types
         for log_type in log_types:
             expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
             assert os.path.isfile(expected_file)
@@ -270,7 +272,7 @@ class TestSaveFiles(object):
             bok_choy.browser.save_driver_logs(browser, 'js_page')
 
         # Check that no files were created.
-        log_types = ['browser', 'driver', 'client', 'server']
+        log_types = browser.log_types
         for log_type in log_types:
             expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
             assert not os.path.exists(expected_file)

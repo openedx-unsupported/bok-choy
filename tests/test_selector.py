@@ -59,7 +59,7 @@ class ScrollTest(WebAppTest):
         self.long_page.scroll_to_element('#element_after_long_part')
         # Different browsers, CI systems, and resolutions may present the
         # element in varying locations. Use a greater-than instead of an equals.
-        self.assertGreaterEqual(self._get_window_position(), 1900)
+        self.assertGreaterEqual(self._get_window_position(), 1800)
 
     def test_scroll_false_element(self):
         """

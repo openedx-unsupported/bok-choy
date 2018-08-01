@@ -33,7 +33,7 @@ requests==2.19.1          # via sphinx
 selenium==3.13.0
 six==1.11.0
 snowballstemmer==1.2.1    # via sphinx
-sphinx==1.7.5
+sphinx==1.7.6
 sphinxcontrib-websupport==1.1.0  # via sphinx
 typing==3.6.4             # via sphinx
 urllib3==1.23             # via requests
