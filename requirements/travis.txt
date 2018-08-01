@@ -10,13 +10,13 @@ codecov==2.0.15
 coverage==4.5.1           # via codecov
 idna==2.7                 # via requests
 packaging==17.1           # via tox
-pluggy==0.6.0             # via tox
+pluggy==0.7.1             # via tox
 py==1.5.4                 # via tox
 pyparsing==2.2.0          # via packaging
 requests==2.19.1          # via codecov
 six==1.11.0               # via packaging, tox
 tox-battery==0.5.1
 tox-travis==0.10
-tox==3.1.1
+tox==3.1.2
 urllib3==1.23             # via requests
 virtualenv==16.0.0        # via tox

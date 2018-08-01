@@ -7,5 +7,6 @@ futures ; python_version == "2.7"   # via isort
 mock                                # For mocking functionality in assorted tests
 packaging                           # For version number parsing and comparisons
 pycodestyle                         # For checking compliance with PEP 8 coding style guidelines
+pylint-plugin-utils<0.4             # via pylint-celery, pylint-django; newer versions drop Python 2 support
 pytest-cov                          # For code coverage statistics generation
 pytest-xdist                        # For parallel test execution
