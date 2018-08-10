@@ -228,12 +228,14 @@ class NextPage(SitePage):
         page.visit()
 
 
+@js_defined('$')
 class FocusedPage(SitePage):
     """
     Page that has a link to a focusable element.
     """
     name = "focused"
 
+    @wait_for_js
     def focus_on_main_content(self):
         """
         Give focus to the element with the ``main-content`` ID.

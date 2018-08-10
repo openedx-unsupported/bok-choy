@@ -6,7 +6,7 @@ import os
 import sys
 from setuptools import setup
 
-VERSION = '0.8.1'
+VERSION = '0.9.0'
 DESCRIPTION = 'UI-level acceptance test framework'
 
 
@@ -74,4 +74,7 @@ setup(
     packages=['bok_choy', 'bok_choy/a11y'],
     package_data={'bok_choy': ['vendor/google/*.*', 'vendor/axe-core/*.*']},
     install_requires=load_requirements('requirements/base.in'),
+    extras_require={
+        'visual_diff': ['needle']
+    }
 )

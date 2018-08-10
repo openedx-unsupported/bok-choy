@@ -1,15 +1,19 @@
 """
 Tests for the WebAppTest class.
 """
+# pylint: disable=attribute-defined-outside-init
 from __future__ import absolute_import
 
 import os
 from unittest import expectedFailure
 
+import pytest
 from bok_choy.web_app_test import WebAppTest
 from .pages import ImagePage
 
 
+@pytest.mark.skipif(not hasattr(WebAppTest, 'engine_class'),
+                    reason='Visual diff assertions only work when needle is installed')
 class ScreenshotAssertTest(WebAppTest):
     """
     Test the integration with needle and its screenshot assertion capability.

@@ -11,8 +11,17 @@ import socket
 from json import dumps
 from shutil import copyfile
 
-from needle.driver import (NeedleFirefox, NeedleChrome, NeedleIe,
-                           NeedleSafari, NeedlePhantomJS, NeedleOpera)
+try:
+    from needle.driver import (
+        NeedleChrome as Chrome,
+        NeedleFirefox as Firefox,
+        NeedleIe as Ie,
+        NeedleOpera as Opera,
+        NeedlePhantomJS as PhantomJS,
+        NeedleSafari as Safari
+    )
+except ImportError:
+    from selenium.webdriver import Chrome, Firefox, Ie, Opera, PhantomJS, Safari
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -45,12 +54,12 @@ OPTIONAL_ENV_VARS = [
 
 
 BROWSERS = {
-    'firefox': NeedleFirefox,
-    'chrome': NeedleChrome,
-    'internet explorer': NeedleIe,
-    'safari': NeedleSafari,
-    'phantomjs': NeedlePhantomJS,
-    'opera': NeedleOpera,
+    'chrome': Chrome,
+    'firefox': Firefox,
+    'internet explorer': Ie,
+    'opera': Opera,
+    'phantomjs': PhantomJS,
+    'safari': Safari,
 }
 
 FIREFOX_PROFILE_ENV_VAR = 'FIREFOX_PROFILE_PATH'
