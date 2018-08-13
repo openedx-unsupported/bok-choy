@@ -3,7 +3,13 @@ Visual Diff Testing
 
 The bok-choy framework uses `Needle`_ to provide the ability to capture
 portions of a rendered page in the browser and assert that the image captured
-matches that of a baseline.
+matches that of a baseline.  Needle is an optional dependency of bok-choy,
+which you can install via either of the following commands:
+
+.. code-block:: console
+
+    pip install bok-choy[visual_diff]
+    pip install needle
 
 The general methodology for creating a test with a screenshot assertion
 consists of the following steps.

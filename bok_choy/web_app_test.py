@@ -5,18 +5,24 @@ from __future__ import absolute_import
 
 from abc import ABCMeta
 import sys
-from unittest import SkipTest
+from unittest import SkipTest, TestCase
 from uuid import uuid4
 
-from needle.cases import NeedleTestCase, import_from_string
-from needle.driver import NeedlePhantomJS
+try:
+    from needle.cases import import_from_string, NeedleTestCase as BaseTestCase
+except ImportError:
+    try:
+        from unittest2 import TestCase as BaseTestCase
+    except ImportError:
+        BaseTestCase = TestCase
+from selenium.webdriver import PhantomJS
 import six
 
 from .browser import browser, save_screenshot, save_driver_logs, save_source
 
 
 @six.add_metaclass(ABCMeta)
-class WebAppTest(NeedleTestCase):
+class WebAppTest(BaseTestCase):
 
     """
     Base class for testing a web application.
@@ -24,6 +30,9 @@ class WebAppTest(NeedleTestCase):
 
     # Execute tests in parallel!
     _multiprocess_can_split_ = True
+
+    viewport_width = 1024
+    viewport_height = 768
 
     def __init__(self, *args, **kwargs):
         super(WebAppTest, self).__init__(*args, **kwargs)
@@ -40,21 +49,24 @@ class WebAppTest(NeedleTestCase):
         Instead we start up the browser once per TestCase instance,
         in the setUp method.
         """
-        # Instantiate the diff engine.
-        # This will allow Needle's flexibility for choosing which you want to use.
-        # These lines are copied over from Needle's setUpClass method.
-        klass = import_from_string(cls.engine_class)
-        cls.engine = klass()
+        if hasattr(cls, 'engine_class'):
+            # Instantiate the diff engine.
+            # This will allow Needle's flexibility for choosing which you want to use.
+            # These lines are copied over from Needle's setUpClass method.
+            klass = import_from_string(cls.engine_class)
+            cls.engine = klass()
 
-        # Needle's setUpClass method set up the driver (thus starting up the browser),
-        # and set the initial window position and viewport size.
-        # Those lines are not copied here into WebAppTest's setUpClass method,
-        # but instead into our setUp method. This follows our paradigm of starting
-        # up a new browser session for each TestCase.
+            # Needle's setUpClass method set up the driver (thus starting up the browser),
+            # and set the initial window position and viewport size.
+            # Those lines are not copied here into WebAppTest's setUpClass method,
+            # but instead into our setUp method. This follows our paradigm of starting
+            # up a new browser session for each TestCase.
 
-        # Now call the super of the NeedleTestCase class, so that we get everything
-        # from the setUpClass method of its parent (unittest.TestCase).
-        super(NeedleTestCase, cls).setUpClass()  # pylint: disable=bad-super-call
+            # Now call the super of the NeedleTestCase class, so that we get everything
+            # from the setUpClass method of its parent (unittest.TestCase).
+            super(BaseTestCase, cls).setUpClass()  # pylint: disable=bad-super-call
+        else:
+            super(WebAppTest, cls).setUpClass()
 
     @classmethod
     def tearDownClass(cls):
@@ -63,9 +75,12 @@ class WebAppTest(NeedleTestCase):
         would quit the browser. This is not needed as we have already quit the browser
         after each TestCase, by virtue of a cleanup that we add in the setUp method.
         """
-        # We still want to call the super of the NeedleTestCase class, so that we get
-        # everything from the tearDownClass method of its parent (unittest.TestCase).
-        super(NeedleTestCase, cls).tearDownClass()  # pylint: disable=bad-super-call
+        if hasattr(cls, 'engine_class'):
+            # We still want to call the super of the NeedleTestCase class, so that we get
+            # everything from the tearDownClass method of its parent (unittest.TestCase).
+            super(BaseTestCase, cls).tearDownClass()  # pylint: disable=bad-super-call
+        else:
+            super(WebAppTest, cls).tearDownClass()
 
     def get_web_driver(self):
         """
@@ -78,7 +93,7 @@ class WebAppTest(NeedleTestCase):
         """
         Terminate the web browser which was launched to run the tests.
         """
-        if isinstance(self.browser, NeedlePhantomJS):
+        if isinstance(self.browser, PhantomJS):
             # Workaround for https://github.com/SeleniumHQ/selenium/issues/767
             self.browser.service.send_remote_shutdown_command()
             self.browser.service._cookie_temp_file = None  # pylint:disable=protected-access
