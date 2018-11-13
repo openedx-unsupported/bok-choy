@@ -189,7 +189,7 @@ def save_driver_logs(driver, prefix):
             LOGGER.warning(msg, exc_info=True)
 
 
-def browser(tags=None, proxy=None):
+def browser(tags=None, proxy=None, other_caps=None):
     """
     Interpret environment variables to configure Selenium.
     Performs validation, logging, and sensible defaults.
@@ -239,6 +239,10 @@ def browser(tags=None, proxy=None):
     Keyword Args:
         tags (list of str): Tags to apply to the SauceLabs job.  If not using SauceLabs, these will be ignored.
         proxy: A proxy instance.
+        other_caps (dict of str): Additional desired capabilities to provide to remote WebDriver instances. Note
+        that these values will be overwritten by environment variables described above. This is only used for
+        remote driver instances, where such info is usually used by services for additional configuration and
+        metadata.
 
     Returns:
         selenium.webdriver: The configured browser object used to drive tests
@@ -268,6 +272,13 @@ def browser(tags=None, proxy=None):
             # If we are using a proxy, we need extra kwargs passed on intantiation.
             if proxy:
                 browser_kwargs = _proxy_kwargs(browser_name, proxy, browser_kwargs)
+
+            # Load in user given desired caps but override with derived caps from above. This is to retain existing
+            # behavior. Only for remote drivers, where various testing services use this info for configuration.
+            if browser_class == webdriver.Remote:
+                desired_caps = other_caps or {}
+                desired_caps.update(browser_kwargs.get('desired_capabilities', {}))
+                browser_kwargs['desired_capabilities'] = desired_caps
 
             return True, browser_class(*browser_args, **browser_kwargs)
 

@@ -119,6 +119,31 @@ class TestBrowser(TestCase):
             bok_choy.browser.browser()
         self.assertEqual(patch_object.call_count, 3)
 
+    @patch.dict(os.environ, {
+        'SELENIUM_BROWSER': 'firefox',
+        'SELENIUM_HOST': '127.0.0.1',
+        'SELENIUM_PORT': '80',
+    })
+    def test_other_capabilities_loaded(self):
+        """
+        If additional desired capabilities are given,
+         they should be sent to the remote WebDriver,
+         but not override existing environment variable logic.
+        """
+        patch_object = patch('selenium.webdriver.Remote').start()
+        self.addCleanup(patch.stopall)
+        browser = bok_choy.browser.browser(other_caps={
+            # Intentionally different, should not be changed
+            'browserName': 'fhrome',
+            'extra-data': '1234',
+        })
+        self.addCleanup(browser.quit)
+        self.assertEqual(patch_object.call_count, 1)
+        desired_caps = patch_object.call_args[1]['desired_capabilities']
+        # browserName in other_caps should not have overriden env var mapping behavior
+        self.assertEqual(desired_caps['browserName'], 'firefox')
+        self.assertEqual(desired_caps['extra-data'], '1234')
+
 
 class TestFirefoxBrowserConfig(TestCase):
     """ Tests for configuring the firefox path and log file."""
