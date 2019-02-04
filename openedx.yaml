@@ -2,7 +2,9 @@
 # https://open-edx-proposals.readthedocs.io/en/latest/oep-0002-bp-repo-metadata.html#specification
 
 nick: bok
-oeps: {}
+oeps:
+    oep-7:
+        state: True
 owner: edx/testeng
 tags: [tools]
 track-pulls: true
