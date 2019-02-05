@@ -7,4 +7,3 @@ oeps:
         state: True
 owner: edx/testeng
 tags: [tools]
-track-pulls: true
