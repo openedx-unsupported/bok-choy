@@ -1,5 +1,7 @@
 # Requirements for test runs with needle installed for visual diff support
 
+-c constraints.txt
+
 -r test.txt                         # Base testing dependencies
 
 needle                              # For test assertions involving screenshots and visual diffs

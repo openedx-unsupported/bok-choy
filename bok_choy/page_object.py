@@ -40,14 +40,14 @@ EXPECTED_ATTRIBUTE_FORMAT = re.compile(r'\'\';!--&quot;<xss>=&amp;{\(\)}')
 XSS_HTML = "<xss"
 
 
-class WrongPageError(Exception):
+class WrongPageError(WebDriverException):
     """
     The page object reports that we're on the wrong page!
     """
     pass
 
 
-class PageLoadError(Exception):
+class PageLoadError(WebDriverException):
     """
     An error occurred while loading the page.
     """
@@ -318,18 +318,18 @@ class PageObject(object):
             PageObject
         """
         if self.url is None:
-            raise NotImplementedError("Page {} does not provide a URL to visit.".format(self))
+            raise NotImplementedError(u"Page {} does not provide a URL to visit.".format(self))
 
         # Validate the URL
         if not self.validate_url(self.url):
-            raise PageLoadError("Invalid URL: '{}'".format(self.url))
+            raise PageLoadError(u"Invalid URL: '{}'".format(self.url))
 
         # Visit the URL
         try:
             self.browser.get(self.url)
         except (WebDriverException, socket.gaierror):
             LOGGER.warning(u"Unexpected page load exception:", exc_info=True)
-            raise PageLoadError("Could not load page '{!r}' at URL '{}'".format(
+            raise PageLoadError(u"Could not load page '{!r}' at URL '{}'".format(
                 self, self.url
             ))
 
@@ -342,7 +342,7 @@ class PageObject(object):
         try:
             return self.wait_for_page()
         except BrokenPromise:
-            raise PageLoadError("Timed out waiting to load page '{!r}' at URL '{}'".format(
+            raise PageLoadError(u"Timed out waiting to load page '{!r}' at URL '{}'".format(
                 self, self.url
             ))
 
@@ -389,7 +389,7 @@ class PageObject(object):
         if not, raise a `WrongPageError`.
         """
         if not self.is_browser_on_page():
-            msg = "Not on the correct page to use '{!r}' at URL '{}'".format(
+            msg = u"Not on the correct page to use '{!r}' at URL '{}'".format(
                 self, self.url
             )
             raise WrongPageError(msg)
@@ -413,7 +413,7 @@ class PageObject(object):
             if all_hits_count > safe_hits_count:
                 potential_hits = re.findall('<[^<]+<xss', html_source)
                 raise XSSExposureError(
-                    "{} XSS issue(s) found on page. Potential places are {}".format(
+                    u"{} XSS issue(s) found on page. Potential places are {}".format(
                         all_hits_count - safe_hits_count, potential_hits
                     )
                 )
@@ -467,7 +467,7 @@ class PageObject(object):
             ).fulfill()
 
         result = Promise(
-            lambda: (self.is_browser_on_page(), self), "loaded page {!r}".format(self),
+            lambda: (self.is_browser_on_page(), self), u"loaded page {!r}".format(self),
             timeout=timeout
         ).fulfill()
 
@@ -519,7 +519,7 @@ class PageObject(object):
         """
 
         # Before executing the `with` block, stub the confirm/alert functions
-        script = dedent("""
+        script = dedent(u"""
             window.confirm = function() {{ return {0}; }};
             window.alert = function() {{ return; }};
         """.format("true" if confirm else "false")).strip()
@@ -698,9 +698,9 @@ class PageObject(object):
 
         """
         # Ensure element exists
-        msg = "Element '{element}' is present".format(element=element_selector)
+        msg = u"Element '{element}' is present".format(element=element_selector)
         self.wait_for(lambda: self.q(css=element_selector).present, msg, timeout=timeout)
 
         # Obtain coordinates and use those for JavaScript call
         loc = self.q(css=element_selector).first.results[0].location
-        self.browser.execute_script("window.scrollTo({x},{y})".format(x=loc['x'], y=loc['y']))
+        self.browser.execute_script(u"window.scrollTo({x},{y})".format(x=loc['x'], y=loc['y']))

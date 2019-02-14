@@ -1,6 +1,8 @@
 # Dependencies that are used in development environments.
 # Please do not use this file for packages that are needed for test runs.
 
+-c constraints.txt
+
 -r pip-tools.txt                    # pip-tools and its dependencies, for managing requirements files
 -r needle.txt                       # Dependencies for running the various test suites
 -r travis.txt                       # Dependencies for tox and related utilities

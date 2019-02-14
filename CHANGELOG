@@ -1,3 +1,7 @@
+v0.9.3 (02/14/19)
+* PageLoadError and WrongPageError now inherit WebDriverException so
+  they can trigger retries instead of immediately failing tests
+
 v0.9.2 (11/20/18) (0.9.1 skipped due to PyPI deployment issue)
 * Support passing additional desired capabilities to remote WebDriver instances.
 

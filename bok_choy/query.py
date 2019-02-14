@@ -97,7 +97,7 @@ class Query(Sequence):
         clone.transforms = list(clone.transforms)
         for key, value in kwargs.items():
             if not hasattr(clone, key):
-                raise TypeError('replace() got an unexpected keyword argument {!r}'.format(key))
+                raise TypeError(u'replace() got an unexpected keyword argument {!r}'.format(key))
 
             setattr(clone, key, value)
         return clone
@@ -342,7 +342,7 @@ class BrowserQuery(Query):
         query_name, query_value = list(kwargs.items())[0]
 
         if query_name not in QUERY_TYPES:
-            raise TypeError('{} is not a supported query type for BrowserQuery()'.format(query_name))
+            raise TypeError(u'{} is not a supported query type for BrowserQuery()'.format(query_name))
 
         def query_fn():  # pylint: disable=missing-docstring
             return getattr(browser, QUERY_TYPES[query_name])(query_value)
@@ -372,7 +372,7 @@ class BrowserQuery(Query):
         Returns:
             A list of attribute values for `attribute_name`.
         """
-        desc = 'attrs({!r})'.format(attribute_name)
+        desc = u'attrs({!r})'.format(attribute_name)
         return self.map(lambda el: el.get_attribute(attribute_name), desc).results
 
     @property
@@ -504,4 +504,4 @@ class BrowserQuery(Query):
             elem.clear()
             elem.send_keys(text)
 
-        self.map(_fill, 'fill({!r})'.format(text)).execute()
+        self.map(_fill, u'fill({!r})'.format(text)).execute()

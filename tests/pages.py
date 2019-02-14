@@ -78,13 +78,13 @@ class SelectPage(SitePage):
         """
         Select the car with ``car_value`` in the drop-down list.
         """
-        self.q(css='select[name="cars"] option[value="{}"]'.format(car_value)).first.click()
+        self.q(css=u'select[name="cars"] option[value="{}"]'.format(car_value)).first.click()
 
     def is_car_selected(self, car):
         """
         Return ``True`` if the given ``car`` is selected, ``False`` otherwise.
         """
-        return self.q(css='select[name="cars"] option[value="{}"]'.format(car)).selected
+        return self.q(css=u'select[name="cars"] option[value="{}"]'.format(car)).selected
 
 
 class CheckboxPage(SitePage):
@@ -97,7 +97,7 @@ class CheckboxPage(SitePage):
         """
         Toggle the box for the pill with `pill_name` (red or blue).
         """
-        self.q(css="#fixture input#{}".format(pill_name)).first.click()
+        self.q(css=u"#fixture input#{}".format(pill_name)).first.click()
 
 
 class AlertPage(SitePage):

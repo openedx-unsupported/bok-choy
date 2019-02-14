@@ -299,9 +299,9 @@ class TestSaveFiles(object):
         # Check that no files were created.
         log_types = browser.log_types
         for log_type in log_types:
-            expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
+            expected_file = os.path.join(tempdir_path, u'js_page_{}.log'.format(log_type))
             assert not os.path.exists(expected_file)
-            assert "Could not save browser log of type '{}'.".format(log_type) in caplog.text
+            assert u"Could not save browser log of type '{}'.".format(log_type) in caplog.text
 
     def test_save_source(self):
         browser = self.browser
