@@ -1,6 +1,8 @@
 # Packages needed in order to run tox.
 # Installed by Travis and dev environments.
 
+-c constraints.txt
+
 codecov                   # Code coverage reporting
 tox                       # Virtualenv management for tests
 tox-battery               # Makes tox aware of requirements file changes

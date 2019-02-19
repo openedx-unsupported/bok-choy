@@ -118,7 +118,7 @@ class PageObjectTest(TestCase):
             self.assertEqual(
                 returned_val,
                 is_valid,
-                msg="Url: {0}, Expected {1} but got {2}".format(url, is_valid, returned_val)
+                msg=u"Url: {0}, Expected {1} but got {2}".format(url, is_valid, returned_val)
             )
 
     def test_guarded_methods(self):

@@ -133,7 +133,7 @@ class A11yAudit(object):
         Raises: `RuntimeError` if the file isn't found.
         """
         if not os.path.isfile(self.config.rules_file):
-            msg = 'Could not find the accessibility tools JS file: {}'.format(
+            msg = u'Could not find the accessibility tools JS file: {}'.format(
                 self.config.rules_file)
             raise RuntimeError(msg)
 

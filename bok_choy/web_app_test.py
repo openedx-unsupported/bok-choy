@@ -112,7 +112,7 @@ class WebAppTest(BaseTestCase):
 
         # Measure the difference between the actual document width and the
         # desired viewport width so we can account for scrollbars:
-        script = "return {width: document.body.clientWidth, height: document.body.clientHeight};"
+        script = u"return {width: document.body.clientWidth, height: document.body.clientHeight};"
         measured = self.driver.execute_script(script)
         delta = width - measured['width']
 

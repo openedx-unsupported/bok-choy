@@ -4,34 +4,28 @@
 #
 #    make upgrade
 #
-alabaster==0.7.11         # via sphinx
+alabaster==0.7.12         # via sphinx
 babel==2.6.0              # via sphinx
-bleach==2.1.3             # via readme-renderer
-certifi==2018.4.16        # via requests
-cffi==1.11.5              # via cmarkgfm
+bleach==3.1.0             # via readme-renderer
+certifi==2018.11.29       # via requests
 chardet==3.0.4            # via requests
-cmarkgfm==0.4.2           # via readme-renderer
 docutils==0.14            # via readme-renderer, sphinx
-edx-sphinx-theme==1.3.0
-future==0.16.0            # via readme-renderer
-html5lib==1.0.1           # via bleach
-idna==2.7                 # via requests
-imagesize==1.0.0          # via sphinx
+edx-sphinx-theme==1.4.0
+idna==2.8                 # via requests
+imagesize==1.1.0          # via sphinx
 jinja2==2.10              # via sphinx
-lazy==1.3
-markupsafe==1.0           # via jinja2
-packaging==17.1           # via sphinx
-pycparser==2.18           # via cffi
-pygments==2.2.0           # via readme-renderer, sphinx
-pyparsing==2.2.0          # via packaging
-pytz==2018.5              # via babel
-readme-renderer==21.0
-requests==2.19.1          # via sphinx
-selenium==3.14.0
-six==1.11.0
+lazy==1.4
+markupsafe==1.1.0         # via jinja2
+packaging==19.0           # via sphinx
+pygments==2.3.1           # via readme-renderer, sphinx
+pyparsing==2.3.1          # via packaging
+pytz==2018.9              # via babel
+readme-renderer==24.0
+requests==2.21.0          # via sphinx
+selenium==3.141.0
+six==1.12.0
 snowballstemmer==1.2.1    # via sphinx
-sphinx==1.7.6
+sphinx==1.8.4
 sphinxcontrib-websupport==1.1.0  # via sphinx
-typing==3.6.4             # via sphinx
-urllib3==1.23
-webencodings==0.5.1       # via html5lib
+urllib3==1.24.1
+webencodings==0.5.1       # via bleach

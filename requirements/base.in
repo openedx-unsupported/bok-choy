@@ -1,5 +1,7 @@
 # Core requirements for using this application
 
+-c constraints.txt
+
 lazy                      # For lazy evaluation of the page object's a11y_audit attribute
 selenium>=2,<4            # Browser automation driver
 six                       # For Python 2 & 3 compatibility

@@ -24,7 +24,7 @@ class AxeCoreAuditConfig(A11yAuditConfig):
     def __init__(self, *args, **kwargs):
         super(AxeCoreAuditConfig, self).__init__(*args, **kwargs)
         self.rules, self.context = None, None
-        self.custom_rules = "customRules={}"
+        self.custom_rules = u"customRules={}"
         self.rules_file = os.path.join(
             os.path.split(CUR_DIR)[0],
             'vendor/axe-core/axe.min.js'
@@ -243,7 +243,7 @@ class AxeCoreAudit(A11yAudit):
         __Caution__: You probably don't really want to call this method
         directly! It will be used by `AxeCoreAudit.do_audit`.
         """
-        audit_run_script = dedent("""
+        audit_run_script = dedent(u"""
             {rules_js}
             {custom_rules}
             axe.configure(customRules);
@@ -259,7 +259,7 @@ class AxeCoreAudit(A11yAudit):
             options=config.rules
         )
 
-        audit_results_script = dedent("""
+        audit_results_script = dedent(u"""
             window.console.log(window.a11yAuditResults);
             return window.a11yAuditResults;
         """)
@@ -350,14 +350,14 @@ class AxeCoreAudit(A11yAudit):
 
         lines = []
         for error_type in errors:
-            lines.append("Severity: {}".format(error_type.get("impact")))
-            lines.append("Rule ID: {}".format(error_type.get("id")))
-            lines.append("Help URL: {}\n".format(error_type.get('helpUrl')))
+            lines.append(u"Severity: {}".format(error_type.get("impact")))
+            lines.append(u"Rule ID: {}".format(error_type.get("id")))
+            lines.append(u"Help URL: {}\n".format(error_type.get('helpUrl')))
 
             for node in error_type['nodes']:
-                msg = "Message: {}".format(_get_message(node))
-                html = "Html: {}".format(node.get('html').encode('utf-8'))
-                target = "Target: {}".format(node.get('target'))
+                msg = u"Message: {}".format(_get_message(node))
+                html = u"Html: {}".format(node.get('html').encode('utf-8'))
+                target = u"Target: {}".format(node.get('target'))
                 fill_opts = {
                     'width': 100,
                     'initial_indent': '\t',
@@ -382,7 +382,7 @@ class AxeCoreAudit(A11yAudit):
         """
         errors = AxeCoreAudit.get_errors(audit)
         if errors["total"] > 0:
-            msg = "URL '{}' has {} errors:\n\n{}".format(
+            msg = u"URL '{}' has {} errors:\n\n{}".format(
                 url,
                 errors["total"],
                 AxeCoreAudit.format_errors(errors["errors"])

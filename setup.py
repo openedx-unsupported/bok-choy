@@ -6,7 +6,7 @@ import os
 import sys
 from setuptools import setup
 
-VERSION = '0.9.2'
+VERSION = '0.9.3'
 DESCRIPTION = 'UI-level acceptance test framework'
 
 
@@ -31,6 +31,7 @@ def is_requirement(line):
     """
     return not (
         line == '' or
+        line.startswith('-c') or
         line.startswith('-r') or
         line.startswith('#') or
         line.startswith('-e') or
