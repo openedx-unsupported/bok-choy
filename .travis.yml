@@ -12,13 +12,13 @@ branches:
   - master
   - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 before_install:
-- wget https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-linux64.tar.gz
+- wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
 - mkdir geckodriver
-- tar -xzf geckodriver-v0.21.0-linux64.tar.gz -C geckodriver
+- tar -xzf geckodriver-v0.24.0-linux64.tar.gz -C geckodriver
 - export PATH=$PATH:$PWD/geckodriver
 - export BOKCHOY_HEADLESS=true
 addons:
-  firefox: '61.0.1'
+  firefox: '65.0.1'
 install:
 - pip install -r requirements/travis.txt
 script:
@@ -33,5 +33,6 @@ deploy:
   on:
     tags: true
     python: 3.6
+    condition: '$TOXENV = core'
   password:
     secure: o6earhHeqUFjY2d9Xrn3w2KpQ9ej96S+BnL0Us8XiTQtvgvhdkAKdH0xIxBWwQiWYT6ZyN8XzDQrvPTM6jnhEuGkY2Qv7GVnPXNu2YimvUm9gkmMtzphII/KSNnqrAMPzHL1ICUKe73fLFxi9ipBWcfN2UDi3Lw1BG78zTmmaGc=
