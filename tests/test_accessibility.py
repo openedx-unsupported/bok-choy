@@ -279,13 +279,13 @@ class AxeCoreTestMixin(object):
             self.page.a11y_audit.do_audit()
 
     def test_default_config(self):
-        self._do_audit_and_check_errors(6)
+        self._do_audit_and_check_errors(10)
 
     def test_ignored_rule(self):
         self.page.a11y_audit.config.set_rules({
             "ignore": ['aria-roles'],
         })
-        self._do_audit_and_check_errors(4)
+        self._do_audit_and_check_errors(8)
 
     def test_limited_rules(self):
         self.page.a11y_audit.config.set_rules({
@@ -295,13 +295,13 @@ class AxeCoreTestMixin(object):
 
     def test_limited_rule_tags(self):
         self.page.a11y_audit.config.set_rules({
-            "tags": ['wcag111'],
+            "tags": ['wcag2a'],
         })
-        self._do_audit_and_check_errors(1)
+        self._do_audit_and_check_errors(7)
 
     def test_exclude_scope(self):
         self.page.a11y_audit.config.set_scope(exclude=['#bad-link'])
-        self._do_audit_and_check_errors(5)
+        self._do_audit_and_check_errors(9)
 
     def test_include_scope(self):
         self.page.a11y_audit.config.set_scope(include=['#limit_scope'])
@@ -323,11 +323,11 @@ class AxeCoreTestMixin(object):
         with patch.dict(os.environ,
                         {'BOKCHOY_A11Y_CUSTOM_RULES_FILE': 'tests/a11y_custom_rules.js'}):
             self.page.a11y_audit.config.customize_ruleset()
-            self._do_audit_and_check_errors(7)
+            self._do_audit_and_check_errors(11)
 
     def test_customize_ruleset_via_config_param(self):
         self.page.a11y_audit.config.customize_ruleset('tests/a11y_custom_rules.js')
-        self._do_audit_and_check_errors(7)
+        self._do_audit_and_check_errors(11)
 
     def test_customize_ruleset_bad_file_path(self):
         with self.assertRaises(IOError):
@@ -349,7 +349,7 @@ class AxeCoreTestMixin(object):
         self.page.a11y_audit.config.set_rules({
             "ignore": ["fake-rule"],
         })
-        self._do_audit_and_check_errors(6)
+        self._do_audit_and_check_errors(10)
 
     def test_running_custom_tag(self):
         self.page.a11y_audit.config.customize_ruleset('tests/a11y_custom_rules.js')

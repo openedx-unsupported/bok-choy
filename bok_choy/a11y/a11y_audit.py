@@ -3,6 +3,7 @@ Interface for running accessibility audits on a PageObject.
 """
 from __future__ import absolute_import
 
+import io
 import os
 from abc import abstractmethod, abstractproperty, ABCMeta
 import six
@@ -138,7 +139,7 @@ class A11yAudit(object):
             raise RuntimeError(msg)
 
         else:
-            with open(self.config.rules_file, "r") as rules_file:
+            with io.open(self.config.rules_file, "r", encoding="utf-8") as rules_file:
                 return rules_file.read()
 
     def do_audit(self):
