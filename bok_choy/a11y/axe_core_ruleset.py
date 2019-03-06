@@ -296,6 +296,7 @@ class AxeCoreAudit(A11yAudit):
         # audit_results is report of accessibility violations for that session
         # Note that this ruleset doesn't have distinct error/warning levels.
         audit_results = result.get('violations')
+        print(audit_results)
         return audit_results
 
     @staticmethod

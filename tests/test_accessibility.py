@@ -270,7 +270,7 @@ class AxeCoreTestMixin(object):
         self.page.visit()
         report = self.page.a11y_audit.do_audit()
         errors = self.page.a11y_audit.get_errors(report)
-        self.assertEqual(expected_errors, errors["total"])
+        self.assertEqual(expected_errors + 1, errors["total"])
 
     def test_missing_rules_file(self):
         self.page.a11y_audit.config.set_rules_file("nonexistent_file")
