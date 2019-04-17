@@ -6,7 +6,7 @@ import os
 import sys
 from setuptools import setup
 
-VERSION = '0.9.3'
+VERSION = '1.0.0'
 DESCRIPTION = 'UI-level acceptance test framework'
 
 
