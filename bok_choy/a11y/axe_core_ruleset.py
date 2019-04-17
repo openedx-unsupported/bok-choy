@@ -247,11 +247,12 @@ class AxeCoreAudit(A11yAudit):
             {rules_js}
             {custom_rules}
             axe.configure(customRules);
-            var updatedResults = function(r) {{
-                window.a11yAuditResults = JSON.stringify(r);
+            var callback = function(err, results) {{
+                if (err) throw err;
+                window.a11yAuditResults = JSON.stringify(results);
                 window.console.log(window.a11yAuditResults);
             }}
-            axe.a11yCheck({context}, {options}, updatedResults);
+            axe.run({context}, {options}, callback);
         """).format(
             rules_js=rules_js,
             custom_rules=config.custom_rules,
