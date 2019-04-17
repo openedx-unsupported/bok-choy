@@ -1,3 +1,6 @@
+v1.0.0 (04/17/19)
+* Bump axe-core dependency from 1.1 to 3.2.2
+
 v0.9.3 (02/14/19)
 * PageLoadError and WrongPageError now inherit WebDriverException so
   they can trigger retries instead of immediately failing tests
