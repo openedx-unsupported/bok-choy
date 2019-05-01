@@ -13,3 +13,9 @@ more-itertools<6.0.0
 
 # Newer versions of pylint-plugin-utils drop Python 2.7 support
 pylint-plugin-utils<0.4
+
+# requests only supports urllib 1.24: https://github.com/kennethreitz/requests/issues/5067
+urllib3<1.25
+
+# pip-compile fails to find dependencies in 1.8.5 https://github.com/jazzband/pip-tools/issues/810
+sphinx<1.8.5
