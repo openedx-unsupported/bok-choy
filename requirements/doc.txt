@@ -17,7 +17,7 @@ jinja2==2.10.1            # via sphinx
 lazy==1.4
 markupsafe==1.1.1         # via jinja2
 packaging==19.0           # via sphinx
-pygments==2.3.1           # via readme-renderer, sphinx
+pygments==2.4.0           # via readme-renderer, sphinx
 pyparsing==2.4.0          # via packaging
 pytz==2019.1              # via babel
 readme-renderer==24.0
@@ -27,6 +27,5 @@ six==1.12.0
 snowballstemmer==1.2.1    # via sphinx
 sphinx==1.8.4
 sphinxcontrib-websupport==1.1.0  # via sphinx
-typing==3.6.6             # via sphinx
 urllib3==1.24.3
 webencodings==0.5.1       # via bleach
