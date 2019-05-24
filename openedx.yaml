@@ -6,4 +6,6 @@ oeps:
     oep-7:
         state: True
 owner: edx/testeng
-tags: [tools]
+tags:
+    - tools
+    - library
