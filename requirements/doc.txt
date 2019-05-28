@@ -5,7 +5,7 @@
 #    make upgrade
 #
 alabaster==0.7.12         # via sphinx
-babel==2.6.0              # via sphinx
+babel==2.7.0              # via sphinx
 bleach==3.1.0             # via readme-renderer
 certifi==2019.3.9         # via requests
 chardet==3.0.4            # via requests
@@ -17,15 +17,16 @@ jinja2==2.10.1            # via sphinx
 lazy==1.4
 markupsafe==1.1.1         # via jinja2
 packaging==19.0           # via sphinx
-pygments==2.4.0           # via readme-renderer, sphinx
+pygments==2.4.1           # via readme-renderer, sphinx
 pyparsing==2.4.0          # via packaging
 pytz==2019.1              # via babel
 readme-renderer==24.0
-requests==2.21.0          # via sphinx
+requests==2.22.0          # via sphinx
 selenium==3.141.0
 six==1.12.0
 snowballstemmer==1.2.1    # via sphinx
 sphinx==1.8.4
-sphinxcontrib-websupport==1.1.0  # via sphinx
+sphinxcontrib-websupport==1.1.2  # via sphinx
+typing==3.6.6             # via sphinx
 urllib3==1.24.3
 webencodings==0.5.1       # via bleach
