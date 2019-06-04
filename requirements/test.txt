@@ -19,7 +19,7 @@ enum34==1.1.6             # via astroid
 execnet==1.6.0            # via pytest-xdist
 funcsigs==1.0.2           # via mock, pytest
 futures==3.2.0 ; python_version == "2.7"
-importlib-metadata==0.15  # via pluggy
+importlib-metadata==0.17  # via pluggy, pytest
 isort==4.3.20             # via pylint
 lazy-object-proxy==1.4.1  # via astroid
 lazy==1.4
@@ -39,7 +39,7 @@ pyparsing==2.4.0          # via packaging
 pytest-cov==2.7.1
 pytest-forked==1.0.2      # via pytest-xdist
 pytest-xdist==1.28.0
-pytest==4.5.0             # via pytest-cov, pytest-forked, pytest-xdist
+pytest==4.6.2             # via pytest-cov, pytest-forked, pytest-xdist
 scandir==1.10.0           # via pathlib2
 selenium==3.141.0
 singledispatch==3.4.0.3   # via astroid, pylint

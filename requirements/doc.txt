@@ -17,7 +17,7 @@ jinja2==2.10.1            # via sphinx
 lazy==1.4
 markupsafe==1.1.1         # via jinja2
 packaging==19.0           # via sphinx
-pygments==2.4.1           # via readme-renderer, sphinx
+pygments==2.4.2           # via readme-renderer, sphinx
 pyparsing==2.4.0          # via packaging
 pytz==2019.1              # via babel
 readme-renderer==24.0

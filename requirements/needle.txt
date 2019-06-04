@@ -19,7 +19,7 @@ enum34==1.1.6
 execnet==1.6.0
 funcsigs==1.0.2
 futures==3.2.0 ; python_version == "2.7"
-importlib-metadata==0.15
+importlib-metadata==0.17
 isort==4.3.20
 lazy-object-proxy==1.4.1
 lazy==1.4
@@ -42,7 +42,7 @@ pyparsing==2.4.0
 pytest-cov==2.7.1
 pytest-forked==1.0.2
 pytest-xdist==1.28.0
-pytest==4.5.0
+pytest==4.6.2
 scandir==1.10.0
 selenium==3.141.0
 singledispatch==3.4.0.3
