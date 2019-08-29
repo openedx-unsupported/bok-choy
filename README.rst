@@ -48,7 +48,7 @@ packages:
 
    pip install bok_choy
 
-.. Note:
+.. Note::
 
    On Ubuntu Linux 18.04 you might have to install
    `firefox-geckodriver` (for Firefox) and/or `chromium-chomedriver` (for Chromium),
