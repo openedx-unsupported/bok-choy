@@ -48,6 +48,14 @@ packages:
 
    pip install bok_choy
 
+.. Note::
+
+   On Ubuntu Linux 18.04 you might have to install
+   *firefox-geckodriver* (for Firefox) and/or *chromium-chomedriver* (for Chromium),
+   especially if you hit the following Error when running bok_choy::
+
+     bok_choy.promise.BrokenPromise: Promise not satisfied: Browser is instantiated successfully.
+
 
 Running Tests
 -------------
