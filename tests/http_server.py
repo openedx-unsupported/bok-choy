@@ -8,7 +8,7 @@ from __future__ import absolute_import, print_function
 import os
 from time import sleep
 from six.moves.SimpleHTTPServer import SimpleHTTPRequestHandler
-from six.moves.urllib_parse import urlparse, parse_qs
+from six.moves.urllib_parse import urlparse, parse_qs  # pylint: disable=wrong-import-order
 from six.moves import BaseHTTPServer
 
 
