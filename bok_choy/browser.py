@@ -284,7 +284,7 @@ def browser(tags=None, proxy=None, other_caps=None):
 
         except (socket.error, WebDriverException) as err:
             msg = str(err)
-            LOGGER.debug('Failed to instantiate browser: ' + msg)
+            LOGGER.debug(u'Failed to instantiate browser: %s', msg)
             return False, None
 
     browser_instance = Promise(

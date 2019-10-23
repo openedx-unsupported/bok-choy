@@ -112,7 +112,7 @@ class A11yAudit(object):
         * Ruleset config: AxsAuditConfig
     """
 
-    def __init__(self, browser, url, config=None, *args, **kwargs):
+    def __init__(self, browser, url, config=None, *args, **kwargs):  # pylint: disable=keyword-arg-before-vararg
         """
         Sets ruleset to be used.
 
