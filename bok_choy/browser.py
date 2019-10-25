@@ -97,12 +97,12 @@ def save_source(driver, name):
     if not saved_source_dir:
         LOGGER.warning('The SAVED_SOURCE_DIR environment variable was not set; not saving page source')
         return
-    elif not os.path.exists(saved_source_dir):
-        os.makedirs(saved_source_dir)
     file_name = os.path.join(saved_source_dir,
                              '{name}.html'.format(name=name))
 
     try:
+        if not os.path.exists(saved_source_dir):
+            os.makedirs(saved_source_dir)
         with open(file_name, 'wb') as output_file:
             output_file.write(source.encode('utf-8'))
     except Exception:  # pylint: disable=broad-except
