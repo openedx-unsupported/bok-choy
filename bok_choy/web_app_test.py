@@ -161,29 +161,47 @@ class WebAppTest(BaseTestCase):
         On failure or error save a screenshot, the
         source html, and the selenium driver logs.
         """
-        # Determine whether the test case succeeded or failed
-        result = sys.exc_info()
-        exception_type = result[0]
+        # Get the unittest.TestResult object storing the results for all tests
+        # run so far.  For context on why we have to do it this way, see
+        # https://stackoverflow.com/a/39606065
+        if hasattr(self, '_outcome'):  # Python 3.4+
+            result = self.defaultTestResult()  # these 2 methods have no side effects
+            self._feedErrorsToResult(result, self._outcome.errors)
 
-        # Do not save artifacts for skipped tests.
-        if exception_type is SkipTest:
-            return
+            # Did this test (the one run most recently) end in an unexpected result?
+            bad_outcome = False
+            outcome_lists = (result.errors, result.failures)
+            for outcome_list in outcome_lists:
+                if outcome_list and outcome_list[-1][0] is self:
+                    bad_outcome = True
+            if result.unexpectedSuccesses and result.unexpectedSuccesses[-1] is self:
+                bad_outcome = True
+            if not bad_outcome:
+                # Test passed, skipped, or failed as expected; not interesting enough to save artifacts
+                return
+        else:  # Python 2.7
+            result = sys.exc_info()
+            # Do not save artifacts for skipped tests.
+            exception_type = result[0]
+            if exception_type is SkipTest:
+                return
+            # The exception info will either be an assertion error (on failure)
+            # or an actual exception (on error)
+            if result == (None, None, None):
+                return
 
-        # If it failed, take a screenshot and save the driver logs.
-        # The exception info will either be an assertion error (on failure)
-        # or an actual exception (on error)
-        if result != (None, None, None):
-            try:
-                save_screenshot(self.browser, self.id())
-            except:  # pylint: disable=bare-except
-                pass
+        # If the outcome was unexpected, take a screenshot and save the page source and driver logs.
+        try:
+            save_screenshot(self.browser, self.id())
+        except:  # pylint: disable=bare-except
+            pass
 
-            try:
-                save_source(self.browser, self.id())
-            except:  # pylint: disable=bare-except
-                pass
+        try:
+            save_source(self.browser, self.id())
+        except:  # pylint: disable=bare-except
+            pass
 
-            try:
-                save_driver_logs(self.browser, self.id())
-            except:  # pylint: disable=bare-except
-                pass
+        try:
+            save_driver_logs(self.browser, self.id())
+        except:  # pylint: disable=bare-except
+            pass

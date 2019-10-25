@@ -1,3 +1,7 @@
+v1.0.1 (10/25/19)
+* Fix saving of test failure artifacts under Python 3
+* Make the saving of page source more robust to missing directories, log problems doing it
+
 v1.0.0 (04/17/19)
 * Bump axe-core dependency from 1.1 to 3.2.2
 
