@@ -319,7 +319,19 @@ class TestSaveFiles(object):
         # Check that the file is not empty
         assert os.stat(expected_file).st_size > 100
 
-    def test_save_source_missing_directory(self, caplog):
+    def test_save_source_missing_directory(self):
+        shutil.rmtree(self.tempdir_path)
+        os.environ['SAVED_SOURCE_DIR'] = self.tempdir_path
+        ButtonPage(self.browser).visit()
+        bok_choy.browser.save_source(self.browser, 'button_page')
+
+        expected_file = os.path.join(self.tempdir_path, 'button_page.html')
+        assert os.path.isfile(expected_file)
+
+        # Check that the file is not empty
+        assert os.stat(expected_file).st_size > 100
+
+    def test_save_source_no_permission(self, caplog):
         os.environ['SAVED_SOURCE_DIR'] = '/does_not_exist'
         ButtonPage(self.browser).visit()
         bok_choy.browser.save_source(self.browser, 'button_page')
