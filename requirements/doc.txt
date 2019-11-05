@@ -32,4 +32,4 @@ urllib3==1.24.3
 webencodings==0.5.1       # via bleach
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==41.5.1        # via sphinx
+# setuptools==41.6.0        # via sphinx
