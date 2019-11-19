@@ -57,7 +57,7 @@ six==1.13.0
 toml==0.10.0
 tox-battery==0.5.1
 tox-travis==0.12
-tox==3.14.0
+tox==3.14.1
 urllib3==1.24.3
 virtualenv==16.7.7
 wcwidth==0.1.7

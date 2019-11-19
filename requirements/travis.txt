@@ -25,7 +25,7 @@ six==1.13.0               # via packaging, pathlib2, tox
 toml==0.10.0              # via tox
 tox-battery==0.5.1
 tox-travis==0.12
-tox==3.14.0
+tox==3.14.1
 urllib3==1.24.3           # via requests
 virtualenv==16.7.7        # via tox
 zipp==0.6.0               # via importlib-metadata
