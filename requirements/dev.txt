@@ -24,7 +24,7 @@ filelock==3.0.12
 funcsigs==1.0.2
 futures==3.3.0 ; python_version == "2.7"
 idna==2.8
-importlib-metadata==1.1.0
+importlib-metadata==1.2.0
 isort==4.3.21
 lazy-object-proxy==1.4.3
 lazy==1.4
@@ -48,7 +48,7 @@ pyparsing==2.4.5
 pytest-cov==2.8.1
 pytest-forked==1.1.3
 pytest-xdist==1.30.0
-pytest==4.6.6
+pytest==4.6.7
 requests==2.22.0
 scandir==1.10.0
 selenium==3.141.0
