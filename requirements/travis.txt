@@ -9,7 +9,7 @@ chardet==3.0.4            # via requests
 codecov==2.0.15
 configparser==4.0.2       # via importlib-metadata
 contextlib2==0.6.0.post1  # via importlib-metadata
-coverage==5.0             # via codecov
+coverage==5.0.1           # via codecov
 filelock==3.0.12          # via tox
 idna==2.8                 # via requests
 importlib-metadata==1.3.0  # via pluggy, tox
