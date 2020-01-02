@@ -17,15 +17,15 @@ more-itertools==5.0.0     # via zipp
 packaging==19.2           # via tox
 pathlib2==2.3.5           # via importlib-metadata
 pluggy==0.13.1            # via tox
-py==1.8.0                 # via tox
-pyparsing==2.4.5          # via packaging
+py==1.8.1                 # via tox
+pyparsing==2.4.6          # via packaging
 requests==2.22.0          # via codecov
 scandir==1.10.0           # via pathlib2
 six==1.13.0               # via packaging, pathlib2, tox
 toml==0.10.0              # via tox
 tox-battery==0.5.1
 tox-travis==0.12
-tox==3.14.2
+tox==3.14.3
 urllib3==1.24.3           # via requests
 virtualenv==16.7.9        # via tox
 zipp==0.6.0               # via importlib-metadata
