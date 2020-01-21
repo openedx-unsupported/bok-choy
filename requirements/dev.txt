@@ -53,7 +53,7 @@ requests==2.22.0
 scandir==1.10.0
 selenium==3.141.0
 singledispatch==3.4.0.3
-six==1.13.0
+six==1.14.0
 toml==0.10.0
 tox-battery==0.5.1
 tox-travis==0.12

@@ -43,7 +43,7 @@ pytest==4.6.9             # via pytest-cov, pytest-forked, pytest-xdist
 scandir==1.10.0           # via pathlib2
 selenium==3.141.0
 singledispatch==3.4.0.3   # via astroid, pylint
-six==1.13.0
+six==1.14.0
 urllib3==1.24.3
 wcwidth==0.1.8            # via pytest
 wrapt==1.11.2             # via astroid

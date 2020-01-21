@@ -21,7 +21,7 @@ py==1.8.1                 # via tox
 pyparsing==2.4.6          # via packaging
 requests==2.22.0          # via codecov
 scandir==1.10.0           # via pathlib2
-six==1.13.0               # via packaging, pathlib2, tox
+six==1.14.0               # via packaging, pathlib2, tox
 toml==0.10.0              # via tox
 tox-battery==0.5.1
 tox-travis==0.12
