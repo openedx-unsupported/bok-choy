@@ -6,7 +6,7 @@
 #
 alabaster==0.7.12         # via sphinx
 babel==2.8.0              # via sphinx
-bleach==3.1.0             # via readme-renderer
+bleach==3.1.1             # via readme-renderer
 certifi==2019.11.28       # via requests
 chardet==3.0.4            # via requests
 docutils==0.16            # via readme-renderer, sphinx
@@ -27,7 +27,6 @@ six==1.13.0
 snowballstemmer==2.0.0    # via sphinx
 sphinx==1.8.4
 sphinxcontrib-websupport==1.1.2  # via sphinx
-typing==3.7.4.1           # via sphinx
 urllib3==1.24.3
 webencodings==0.5.1       # via bleach
 
