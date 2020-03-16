@@ -27,7 +27,7 @@ class TestGitHub(WebAppTest):
         """
         self.github_search_page.visit().search_for_terms('user:edx repo:edx-platform')
         search_results = self.github_results_page.search_results
-        print(search_results)
+        print(self.github_results_page)
         assert 'edx/edx-platform' in search_results
         assert search_results[0] == 'edx/edx-platform'
 

@@ -23,7 +23,7 @@ class GitHubSearchPage(PageObject):
     GitHub's search page
     """
 
-    url = 'http://www.github.com/search'
+    url = 'https://www.github.com/search'
 
     def is_browser_on_page(self):
         return 'code search' in self.browser.title.lower()
