@@ -4,28 +4,32 @@
 #
 #    make upgrade
 #
+appdirs==1.4.3            # via virtualenv
 certifi==2019.11.28       # via requests
 chardet==3.0.4            # via requests
-codecov==2.0.15
+codecov==2.0.16           # via -r requirements/travis.in
 configparser==4.0.2       # via importlib-metadata
-contextlib2==0.6.0.post1  # via importlib-metadata
+contextlib2==0.6.0.post1  # via importlib-metadata, importlib-resources, virtualenv, zipp
 coverage==5.0.3           # via codecov
-filelock==3.0.12          # via tox
-idna==2.8                 # via requests
-importlib-metadata==1.4.0  # via pluggy, tox
-more-itertools==5.0.0     # via zipp
-packaging==20.0           # via tox
-pathlib2==2.3.5           # via importlib-metadata
+distlib==0.3.0            # via virtualenv
+filelock==3.0.12          # via tox, virtualenv
+idna==2.9                 # via requests
+importlib-metadata==1.5.0  # via importlib-resources, pluggy, tox, virtualenv
+importlib-resources==1.3.1  # via virtualenv
+packaging==20.3           # via tox
+pathlib2==2.3.5           # via importlib-metadata, importlib-resources, virtualenv
 pluggy==0.13.1            # via tox
 py==1.8.1                 # via tox
 pyparsing==2.4.6          # via packaging
-requests==2.22.0          # via codecov
+requests==2.23.0          # via codecov
 scandir==1.10.0           # via pathlib2
-six==1.13.0               # via packaging, pathlib2, tox
+singledispatch==3.4.0.3   # via importlib-resources
+six==1.14.0               # via packaging, pathlib2, tox, virtualenv
 toml==0.10.0              # via tox
-tox-battery==0.5.1
-tox-travis==0.12
-tox==3.14.3
-urllib3==1.24.3           # via requests
-virtualenv==16.7.9        # via tox
-zipp==1.0.0               # via importlib-metadata
+tox-battery==0.5.2        # via -r requirements/travis.in
+tox-travis==0.12          # via -r requirements/travis.in
+tox==3.14.5               # via -r requirements/travis.in, tox-battery, tox-travis
+typing==3.7.4.1           # via importlib-resources
+urllib3==1.24.3           # via -c requirements/constraints.txt, requests
+virtualenv==20.0.10       # via tox
+zipp==1.2.0               # via importlib-metadata, importlib-resources
