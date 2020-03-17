@@ -13,7 +13,7 @@ click-log==0.3.2          # via -r requirements/test.txt, edx-lint
 click==7.1.1              # via -r requirements/test.txt, click-log, edx-lint
 configparser==4.0.2       # via -r requirements/test.txt, importlib-metadata, pylint
 contextlib2==0.6.0.post1  # via -r requirements/test.txt, importlib-metadata, zipp
-coverage==5.0.3           # via -r requirements/test.txt, pytest-cov
+coverage==5.0.4           # via -r requirements/test.txt, pytest-cov
 edx-lint==1.4.1           # via -r requirements/test.txt
 enum34==1.1.10            # via -r requirements/test.txt, astroid
 execnet==1.7.1            # via -r requirements/test.txt, pytest-xdist
