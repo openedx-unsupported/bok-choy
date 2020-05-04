@@ -73,7 +73,6 @@ class BrowserConfigError(Exception):
     """
     Misconfiguration error in the environment variables.
     """
-    pass
 
 
 def save_source(driver, name):
@@ -130,7 +129,7 @@ def save_screenshot(driver, name):
         if not screenshot_dir:
             LOGGER.warning('The SCREENSHOT_DIR environment variable was not set; not saving a screenshot')
             return
-        elif not os.path.exists(screenshot_dir):
+        if not os.path.exists(screenshot_dir):
             os.makedirs(screenshot_dir)
         image_name = os.path.join(screenshot_dir, name + '.png')
         driver.save_screenshot(image_name)
@@ -164,7 +163,7 @@ def save_driver_logs(driver, prefix):
     if not log_dir:
         LOGGER.warning('The SELENIUM_DRIVER_LOG_DIR environment variable was not set; not saving logs')
         return
-    elif not os.path.exists(log_dir):
+    if not os.path.exists(log_dir):
         os.makedirs(log_dir)
     if browser_name == 'firefox':
         # Firefox doesn't yet provide logs to Selenium, but does log to a separate file
@@ -325,15 +324,14 @@ def _firefox_profile():
                 raise BrowserConfigError(
                     u"Firefox profile directory {env_var}={profile_dir} does not exist".format(
                         env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
-            elif err.errno == errno.EACCES:
+            if err.errno == errno.EACCES:
                 raise BrowserConfigError(
                     u"Firefox profile directory {env_var}={profile_dir} has incorrect permissions. It must be \
                     readable and executable.".format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
-            else:
-                # Some other OSError:
-                raise BrowserConfigError(
-                    u"Problem with firefox profile directory {env_var}={profile_dir}: {msg}"
-                    .format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir, msg=str(err)))
+            # Some other OSError:
+            raise BrowserConfigError(
+                u"Problem with firefox profile directory {env_var}={profile_dir}: {msg}"
+                .format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir, msg=str(err)))
     else:
         LOGGER.info("Using default firefox profile")
         firefox_profile = webdriver.FirefoxProfile()
@@ -388,59 +386,56 @@ def _local_browser_class(browser_name):
         raise BrowserConfigError(
             u"Invalid browser name {name}.  Options are: {options}".format(
                 name=browser_name, options=", ".join(list(BROWSERS.keys()))))
+    if browser_name == 'firefox':
+        # Remove geckodriver log data from previous test cases
+        log_path = os.path.join(os.getcwd(), 'geckodriver.log')
+        if os.path.exists(log_path):
+            os.remove(log_path)
+
+        firefox_options = FirefoxOptions()
+        firefox_options.log.level = 'trace'
+        if headless:
+            firefox_options.headless = True
+        browser_args = []
+        browser_kwargs = {
+            'firefox_profile': _firefox_profile(),
+            'options': firefox_options,
+        }
+
+        firefox_path = os.environ.get('SELENIUM_FIREFOX_PATH')
+        firefox_log = os.environ.get('SELENIUM_FIREFOX_LOG')
+        if firefox_path and firefox_log:
+            browser_kwargs.update({
+                'firefox_binary': FirefoxBinary(
+                    firefox_path=firefox_path, log_file=firefox_log)
+            })
+        elif firefox_path:
+            browser_kwargs.update({
+                'firefox_binary': FirefoxBinary(firefox_path=firefox_path)
+            })
+        elif firefox_log:
+            browser_kwargs.update({
+                'firefox_binary': FirefoxBinary(log_file=firefox_log)
+            })
+
+    elif browser_name == 'chrome':
+        chrome_options = ChromeOptions()
+        if headless:
+            chrome_options.headless = True
+
+        # Emulate webcam and microphone for testing purposes
+        chrome_options.add_argument('--use-fake-device-for-media-stream')
+
+        # Bypasses the security prompt displayed by the browser when it attempts to
+        # access a media device (e.g., a webcam)
+        chrome_options.add_argument('--use-fake-ui-for-media-stream')
+        browser_args = []
+        browser_kwargs = {
+            'options': chrome_options,
+        }
     else:
-        if browser_name == 'firefox':
-            # Remove geckodriver log data from previous test cases
-            log_path = os.path.join(os.getcwd(), 'geckodriver.log')
-            if os.path.exists(log_path):
-                os.remove(log_path)
-
-            firefox_options = FirefoxOptions()
-            firefox_options.log.level = 'trace'
-            if headless:
-                firefox_options.headless = True
-            browser_args = []
-            browser_kwargs = {
-                'firefox_profile': _firefox_profile(),
-                'options': firefox_options,
-            }
-
-            firefox_path = os.environ.get('SELENIUM_FIREFOX_PATH')
-            firefox_log = os.environ.get('SELENIUM_FIREFOX_LOG')
-            if firefox_path and firefox_log:
-                browser_kwargs.update({
-                    'firefox_binary': FirefoxBinary(
-                        firefox_path=firefox_path, log_file=firefox_log)
-                })
-            elif firefox_path:
-                browser_kwargs.update({
-                    'firefox_binary': FirefoxBinary(firefox_path=firefox_path)
-                })
-            elif firefox_log:
-                browser_kwargs.update({
-                    'firefox_binary': FirefoxBinary(log_file=firefox_log)
-                })
-
-        elif browser_name == 'chrome':
-            chrome_options = ChromeOptions()
-            if headless:
-                chrome_options.headless = True
-
-            # Emulate webcam and microphone for testing purposes
-            chrome_options.add_argument('--use-fake-device-for-media-stream')
-
-            # Bypasses the security prompt displayed by the browser when it attempts to
-            # access a media device (e.g., a webcam)
-            chrome_options.add_argument('--use-fake-ui-for-media-stream')
-
-            browser_args = []
-            browser_kwargs = {
-                'options': chrome_options,
-            }
-        else:
-            browser_args, browser_kwargs = [], {}
-
-        return browser_class, browser_args, browser_kwargs
+        browser_args, browser_kwargs = [], {}
+    return browser_class, browser_args, browser_kwargs
 
 
 def _remote_browser_class(env_vars, tags=None):

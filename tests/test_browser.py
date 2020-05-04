@@ -193,7 +193,7 @@ class TestFirefoxBrowserConfig(TestCase):
         self.verify_config()
 
 
-class TestSaveFiles(object):
+class TestSaveFiles:
     """
     Tests for saving files from the browser (including logs, page source, and
     screenshots).

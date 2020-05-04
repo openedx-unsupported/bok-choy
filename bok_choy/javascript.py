@@ -62,17 +62,16 @@ def wait_for_js(function):
             return function(*args, **kwargs)
 
         # Otherwise, retrieve `self` as the first arg
-        else:
-            self = args[0]
+        self = args[0]
 
-            # If the class has been decorated by one of the
-            # JavaScript dependency decorators, it should have
-            # a `wait_for_js` method
-            if hasattr(self, 'wait_for_js'):
-                self.wait_for_js()
+        # If the class has been decorated by one of the
+        # JavaScript dependency decorators, it should have
+        # a `wait_for_js` method
+        if hasattr(self, 'wait_for_js'):
+            self.wait_for_js()
 
-            # Call the function
-            return function(*args, **kwargs)
+        # Call the function
+        return function(*args, **kwargs)
 
     return wrapper
 
@@ -154,8 +153,7 @@ def _are_js_vars_defined(browser, js_vars):
     except WebDriverException as exc:
         if "is not defined" in exc.msg or "is undefined" in exc.msg:
             return False
-        else:
-            raise
+        raise
 
 
 def _are_requirejs_deps_loaded(browser, deps):

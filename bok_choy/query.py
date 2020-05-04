@@ -6,7 +6,7 @@ from __future__ import absolute_import
 import logging
 
 from copy import copy
-from collections import Sequence
+from collections.abc import Sequence
 from itertools import islice
 from selenium.common.exceptions import WebDriverException
 import six

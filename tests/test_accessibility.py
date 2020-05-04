@@ -12,7 +12,7 @@ from bok_choy.a11y.a11y_audit import AccessibilityError, A11yAuditConfigError
 from .pages import AccessibilityPage
 
 
-class GoogleAxsAccessibilityTestMixin(object):
+class GoogleAxsAccessibilityTestMixin:
     """
     Test cases for axs ruleset accessibility audit integration.
     """
@@ -258,7 +258,7 @@ class GoogleAxsAccessibilityFirefoxTest(WebAppTest, GoogleAxsAccessibilityTestMi
         super(GoogleAxsAccessibilityFirefoxTest, self).setUp()
 
 
-class AxeCoreTestMixin(object):
+class AxeCoreTestMixin:
     """
     Test cases for axe-core ruleset accessibility audit integration.
     """

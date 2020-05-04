@@ -6,7 +6,7 @@ import os
 import sys
 from setuptools import setup
 
-VERSION = '1.0.1'
+VERSION = '1.1.0'
 DESCRIPTION = 'UI-level acceptance test framework'
 
 
@@ -63,11 +63,9 @@ setup(
                  'License :: OSI Approved :: Apache Software License',
                  'Operating System :: OS Independent',
                  'Programming Language :: Python',
-                 'Programming Language :: Python :: 2',
-                 'Programming Language :: Python :: 2.7',
                  'Programming Language :: Python :: 3',
                  'Programming Language :: Python :: 3.5',
-                 'Programming Language :: Python :: 3.6',
+                 'Programming Language :: Python :: 3.8',
                  'Programming Language :: Python :: Implementation :: CPython',
                  'Programming Language :: Python :: Implementation :: PyPy',
                  'Topic :: Software Development :: Testing',

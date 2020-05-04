@@ -44,21 +44,18 @@ class WrongPageError(WebDriverException):
     """
     The page object reports that we're on the wrong page!
     """
-    pass
 
 
 class PageLoadError(WebDriverException):
     """
     An error occurred while loading the page.
     """
-    pass
 
 
 class XSSExposureError(Exception):
     """
     An XSS issue has been found on the current page.
     """
-    pass
 
 
 def no_selenium_errors(func):
@@ -173,7 +170,7 @@ class _PageObjectMetaclass(ABCMeta):
 
 
 @six.add_metaclass(_PageObjectMetaclass)
-class PageObject(object):
+class PageObject:
     """
     Encapsulates user interactions with a specific part
     of a web application.

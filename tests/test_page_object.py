@@ -54,20 +54,17 @@ class NeverOnPage(SitePage):
 
     def _private_method(self):
         """Example of a no-op private method."""
-        pass
 
     def guarded_method(self):
         """
         A no-op method which waits for the page to finish loading.
         """
-        pass
 
     @unguarded
     def unguarded_method(self):
         """
         A no-op method which does not wait for the page to finish loading.
         """
-        pass
 
     @property
     def guarded_property(self):

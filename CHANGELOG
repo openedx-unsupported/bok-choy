@@ -1,3 +1,6 @@
+V1.1.0 (05/04/2020)
+* Drop support for python 2.7
+* Python 3.8 support
 v1.0.1 (10/25/19)
 * Fix saving of test failure artifacts under Python 3
 * Make the saving of page source more robust to missing directories, log problems doing it
