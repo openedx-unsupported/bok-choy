@@ -1,11 +1,11 @@
 language: python
 python:
- - '2.7'
- - '3.5'
- - '3.6'
+ - 3.5
+ - 3.8
 env:
  - TOXENV=core
  - TOXENV=needle
+ - TOXENV=doc
 sudo: false
 branches:
   only:
@@ -23,7 +23,6 @@ install:
 - pip install -r requirements/travis.txt
 script:
 - tox -- -n 2 --durations=10
-- tox -e doc
 after_success:
 - codecov
 deploy:

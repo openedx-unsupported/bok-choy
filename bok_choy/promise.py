@@ -30,7 +30,7 @@ class BrokenPromise(Exception):
         return "Promise not satisfied: {0}".format(self._promise)
 
 
-class Promise(object):
+class Promise:
     """
     Check that an asynchronous action completed, blocking until it does
     or timeout / try limits are reached.
@@ -102,8 +102,7 @@ class Promise(object):
 
         if is_fulfilled:
             return result
-        else:
-            raise BrokenPromise(self)
+        raise BrokenPromise(self)
 
     def __str__(self):
         return str(self._description)

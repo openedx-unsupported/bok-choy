@@ -8,12 +8,6 @@
 # pin when possible.  Writing an issue against the offending project and
 # linking to it here is good.
 
-# more-itertools 6.0.0 dropped Python 2.7 support
-more-itertools<6.0.0
-
-# Newer versions of pylint-plugin-utils drop Python 2.7 support
-pylint-plugin-utils<0.4
-
 # requests only supports urllib 1.24: https://github.com/kennethreitz/requests/issues/5067
 urllib3<1.25
 

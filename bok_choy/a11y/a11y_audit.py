@@ -13,18 +13,16 @@ class AccessibilityError(Exception):
     """
     The page violates one or more accessibility rules.
     """
-    pass
 
 
 class A11yAuditConfigError(Exception):
     """
     An error in A11yAuditConfig.
     """
-    pass
 
 
 @six.add_metaclass(ABCMeta)
-class A11yAuditConfig(object):
+class A11yAuditConfig:
     """
     The `A11yAuditConfig` object defines the options available in an
     accessibility ruleset.
@@ -93,7 +91,7 @@ class A11yAuditConfig(object):
 
 
 @six.add_metaclass(ABCMeta)
-class A11yAudit(object):
+class A11yAudit:
     """
     Allows auditing of a page for accessibility issues.
 
@@ -138,9 +136,8 @@ class A11yAudit(object):
                 self.config.rules_file)
             raise RuntimeError(msg)
 
-        else:
-            with io.open(self.config.rules_file, "r", encoding="utf-8") as rules_file:
-                return rules_file.read()
+        with io.open(self.config.rules_file, "r", encoding="utf-8") as rules_file:
+            return rules_file.read()
 
     def do_audit(self):
         """
