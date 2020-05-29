@@ -32,7 +32,7 @@ nose==1.3.7               # via -r requirements/needle.txt, needle
 packaging==20.4           # via -r requirements/needle.txt, -r requirements/travis.txt, pytest, tox
 pathlib2==2.3.5           # via -r requirements/needle.txt, pytest
 pillow==7.1.2             # via -r requirements/needle.txt, needle
-pip-tools==5.1.2          # via -r requirements/pip-tools.txt
+pip-tools==5.2.0          # via -r requirements/pip-tools.txt
 pluggy==0.13.1            # via -r requirements/needle.txt, -r requirements/travis.txt, pytest, tox
 py==1.8.1                 # via -r requirements/needle.txt, -r requirements/travis.txt, pytest, tox
 pycodestyle==2.6.0        # via -r requirements/needle.txt
@@ -41,7 +41,7 @@ pylint-django==2.0.11     # via -r requirements/needle.txt, edx-lint
 pylint-plugin-utils==0.6  # via -r requirements/needle.txt, pylint-celery, pylint-django
 pylint==2.4.2             # via -r requirements/needle.txt, edx-lint, pylint-celery, pylint-django, pylint-plugin-utils
 pyparsing==2.4.7          # via -r requirements/needle.txt, -r requirements/travis.txt, packaging
-pytest-cov==2.8.1         # via -r requirements/needle.txt
+pytest-cov==2.9.0         # via -r requirements/needle.txt
 pytest-forked==1.1.3      # via -r requirements/needle.txt, pytest-xdist
 pytest-xdist==1.32.0      # via -r requirements/needle.txt
 pytest==5.4.2             # via -r requirements/needle.txt, pytest-cov, pytest-forked, pytest-xdist
@@ -49,7 +49,7 @@ requests==2.23.0          # via -r requirements/travis.txt, codecov
 selenium==3.141.0         # via -r requirements/needle.txt, needle
 six==1.15.0               # via -r requirements/needle.txt, -r requirements/pip-tools.txt, -r requirements/travis.txt, astroid, edx-lint, mock, packaging, pathlib2, pip-tools, pytest-xdist, tox, virtualenv
 toml==0.10.1              # via -r requirements/travis.txt, tox
-tox-battery==0.6.0        # via -r requirements/travis.txt
+tox-battery==0.6.1        # via -r requirements/travis.txt
 tox-travis==0.12          # via -r requirements/travis.txt
 tox==3.15.1               # via -r requirements/travis.txt, tox-battery, tox-travis
 typed-ast==1.4.1          # via -r requirements/needle.txt, astroid

@@ -32,7 +32,7 @@ pylint-django==2.0.11     # via -r requirements/test.txt, edx-lint
 pylint-plugin-utils==0.6  # via -r requirements/test.txt, pylint-celery, pylint-django
 pylint==2.4.2             # via -r requirements/test.txt, edx-lint, pylint-celery, pylint-django, pylint-plugin-utils
 pyparsing==2.4.7          # via -r requirements/test.txt, packaging
-pytest-cov==2.8.1         # via -r requirements/test.txt
+pytest-cov==2.9.0         # via -r requirements/test.txt
 pytest-forked==1.1.3      # via -r requirements/test.txt, pytest-xdist
 pytest-xdist==1.32.0      # via -r requirements/test.txt
 pytest==5.4.2             # via -r requirements/test.txt, pytest-cov, pytest-forked, pytest-xdist
