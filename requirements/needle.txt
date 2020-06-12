@@ -12,7 +12,7 @@ click==7.1.2              # via -r requirements/test.txt, click-log, edx-lint
 coverage==5.1             # via -r requirements/test.txt, pytest-cov
 edx-lint==1.4.1           # via -r requirements/test.txt
 execnet==1.7.1            # via -r requirements/test.txt, pytest-xdist
-importlib-metadata==1.6.0  # via -r requirements/test.txt, pluggy, pytest
+importlib-metadata==1.6.1  # via -r requirements/test.txt, pluggy, pytest
 isort==4.3.21             # via -r requirements/test.txt, pylint
 lazy-object-proxy==1.4.3  # via -r requirements/test.txt, astroid
 lazy==1.4                 # via -r requirements/test.txt
@@ -40,6 +40,6 @@ selenium==3.141.0         # via -r requirements/test.txt, needle
 six==1.15.0               # via -r requirements/test.txt, astroid, edx-lint, mock, packaging, pathlib2, pytest-xdist
 typed-ast==1.4.1          # via -r requirements/test.txt, astroid
 urllib3==1.24.3           # via -c requirements/constraints.txt, -r requirements/test.txt, selenium
-wcwidth==0.2.3            # via -r requirements/test.txt, pytest
+wcwidth==0.2.4            # via -r requirements/test.txt, pytest
 wrapt==1.11.2             # via -r requirements/test.txt, astroid
 zipp==1.2.0               # via -r requirements/test.txt, importlib-metadata
