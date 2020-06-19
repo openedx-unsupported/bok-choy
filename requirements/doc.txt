@@ -21,7 +21,7 @@ pygments==2.6.1           # via readme-renderer, sphinx
 pyparsing==2.4.7          # via packaging
 pytz==2020.1              # via babel
 readme-renderer==26.0     # via -r requirements/doc.in
-requests==2.23.0          # via sphinx
+requests==2.24.0          # via sphinx
 selenium==3.141.0         # via -r requirements/base.txt
 six==1.15.0               # via -r requirements/base.txt, bleach, edx-sphinx-theme, packaging, readme-renderer, sphinx
 snowballstemmer==2.0.0    # via sphinx
