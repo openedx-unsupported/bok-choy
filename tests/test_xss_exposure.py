@@ -2,7 +2,6 @@
 Tests for identifying XSS vulnerabilities.
 This is currently done when the "q" method is called.
 """
-from __future__ import absolute_import
 
 import os
 from mock import patch

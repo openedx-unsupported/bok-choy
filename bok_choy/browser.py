@@ -2,7 +2,6 @@
 Use environment variables to configure Selenium remote WebDriver.
 For use with SauceLabs (via SauceConnect) or local browsers.
 """
-from __future__ import absolute_import, print_function
 
 import errno
 import logging

@@ -1,7 +1,6 @@
 """
 Tools for interacting with the DOM inside a browser.
 """
-from __future__ import absolute_import
 
 import logging
 

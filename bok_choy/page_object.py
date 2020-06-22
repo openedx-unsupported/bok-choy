@@ -3,7 +3,6 @@ Base implementation of the Page Object pattern.
 See https://github.com/SeleniumHQ/selenium/wiki/PageObjects
 and http://www.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern
 """
-from __future__ import absolute_import
 
 from abc import ABCMeta, abstractmethod, abstractproperty
 from collections import defaultdict

@@ -1,7 +1,6 @@
 """
 Helpers for dealing with JavaScript synchronization issues.
 """
-from __future__ import absolute_import
 
 import functools
 import json

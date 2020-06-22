@@ -1,7 +1,6 @@
 """
 Page objects for interacting with the test site.
 """
-from __future__ import absolute_import
 
 import os
 import time

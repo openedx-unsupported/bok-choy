@@ -1,7 +1,6 @@
 """
 Tests browser instantiation, selection, etc
 """
-from __future__ import absolute_import
 
 import tempfile
 import shutil

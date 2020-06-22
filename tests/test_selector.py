@@ -1,7 +1,6 @@
 """
 Tests for retrieving values from the page using CSS selectors.
 """
-from __future__ import absolute_import
 
 from bok_choy.promise import BrokenPromise
 from bok_choy.web_app_test import WebAppTest

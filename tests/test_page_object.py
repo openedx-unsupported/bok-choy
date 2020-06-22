@@ -2,8 +2,6 @@
 Tests the representation of site pages.
 """
 
-from __future__ import absolute_import
-
 import logging
 from unittest import TestCase
 

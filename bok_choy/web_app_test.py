@@ -1,7 +1,6 @@
 """
 Base class for testing a web application.
 """
-from __future__ import absolute_import
 
 from abc import ABCMeta
 import sys
