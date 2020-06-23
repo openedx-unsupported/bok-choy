@@ -2,8 +2,6 @@
 Tests of the ``bok_choy.query`` module
 """
 
-from __future__ import absolute_import
-
 from unittest import TestCase
 
 from mock import Mock

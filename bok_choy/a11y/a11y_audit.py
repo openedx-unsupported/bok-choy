@@ -1,7 +1,6 @@
 """
 Interface for running accessibility audits on a PageObject.
 """
-from __future__ import absolute_import
 
 import io
 import os

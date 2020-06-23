@@ -3,7 +3,6 @@ An HTTP service for serving pages for tests, with
 a configurable delay that can be passed as a
 query parameter in a GET request.
 """
-from __future__ import absolute_import, print_function
 
 import os
 from time import sleep

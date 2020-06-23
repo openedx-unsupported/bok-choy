@@ -1,7 +1,6 @@
 """
 Test waiting for elements to appear after requesting via ajax.
 """
-from __future__ import absolute_import
 
 from bok_choy.promise import BrokenPromise
 from bok_choy.web_app_test import WebAppTest
