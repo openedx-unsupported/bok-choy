@@ -14,8 +14,7 @@ import os
 import socket
 import re
 from textwrap import dedent
-import six
-from six.moves import urllib_parse
+from urllib import parse
 from lazy import lazy
 
 from selenium.common.exceptions import WebDriverException
@@ -169,8 +168,7 @@ class _PageObjectMetaclass(ABCMeta):
         return super(_PageObjectMetaclass, mcs).__new__(mcs, cls_name, cls_bases, cls_attrs)
 
 
-@six.add_metaclass(_PageObjectMetaclass)
-class PageObject:
+class PageObject(metaclass=_PageObjectMetaclass):
     """
     Encapsulates user interactions with a specific part
     of a web application.
@@ -356,7 +354,7 @@ class PageObject:
         Returns:
             Boolean indicating whether the URL has a protocol and hostname.
         """
-        result = urllib_parse.urlsplit(url)
+        result = parse.urlsplit(url)
 
         # Check that we have a protocol and hostname
         if not result.scheme:

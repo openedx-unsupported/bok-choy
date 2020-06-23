@@ -9,7 +9,6 @@ from copy import copy
 from collections.abc import Sequence
 from itertools import islice
 from selenium.common.exceptions import WebDriverException
-import six
 from bok_choy.promise import Promise
 
 
@@ -273,7 +272,7 @@ class Query(Sequence):
         """
         def _transform(xs):  # pylint: disable=missing-docstring, invalid-name
             try:
-                return [six.next(iter(xs))]
+                return [next(iter(xs))]
             except StopIteration:
                 return []
 

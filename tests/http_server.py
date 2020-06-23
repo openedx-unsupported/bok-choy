@@ -7,9 +7,8 @@ from __future__ import absolute_import, print_function
 
 import os
 from time import sleep
-from six.moves.SimpleHTTPServer import SimpleHTTPRequestHandler
-from six.moves.urllib_parse import urlparse, parse_qs  # pylint: disable=wrong-import-order
-from six.moves import BaseHTTPServer
+from urllib.parse import urlparse, parse_qs  # pylint: disable=wrong-import-order
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 
 class DelayedRequestHandler(SimpleHTTPRequestHandler):
@@ -50,10 +49,9 @@ def main():
     """
     handler_class = DelayedRequestHandler
     handler_class.protocol_version = "HTTP/1.0"
-    server_class = BaseHTTPServer.HTTPServer
     port = int(os.environ['SERVER_PORT'])
     server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
+    httpd = HTTPServer(server_address, handler_class)
 
     address = httpd.socket.getsockname()
     print("Serving HTTP on", address[0], "port", address[1], "...")

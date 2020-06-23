@@ -6,7 +6,6 @@ from __future__ import absolute_import
 import io
 import os
 from abc import abstractmethod, abstractproperty, ABCMeta
-import six
 
 
 class AccessibilityError(Exception):
@@ -21,8 +20,7 @@ class A11yAuditConfigError(Exception):
     """
 
 
-@six.add_metaclass(ABCMeta)
-class A11yAuditConfig:
+class A11yAuditConfig(metaclass=ABCMeta):
     """
     The `A11yAuditConfig` object defines the options available in an
     accessibility ruleset.
@@ -90,8 +88,7 @@ class A11yAuditConfig:
         )
 
 
-@six.add_metaclass(ABCMeta)
-class A11yAudit:
+class A11yAudit(metaclass=ABCMeta):
     """
     Allows auditing of a page for accessibility issues.
 
