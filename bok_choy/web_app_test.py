@@ -15,13 +15,11 @@ except ImportError:
     except ImportError:
         BaseTestCase = TestCase
 from selenium.webdriver import PhantomJS
-import six
 
 from .browser import browser, save_screenshot, save_driver_logs, save_source
 
 
-@six.add_metaclass(ABCMeta)
-class WebAppTest(BaseTestCase):
+class WebAppTest(BaseTestCase, metaclass=ABCMeta):
 
     """
     Base class for testing a web application.
