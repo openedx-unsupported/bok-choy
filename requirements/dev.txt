@@ -13,7 +13,7 @@ chardet==3.0.4            # via -r requirements/travis.txt, requests
 click-log==0.3.2          # via -r requirements/needle.txt, edx-lint
 click==7.1.2              # via -r requirements/needle.txt, -r requirements/pip-tools.txt, click-log, edx-lint, pip-tools
 codecov==2.1.7            # via -r requirements/travis.txt
-coverage==5.1             # via -r requirements/needle.txt, -r requirements/travis.txt, codecov, pytest-cov
+coverage==5.2             # via -r requirements/needle.txt, -r requirements/travis.txt, codecov, pytest-cov
 distlib==0.3.1            # via -r requirements/travis.txt, virtualenv
 edx-lint==1.5.0           # via -r requirements/needle.txt
 execnet==1.7.1            # via -r requirements/needle.txt, pytest-xdist
@@ -43,7 +43,7 @@ pylint==2.4.4             # via -r requirements/needle.txt, edx-lint, pylint-cel
 pyparsing==2.4.7          # via -r requirements/needle.txt, -r requirements/travis.txt, packaging
 pytest-cov==2.10.0        # via -r requirements/needle.txt
 pytest-forked==1.2.0      # via -r requirements/needle.txt, pytest-xdist
-pytest-xdist==1.32.0      # via -r requirements/needle.txt
+pytest-xdist==1.33.0      # via -r requirements/needle.txt
 pytest==5.4.3             # via -r requirements/needle.txt, pytest-cov, pytest-forked, pytest-xdist
 requests==2.24.0          # via -r requirements/travis.txt, codecov
 selenium==3.141.0         # via -r requirements/needle.txt, needle
@@ -54,7 +54,7 @@ tox-travis==0.12          # via -r requirements/travis.txt
 tox==3.16.1               # via -r requirements/travis.txt, tox-battery, tox-travis
 typed-ast==1.4.1          # via -r requirements/needle.txt, astroid
 urllib3==1.24.3           # via -c requirements/constraints.txt, -r requirements/needle.txt, -r requirements/travis.txt, requests, selenium
-virtualenv==20.0.25       # via -r requirements/travis.txt, tox
+virtualenv==20.0.26       # via -r requirements/travis.txt, tox
 wcwidth==0.2.5            # via -r requirements/needle.txt, pytest
 wrapt==1.11.2             # via -r requirements/needle.txt, astroid
 zipp==1.2.0               # via -r requirements/needle.txt, -r requirements/travis.txt, importlib-metadata, importlib-resources
