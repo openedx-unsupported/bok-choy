@@ -12,7 +12,7 @@ certifi==2020.6.20        # via -r requirements/travis.txt, requests
 chardet==3.0.4            # via -r requirements/travis.txt, requests
 click-log==0.3.2          # via -r requirements/needle.txt, edx-lint
 click==7.1.2              # via -r requirements/needle.txt, -r requirements/pip-tools.txt, click-log, edx-lint, pip-tools
-codecov==2.1.7            # via -r requirements/travis.txt
+codecov==2.1.8            # via -r requirements/travis.txt
 coverage==5.2             # via -r requirements/needle.txt, -r requirements/travis.txt, codecov, pytest-cov
 distlib==0.3.1            # via -r requirements/travis.txt, virtualenv
 edx-lint==1.5.0           # via -r requirements/needle.txt
@@ -51,10 +51,10 @@ six==1.15.0               # via -r requirements/needle.txt, -r requirements/pip-
 toml==0.10.1              # via -r requirements/travis.txt, tox
 tox-battery==0.6.1        # via -r requirements/travis.txt
 tox-travis==0.12          # via -r requirements/travis.txt
-tox==3.16.1               # via -r requirements/travis.txt, tox-battery, tox-travis
+tox==3.17.1               # via -r requirements/travis.txt, tox-battery, tox-travis
 typed-ast==1.4.1          # via -r requirements/needle.txt, astroid
 urllib3==1.24.3           # via -c requirements/constraints.txt, -r requirements/needle.txt, -r requirements/travis.txt, requests, selenium
-virtualenv==20.0.26       # via -r requirements/travis.txt, tox
+virtualenv==20.0.27       # via -r requirements/travis.txt, tox
 wcwidth==0.2.5            # via -r requirements/needle.txt, pytest
 wrapt==1.11.2             # via -r requirements/needle.txt, astroid
 zipp==1.2.0               # via -r requirements/needle.txt, -r requirements/travis.txt, importlib-metadata, importlib-resources
