@@ -51,7 +51,7 @@ six==1.15.0               # via -r requirements/needle.txt, -r requirements/pip-
 toml==0.10.1              # via -r requirements/travis.txt, tox
 tox-battery==0.6.1        # via -r requirements/travis.txt
 tox-travis==0.12          # via -r requirements/travis.txt
-tox==3.17.1               # via -r requirements/travis.txt, tox-battery, tox-travis
+tox==3.18.0               # via -r requirements/travis.txt, tox-battery, tox-travis
 typed-ast==1.4.1          # via -r requirements/needle.txt, astroid
 urllib3==1.24.3           # via -c requirements/constraints.txt, -r requirements/needle.txt, -r requirements/travis.txt, requests, selenium
 virtualenv==20.0.27       # via -r requirements/travis.txt, tox
