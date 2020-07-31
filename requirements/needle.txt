@@ -9,10 +9,11 @@ astroid==2.3.3            # via -r requirements/test.txt, pylint, pylint-celery
 attrs==19.3.0             # via -r requirements/test.txt, pytest
 click-log==0.3.2          # via -r requirements/test.txt, edx-lint
 click==7.1.2              # via -r requirements/test.txt, click-log, edx-lint
-coverage==5.2             # via -r requirements/test.txt, pytest-cov
+coverage==5.2.1           # via -r requirements/test.txt, pytest-cov
 edx-lint==1.5.0           # via -r requirements/test.txt
 execnet==1.7.1            # via -r requirements/test.txt, pytest-xdist
 importlib-metadata==1.7.0  # via -r requirements/test.txt, pluggy, pytest
+iniconfig==1.0.0          # via -r requirements/test.txt, pytest
 isort==4.3.21             # via -r requirements/test.txt, pylint
 lazy-object-proxy==1.4.3  # via -r requirements/test.txt, astroid
 lazy==1.4                 # via -r requirements/test.txt
@@ -25,7 +26,7 @@ packaging==20.4           # via -r requirements/test.txt, pytest
 pathlib2==2.3.5           # via -r requirements/test.txt, pytest
 pillow==7.2.0             # via needle
 pluggy==0.13.1            # via -r requirements/test.txt, pytest
-py==1.9.0                 # via -r requirements/test.txt, pytest
+py==1.9.0                 # via -r requirements/test.txt, pytest, pytest-forked
 pycodestyle==2.6.0        # via -r requirements/test.txt
 pylint-celery==0.3        # via -r requirements/test.txt, edx-lint
 pylint-django==2.0.11     # via -r requirements/test.txt, edx-lint
@@ -33,13 +34,13 @@ pylint-plugin-utils==0.6  # via -r requirements/test.txt, pylint-celery, pylint-
 pylint==2.4.4             # via -r requirements/test.txt, edx-lint, pylint-celery, pylint-django, pylint-plugin-utils
 pyparsing==2.4.7          # via -r requirements/test.txt, packaging
 pytest-cov==2.10.0        # via -r requirements/test.txt
-pytest-forked==1.2.0      # via -r requirements/test.txt, pytest-xdist
-pytest-xdist==1.33.0      # via -r requirements/test.txt
-pytest==5.4.3             # via -r requirements/test.txt, pytest-cov, pytest-forked, pytest-xdist
+pytest-forked==1.3.0      # via -r requirements/test.txt, pytest-xdist
+pytest-xdist==1.34.0      # via -r requirements/test.txt
+pytest==6.0.1             # via -r requirements/test.txt, pytest-cov, pytest-forked, pytest-xdist
 selenium==3.141.0         # via -r requirements/test.txt, needle
 six==1.15.0               # via -r requirements/test.txt, astroid, edx-lint, mock, packaging, pathlib2, pytest-xdist
+toml==0.10.1              # via -r requirements/test.txt, pytest
 typed-ast==1.4.1          # via -r requirements/test.txt, astroid
 urllib3==1.24.3           # via -c requirements/constraints.txt, -r requirements/test.txt, selenium
-wcwidth==0.2.5            # via -r requirements/test.txt, pytest
 wrapt==1.11.2             # via -r requirements/test.txt, astroid
 zipp==1.2.0               # via -r requirements/test.txt, importlib-metadata
