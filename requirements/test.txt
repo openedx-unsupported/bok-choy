@@ -13,7 +13,7 @@ coverage==5.2.1           # via pytest-cov
 edx-lint==1.5.0           # via -r requirements/test.in
 execnet==1.7.1            # via pytest-xdist
 importlib-metadata==1.7.0  # via pluggy, pytest
-iniconfig==1.0.0          # via pytest
+iniconfig==1.0.1          # via pytest
 isort==4.3.21             # via pylint
 lazy-object-proxy==1.4.3  # via astroid
 lazy==1.4                 # via -r requirements/base.txt
