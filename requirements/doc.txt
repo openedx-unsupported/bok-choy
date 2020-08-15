@@ -26,7 +26,8 @@ selenium==3.141.0         # via -r requirements/base.txt
 six==1.15.0               # via bleach, edx-sphinx-theme, packaging, readme-renderer, sphinx
 snowballstemmer==2.0.0    # via sphinx
 sphinx==1.8.4             # via -c requirements/constraints.txt, -r requirements/doc.in, edx-sphinx-theme
-sphinxcontrib-websupport==1.2.3  # via sphinx
+sphinxcontrib-serializinghtml==1.1.4  # via sphinxcontrib-websupport
+sphinxcontrib-websupport==1.2.4  # via sphinx
 urllib3==1.24.3           # via -c requirements/constraints.txt, -r requirements/base.txt, requests, selenium
 webencodings==0.5.1       # via bleach
 
