@@ -25,5 +25,5 @@ tox-battery==0.6.1        # via -r requirements/travis.in
 tox-travis==0.12          # via -r requirements/travis.in
 tox==3.19.0               # via -r requirements/travis.in, tox-battery, tox-travis
 urllib3==1.24.3           # via -c requirements/constraints.txt, requests
-virtualenv==20.0.30       # via tox
+virtualenv==20.0.31       # via tox
 zipp==1.2.0               # via importlib-metadata, importlib-resources
