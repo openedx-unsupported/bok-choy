@@ -4,8 +4,7 @@
 nick: bok
 oeps:
     oep-7:
-        state: True
-owner: edx/testeng
+        state: true
 tags:
     - tools
     - library
