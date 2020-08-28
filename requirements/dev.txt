@@ -12,7 +12,7 @@ certifi==2020.6.20        # via -r requirements/travis.txt, requests
 chardet==3.0.4            # via -r requirements/travis.txt, requests
 click-log==0.3.2          # via -r requirements/needle.txt, edx-lint
 click==7.1.2              # via -r requirements/needle.txt, -r requirements/pip-tools.txt, click-log, edx-lint, pip-tools
-codecov==2.1.8            # via -r requirements/travis.txt
+codecov==2.1.9            # via -r requirements/travis.txt
 coverage==5.2.1           # via -r requirements/needle.txt, -r requirements/travis.txt, codecov, pytest-cov
 distlib==0.3.1            # via -r requirements/travis.txt, virtualenv
 edx-lint==1.5.2           # via -r requirements/needle.txt
@@ -35,7 +35,6 @@ pathlib2==2.3.5           # via -r requirements/needle.txt, pytest
 pillow==7.2.0             # via -r requirements/needle.txt, needle
 pip-tools==5.3.1          # via -r requirements/pip-tools.txt
 pluggy==0.13.1            # via -r requirements/needle.txt, -r requirements/travis.txt, pytest, tox
-psutil==5.7.2             # via -r requirements/needle.txt, pytest-xdist
 py==1.9.0                 # via -r requirements/needle.txt, -r requirements/travis.txt, pytest, pytest-forked, tox
 pycodestyle==2.6.0        # via -r requirements/needle.txt
 pylint-celery==0.3        # via -r requirements/needle.txt, edx-lint
@@ -45,7 +44,7 @@ pylint==2.4.4             # via -r requirements/needle.txt, edx-lint, pylint-cel
 pyparsing==2.4.7          # via -r requirements/needle.txt, -r requirements/travis.txt, packaging
 pytest-cov==2.10.1        # via -r requirements/needle.txt
 pytest-forked==1.3.0      # via -r requirements/needle.txt, pytest-xdist
-pytest-xdist==2.0.0       # via -r requirements/needle.txt
+pytest-xdist==2.1.0       # via -r requirements/needle.txt
 pytest==6.0.1             # via -r requirements/needle.txt, pytest-cov, pytest-forked, pytest-xdist
 requests==2.24.0          # via -r requirements/travis.txt, codecov
 selenium==3.141.0         # via -r requirements/needle.txt, needle
