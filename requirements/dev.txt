@@ -7,7 +7,7 @@
 apipkg==1.5               # via -r requirements/needle.txt, execnet
 appdirs==1.4.4            # via -r requirements/travis.txt, virtualenv
 astroid==2.3.3            # via -r requirements/needle.txt, pylint, pylint-celery
-attrs==20.1.0             # via -r requirements/needle.txt, pytest
+attrs==20.2.0             # via -r requirements/needle.txt, pytest
 certifi==2020.6.20        # via -r requirements/travis.txt, requests
 chardet==3.0.4            # via -r requirements/travis.txt, requests
 click-log==0.3.2          # via -r requirements/needle.txt, edx-lint

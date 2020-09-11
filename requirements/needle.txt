@@ -6,7 +6,7 @@
 #
 apipkg==1.5               # via -r requirements/test.txt, execnet
 astroid==2.3.3            # via -r requirements/test.txt, pylint, pylint-celery
-attrs==20.1.0             # via -r requirements/test.txt, pytest
+attrs==20.2.0             # via -r requirements/test.txt, pytest
 click-log==0.3.2          # via -r requirements/test.txt, edx-lint
 click==7.1.2              # via -r requirements/test.txt, click-log, edx-lint
 coverage==5.2.1           # via -r requirements/test.txt, pytest-cov
