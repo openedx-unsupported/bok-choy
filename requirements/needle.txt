@@ -9,7 +9,7 @@ astroid==2.3.3            # via -r requirements/test.txt, pylint, pylint-celery
 attrs==20.2.0             # via -r requirements/test.txt, pytest
 click-log==0.3.2          # via -r requirements/test.txt, edx-lint
 click==7.1.2              # via -r requirements/test.txt, click-log, edx-lint
-coverage==5.2.1           # via -r requirements/test.txt, pytest-cov
+coverage==5.3             # via -r requirements/test.txt, pytest-cov
 edx-lint==1.5.2           # via -r requirements/test.txt
 execnet==1.7.1            # via -r requirements/test.txt, pytest-xdist
 importlib-metadata==1.7.0  # via -r requirements/test.txt, pluggy, pytest
@@ -36,7 +36,7 @@ pyparsing==2.4.7          # via -r requirements/test.txt, packaging
 pytest-cov==2.10.1        # via -r requirements/test.txt
 pytest-forked==1.3.0      # via -r requirements/test.txt, pytest-xdist
 pytest-xdist==2.1.0       # via -r requirements/test.txt
-pytest==6.0.1             # via -r requirements/test.txt, pytest-cov, pytest-forked, pytest-xdist
+pytest==6.0.2             # via -r requirements/test.txt, pytest-cov, pytest-forked, pytest-xdist
 selenium==3.141.0         # via -r requirements/test.txt, needle
 six==1.15.0               # via -r requirements/test.txt, astroid, edx-lint, mock, packaging, pathlib2
 toml==0.10.1              # via -r requirements/test.txt, pytest
