@@ -12,7 +12,7 @@ click==7.1.2              # via click-log, edx-lint
 coverage==5.3             # via pytest-cov
 edx-lint==1.5.2           # via -r requirements/test.in
 execnet==1.7.1            # via pytest-xdist
-importlib-metadata==1.7.0  # via pluggy, pytest
+importlib-metadata==1.7.0  # via -c requirements/constraints.txt, pluggy, pytest
 iniconfig==1.0.1          # via pytest
 isort==4.3.21             # via pylint
 lazy-object-proxy==1.4.3  # via astroid
