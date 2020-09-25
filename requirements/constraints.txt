@@ -13,3 +13,6 @@ urllib3<1.25
 
 # pip-compile fails to find dependencies in 1.8.5 https://github.com/jazzband/pip-tools/issues/810
 sphinx<1.8.5
+
+# make upgrade fails due to conflicts for version>1.7.0 on python3.5
+importlib-metadata==1.7.0

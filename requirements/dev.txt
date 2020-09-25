@@ -19,7 +19,7 @@ edx-lint==1.5.2           # via -r requirements/needle.txt
 execnet==1.7.1            # via -r requirements/needle.txt, pytest-xdist
 filelock==3.0.12          # via -r requirements/travis.txt, tox, virtualenv
 idna==2.10                # via -r requirements/travis.txt, requests
-importlib-metadata==1.7.0  # via -r requirements/needle.txt, -r requirements/travis.txt, pluggy, pytest, tox, virtualenv
+importlib-metadata==1.7.0  # via -c requirements/constraints.txt, -r requirements/needle.txt, -r requirements/travis.txt, pluggy, pytest, tox, virtualenv
 importlib-resources==3.0.0  # via -r requirements/travis.txt, virtualenv
 iniconfig==1.0.1          # via -r requirements/needle.txt, pytest
 isort==4.3.21             # via -r requirements/needle.txt, pylint
