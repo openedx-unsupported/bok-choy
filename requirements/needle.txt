@@ -35,7 +35,7 @@ pyparsing==2.4.7          # via -r requirements/test.txt, packaging
 pytest-cov==2.10.1        # via -r requirements/test.txt
 pytest-forked==1.3.0      # via -r requirements/test.txt, pytest-xdist
 pytest-xdist==2.1.0       # via -r requirements/test.txt
-pytest==6.1.0             # via -r requirements/test.txt, pytest-cov, pytest-forked, pytest-xdist
+pytest==6.1.1             # via -r requirements/test.txt, pytest-cov, pytest-forked, pytest-xdist
 selenium==3.141.0         # via -r requirements/test.txt, needle
 six==1.15.0               # via -r requirements/test.txt, astroid, edx-lint, mock, packaging, pathlib2
 toml==0.10.1              # via -r requirements/test.txt, pytest
