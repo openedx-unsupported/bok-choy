@@ -5,8 +5,8 @@ bok-choy
     :target: https://pypi.python.org/pypi/bok_choy/
     :alt: PyPI
 
-.. image:: https://travis-ci.org/edx/bok-choy.svg?branch=master
-    :target: https://travis-ci.org/edx/bok-choy
+.. image:: https://travis-ci.com/edx/bok-choy.svg?branch=master
+    :target: https://travis-ci.com/edx/bok-choy
     :alt: Travis
 
 .. image:: http://codecov.io/github/edx/bok-choy/coverage.svg?branch=master
