@@ -12,7 +12,7 @@ class AjaxTest(WebAppTest):
     Test waiting for an ajax call to return.
     """
     def setUp(self):
-        super(AjaxTest, self).setUp()
+        super().setUp()
         self.ajax = AjaxPage(self.browser)
         self.ajax.visit()
 
@@ -46,7 +46,7 @@ class AjaxNoJQueryTest(WebAppTest):
     Test waiting for a ajax on a page where jQuery isn't loaded.
     """
     def setUp(self):
-        super(AjaxNoJQueryTest, self).setUp()
+        super().setUp()
         self.ajax = AjaxNoJQueryPage(self.browser)
         self.ajax.visit()
 

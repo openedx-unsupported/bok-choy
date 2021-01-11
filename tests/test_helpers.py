@@ -11,7 +11,7 @@ class WaitHelpersTest(WebAppTest):
     Test waiting for elements to appear after a delay.
     """
     def setUp(self):
-        super(WaitHelpersTest, self).setUp()
+        super().setUp()
         self.wait_page = WaitsPage(self.browser)
         self.wait_page.visit()
 

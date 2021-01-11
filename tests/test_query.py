@@ -4,7 +4,7 @@ Tests of the ``bok_choy.query`` module
 
 from unittest import TestCase
 
-from mock import Mock
+from unittest.mock import Mock
 from selenium.common.exceptions import WebDriverException
 from bok_choy.query import Query, BrowserQuery
 
@@ -14,7 +14,7 @@ class TestQuery(TestCase):
     Tests of the ``Query`` class
     """
     def setUp(self):
-        super(TestQuery, self).setUp()
+        super().setUp()
         self.query = Query(lambda: list(range(5)))
 
     def test_initial_identify(self):
@@ -96,7 +96,7 @@ class TestQuery(TestCase):
         assert self.query.filter(lambda x: x % 2 == 0)[1] == 2
 
     def test_repr(self):
-        assert repr(self.query) == u"Query(<lambda>)"
+        assert repr(self.query) == "Query(<lambda>)"
 
         def integers():
             """
@@ -104,20 +104,20 @@ class TestQuery(TestCase):
             """
             return list(range(100))
 
-        assert repr(Query(integers)) == u"Query(integers)"
+        assert repr(Query(integers)) == "Query(integers)"
 
-        assert repr(self.query.map(lambda x: x + 1)) == u"Query(<lambda>).map(<lambda>)"
-        assert repr(self.query.map(lambda x: x + 1, 'x + 1')) == u"Query(<lambda>).map(x + 1)"
+        assert repr(self.query.map(lambda x: x + 1)) == "Query(<lambda>).map(<lambda>)"
+        assert repr(self.query.map(lambda x: x + 1, 'x + 1')) == "Query(<lambda>).map(x + 1)"
         self.assertEqual(
-            u"Query(<lambda>).map(x + 1).filter(<lambda>)",
+            "Query(<lambda>).map(x + 1).filter(<lambda>)",
             repr(self.query.map(lambda x: x + 1, 'x + 1').filter(lambda x: x > 2))
         )
         self.assertEqual(
-            u"Query(<lambda>).transform(<lambda>)",
+            "Query(<lambda>).transform(<lambda>)",
             repr(self.query.transform(lambda xs: iter(xs).next(0)))
         )
         self.assertEqual(
-            u"Query(<lambda>).filter(text='foo')",
+            "Query(<lambda>).filter(text='foo')",
             repr(self.query.filter(text='foo'))
         )
 
@@ -143,7 +143,7 @@ class TestBrowserQuery(TestCase):
     Tests of the ``BrowserQuery`` class.
     """
     def setUp(self):
-        super(TestBrowserQuery, self).setUp()
+        super().setUp()
         self.browser = Mock(
             find_elements_by_css_selector=Mock(return_value=list(range(3))),
             find_elements_by_xpath=Mock(return_value=list(range(10)))
@@ -170,5 +170,5 @@ class TestBrowserQuery(TestCase):
         )
 
     def test_repr(self):
-        assert repr(BrowserQuery(self.browser, css='foo')) == u"BrowserQuery(css='foo')"
-        assert repr(BrowserQuery(self.browser, xpath='foo')) == u"BrowserQuery(xpath='foo')"
+        assert repr(BrowserQuery(self.browser, css='foo')) == "BrowserQuery(css='foo')"
+        assert repr(BrowserQuery(self.browser, xpath='foo')) == "BrowserQuery(xpath='foo')"

@@ -12,7 +12,7 @@ class DelayTest(WebAppTest):
     Test waiting for elements to appear after a delay.
     """
     def setUp(self):
-        super(DelayTest, self).setUp()
+        super().setUp()
         self.delay = DelayPage(self.browser)
         self.delay.visit()
 
@@ -39,7 +39,7 @@ class SlowTest(WebAppTest):
     Test visiting a page that loads its elements into the DOM slowly.
     """
     def setUp(self):
-        super(SlowTest, self).setUp()
+        super().setUp()
         self.slow = SlowPage(self.browser)
 
     def test_slow(self):

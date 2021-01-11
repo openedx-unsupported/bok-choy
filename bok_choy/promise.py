@@ -22,11 +22,11 @@ class BrokenPromise(Exception):
         Args:
             promise (Promise): The promise that was not satisfied.
         """
-        super(BrokenPromise, self).__init__()
+        super().__init__()
         self._promise = promise
 
     def __str__(self):
-        return "Promise not satisfied: {0}".format(self._promise)
+        return f"Promise not satisfied: {self._promise}"
 
 
 class Promise:
@@ -177,4 +177,4 @@ class EmptyPromise(Promise):
             EmptyPromise
         """
         full_check_func = lambda: (check_func(), None)
-        super(EmptyPromise, self).__init__(full_check_func, description, **kwargs)
+        super().__init__(full_check_func, description, **kwargs)

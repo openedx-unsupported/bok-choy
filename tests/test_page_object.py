@@ -4,12 +4,13 @@ Tests the representation of site pages.
 
 import logging
 from unittest import TestCase
+from unittest.mock import Mock
 
 import pytest
-from mock import Mock
 from selenium.common.exceptions import WebDriverException
 
-from bok_choy.page_object import PageObject, PageLoadError, unguarded, WrongPageError
+from bok_choy.page_object import (PageLoadError, PageObject, WrongPageError,
+                                  unguarded)
 from bok_choy.promise import BrokenPromise
 from tests.pages import ButtonPage, SitePage
 
@@ -113,7 +114,7 @@ class PageObjectTest(TestCase):
             self.assertEqual(
                 returned_val,
                 is_valid,
-                msg=u"Url: {0}, Expected {1} but got {2}".format(url, is_valid, returned_val)
+                msg=f"Url: {url}, Expected {is_valid} but got {returned_val}"
             )
 
     def test_guarded_methods(self):
@@ -147,13 +148,13 @@ class PageObjectTest(TestCase):
 def test_invalid_port_exception(caplog):
     with pytest.raises(PageLoadError):
         InvalidPortPage(Mock()).visit()
-    assert u'uses an invalid port' in caplog.text
+    assert 'uses an invalid port' in caplog.text
 
 
 def test_missing_hostname_exception(caplog):
     with pytest.raises(PageLoadError):
         MissingHostnamePage(Mock()).visit()
-    assert u'is missing a hostname' in caplog.text
+    assert 'is missing a hostname' in caplog.text
 
 
 def test_never_loads(caplog):
@@ -162,7 +163,7 @@ def test_never_loads(caplog):
     page = ButtonPage(browser)
     with pytest.raises(BrokenPromise):
         page.wait_for_page(timeout=1)
-    assert u'document.readyState does not become complete for following url' in caplog.text
+    assert 'document.readyState does not become complete for following url' in caplog.text
 
 
 def test_page_load_exception(caplog):
@@ -171,7 +172,7 @@ def test_page_load_exception(caplog):
     page = ButtonPage(browser)
     with pytest.raises(PageLoadError):
         page.visit()
-    assert u'Unexpected page load exception' in caplog.text
+    assert 'Unexpected page load exception' in caplog.text
 
 
 def test_retry_errors(caplog):
@@ -183,10 +184,10 @@ def test_retry_errors(caplog):
     page = ButtonPage(Mock())
     with pytest.raises(BrokenPromise):
         page.wait_for(promise_check_func, 'Never succeeds', timeout=1)
-    assert u'Exception ignored during retry loop' in caplog.text
+    assert 'Exception ignored during retry loop' in caplog.text
 
 
 def test_warning(caplog):
     page = SitePage(Mock())
-    page.warning(u'Scary stuff')
-    assert ('SitePage', logging.WARN, u'Scary stuff') in caplog.record_tuples
+    page.warning('Scary stuff')
+    assert ('SitePage', logging.WARN, 'Scary stuff') in caplog.record_tuples

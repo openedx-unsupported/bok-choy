@@ -2,7 +2,6 @@
 Interface for running accessibility audits on a PageObject.
 """
 
-import io
 import os
 from abc import abstractmethod, abstractproperty, ABCMeta
 
@@ -26,7 +25,7 @@ class A11yAuditConfig(metaclass=ABCMeta):
     """
 
     def __init__(self, *args, **kwargs):
-        super(A11yAuditConfig, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.rules_file = None
 
     def set_rules_file(self, path=None):
@@ -115,7 +114,7 @@ class A11yAudit(metaclass=ABCMeta):
             url: URL of the page to test
             config: (optional) A11yAuditConfig or subclass of A11yAuditConfig
         """
-        super(A11yAudit, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.url = url
         self.browser = browser
         self.config = config or self.default_config
@@ -128,11 +127,11 @@ class A11yAudit(metaclass=ABCMeta):
         Raises: `RuntimeError` if the file isn't found.
         """
         if not os.path.isfile(self.config.rules_file):
-            msg = u'Could not find the accessibility tools JS file: {}'.format(
+            msg = 'Could not find the accessibility tools JS file: {}'.format(
                 self.config.rules_file)
             raise RuntimeError(msg)
 
-        with io.open(self.config.rules_file, "r", encoding="utf-8") as rules_file:
+        with open(self.config.rules_file, "r", encoding="utf-8") as rules_file:
             return rules_file.read()
 
     def do_audit(self):

@@ -6,7 +6,7 @@ import os
 import sys
 from setuptools import setup
 
-VERSION = '1.1.1'
+VERSION = '2.0.0'
 DESCRIPTION = 'UI-level acceptance test framework'
 
 
@@ -64,7 +64,6 @@ setup(
                  'Operating System :: OS Independent',
                  'Programming Language :: Python',
                  'Programming Language :: Python :: 3',
-                 'Programming Language :: Python :: 3.5',
                  'Programming Language :: Python :: 3.8',
                  'Programming Language :: Python :: Implementation :: CPython',
                  'Programming Language :: Python :: Implementation :: PyPy',

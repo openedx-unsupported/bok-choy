@@ -4,6 +4,11 @@
 #
 #    make upgrade
 #
-lazy==1.4                 # via -r requirements/base.in
-selenium==3.141.0         # via -r requirements/base.in
-urllib3==1.24.3           # via -c requirements/constraints.txt, selenium
+lazy==1.4
+    # via -r requirements/base.in
+selenium==3.141.0
+    # via -r requirements/base.in
+urllib3==1.24.3
+    # via
+    #   -c requirements/constraints.txt
+    #   selenium

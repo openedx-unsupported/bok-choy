@@ -32,7 +32,7 @@ class WebAppTest(BaseTestCase, metaclass=ABCMeta):
     viewport_height = 768
 
     def __init__(self, *args, **kwargs):
-        super(WebAppTest, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # This allows using the @attr() decorator from nose to set these on a
         # test by test basis
@@ -63,7 +63,7 @@ class WebAppTest(BaseTestCase, metaclass=ABCMeta):
             # from the setUpClass method of its parent (unittest.TestCase).
             super(BaseTestCase, cls).setUpClass()  # pylint: disable=bad-super-call
         else:
-            super(WebAppTest, cls).setUpClass()
+            super().setUpClass()
 
     @classmethod
     def tearDownClass(cls):
@@ -77,7 +77,7 @@ class WebAppTest(BaseTestCase, metaclass=ABCMeta):
             # everything from the tearDownClass method of its parent (unittest.TestCase).
             super(BaseTestCase, cls).tearDownClass()  # pylint: disable=bad-super-call
         else:
-            super(WebAppTest, cls).tearDownClass()
+            super().tearDownClass()
 
     def get_web_driver(self):
         """
@@ -109,7 +109,7 @@ class WebAppTest(BaseTestCase, metaclass=ABCMeta):
 
         # Measure the difference between the actual document width and the
         # desired viewport width so we can account for scrollbars:
-        script = u"return {width: document.body.clientWidth, height: document.body.clientHeight};"
+        script = "return {width: document.body.clientWidth, height: document.body.clientHeight};"
         measured = self.driver.execute_script(script)
         delta = width - measured['width']
 
@@ -124,7 +124,7 @@ class WebAppTest(BaseTestCase, metaclass=ABCMeta):
         Returns:
             None
         """
-        super(WebAppTest, self).setUp()
+        super().setUp()
 
         # Set up the browser
         # This will start the browser

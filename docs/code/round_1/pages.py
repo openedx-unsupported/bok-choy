@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from bok_choy.page_object import PageObject
 
 

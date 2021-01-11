@@ -13,7 +13,7 @@ class SelectorTest(WebAppTest):
     """
 
     def setUp(self):
-        super(SelectorTest, self).setUp()
+        super().setUp()
 
         self.selector = SelectorPage(self.browser)
         self.selector.visit()
@@ -49,7 +49,7 @@ class ScrollTest(WebAppTest):
     """
 
     def setUp(self):
-        super(ScrollTest, self).setUp()
+        super().setUp()
         self.long_page = LongPage(self.browser)
         self.long_page.visit()
 

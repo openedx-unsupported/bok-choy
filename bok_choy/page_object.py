@@ -77,7 +77,7 @@ def no_selenium_errors(func):
         try:
             return_val = func(*args, **kwargs)
         except WebDriverException:
-            LOGGER.warning(u'Exception ignored during retry loop:', exc_info=True)
+            LOGGER.warning('Exception ignored during retry loop:', exc_info=True)
             return False
         else:
             return return_val
@@ -164,7 +164,7 @@ class _PageObjectMetaclass(ABCMeta):
             else:
                 cls_attrs[name] = pre_verify(attr)
 
-        return super(_PageObjectMetaclass, mcs).__new__(mcs, cls_name, cls_bases, cls_attrs)
+        return super().__new__(mcs, cls_name, cls_bases, cls_attrs)
 
 
 class PageObject(metaclass=_PageObjectMetaclass):
@@ -224,7 +224,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
         Returns:
             PageObject
         """
-        super(PageObject, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.browser = browser
         a11y_flag = os.environ.get('VERIFY_ACCESSIBILITY', 'False')
         self.verify_accessibility = a11y_flag.lower() == 'true'
@@ -312,20 +312,20 @@ class PageObject(metaclass=_PageObjectMetaclass):
             PageObject
         """
         if self.url is None:
-            raise NotImplementedError(u"Page {} does not provide a URL to visit.".format(self))
+            raise NotImplementedError(f"Page {self} does not provide a URL to visit.")
 
         # Validate the URL
         if not self.validate_url(self.url):
-            raise PageLoadError(u"Invalid URL: '{}'".format(self.url))
+            raise PageLoadError(f"Invalid URL: '{self.url}'")
 
         # Visit the URL
         try:
             self.browser.get(self.url)
-        except (WebDriverException, socket.gaierror):
-            LOGGER.warning(u"Unexpected page load exception:", exc_info=True)
-            raise PageLoadError(u"Could not load page '{!r}' at URL '{}'".format(
+        except (WebDriverException, socket.gaierror) as err:
+            LOGGER.warning("Unexpected page load exception:", exc_info=True)
+            raise PageLoadError("Could not load page '{!r}' at URL '{}'".format(
                 self, self.url
-            ))
+            )) from err
 
         # Give the browser enough time to get to the page, then return the page object
         # so that the caller can chain the call with an action:
@@ -335,10 +335,10 @@ class PageObject(metaclass=_PageObjectMetaclass):
         # does not return True before timing out.
         try:
             return self.wait_for_page()
-        except BrokenPromise:
-            raise PageLoadError(u"Timed out waiting to load page '{!r}' at URL '{}'".format(
+        except BrokenPromise as err:
+            raise PageLoadError("Timed out waiting to load page '{!r}' at URL '{}'".format(
                 self, self.url
-            ))
+            )) from err
 
     @classmethod
     @unguarded
@@ -357,10 +357,10 @@ class PageObject(metaclass=_PageObjectMetaclass):
 
         # Check that we have a protocol and hostname
         if not result.scheme:
-            LOGGER.warning(u"%s is missing a protocol", url)
+            LOGGER.warning("%s is missing a protocol", url)
             return False
         if not result.netloc:
-            LOGGER.warning(u"%s is missing a hostname", url)
+            LOGGER.warning("%s is missing a hostname", url)
             return False
 
         # Check that the port is an integer
@@ -369,10 +369,10 @@ class PageObject(metaclass=_PageObjectMetaclass):
                 int(result.port)
             elif result.netloc.endswith(':'):
                 # Valid URLs do not end with colons.
-                LOGGER.warning(u"%s has a colon after the hostname but no port", url)
+                LOGGER.warning("%s has a colon after the hostname but no port", url)
                 return False
         except ValueError:
-            LOGGER.warning(u"%s uses an invalid port", url)
+            LOGGER.warning("%s uses an invalid port", url)
             return False
         else:
             return True
@@ -383,7 +383,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
         if not, raise a `WrongPageError`.
         """
         if not self.is_browser_on_page():
-            msg = u"Not on the correct page to use '{!r}' at URL '{}'".format(
+            msg = "Not on the correct page to use '{!r}' at URL '{}'".format(
                 self, self.url
             )
             raise WrongPageError(msg)
@@ -407,7 +407,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
             if all_hits_count > safe_hits_count:
                 potential_hits = re.findall('<[^<]+<xss', html_source)
                 raise XSSExposureError(
-                    u"{} XSS issue(s) found on page. Potential places are {}".format(
+                    "{} XSS issue(s) found on page. Potential places are {}".format(
                         all_hits_count - safe_hits_count, potential_hits
                     )
                 )
@@ -461,7 +461,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
             ).fulfill()
 
         result = Promise(
-            lambda: (self.is_browser_on_page(), self), u"loaded page {!r}".format(self),
+            lambda: (self.is_browser_on_page(), self), f"loaded page {self!r}",
             timeout=timeout
         ).fulfill()
 
@@ -513,7 +513,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
         """
 
         # Before executing the `with` block, stub the confirm/alert functions
-        script = dedent(u"""
+        script = dedent("""
             window.confirm = function() {{ return {0}; }};
             window.alert = function() {{ return; }};
         """.format("true" if confirm else "false")).strip()
@@ -692,9 +692,9 @@ class PageObject(metaclass=_PageObjectMetaclass):
 
         """
         # Ensure element exists
-        msg = u"Element '{element}' is present".format(element=element_selector)
+        msg = f"Element '{element_selector}' is present"
         self.wait_for(lambda: self.q(css=element_selector).present, msg, timeout=timeout)
 
         # Obtain coordinates and use those for JavaScript call
         loc = self.q(css=element_selector).first.results[0].location
-        self.browser.execute_script(u"window.scrollTo({x},{y})".format(x=loc['x'], y=loc['y']))
+        self.browser.execute_script("window.scrollTo({x},{y})".format(x=loc['x'], y=loc['y']))

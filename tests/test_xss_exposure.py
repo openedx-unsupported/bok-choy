@@ -4,7 +4,7 @@ This is currently done when the "q" method is called.
 """
 
 import os
-from mock import patch
+from unittest.mock import patch
 import pytest
 
 from bok_choy.page_object import XSSExposureError
@@ -17,7 +17,7 @@ class XSSExposureTest(WebAppTest):
     Tests for identifying XSS vulnerabilities.
     """
     def __init__(self, *args, **kwargs):
-        super(XSSExposureTest, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.site_page = None
 
     def _visit_page(self, page_name):

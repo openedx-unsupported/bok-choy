@@ -6,7 +6,6 @@ For use with SauceLabs (via SauceConnect) or local browsers.
 import errno
 import logging
 import os
-import socket
 from json import dumps
 from shutil import copyfile
 
@@ -96,7 +95,7 @@ def save_source(driver, name):
         LOGGER.warning('The SAVED_SOURCE_DIR environment variable was not set; not saving page source')
         return
     file_name = os.path.join(saved_source_dir,
-                             '{name}.html'.format(name=name))
+                             f'{name}.html')
 
     try:
         if not os.path.exists(saved_source_dir):
@@ -104,7 +103,7 @@ def save_source(driver, name):
         with open(file_name, 'wb') as output_file:
             output_file.write(source.encode('utf-8'))
     except Exception:  # pylint: disable=broad-except
-        msg = u"Could not save the browser page source to {}.".format(file_name)
+        msg = f"Could not save the browser page source to {file_name}."
         LOGGER.warning(msg)
 
 
@@ -135,8 +134,8 @@ def save_screenshot(driver, name):
 
     else:
         msg = (
-            u"Browser does not support screenshots. "
-            u"Could not save screenshot '{name}'"
+            "Browser does not support screenshots. "
+            "Could not save screenshot '{name}'"
         ).format(name=name)
 
         LOGGER.warning(msg)
@@ -170,7 +169,7 @@ def save_driver_logs(driver, prefix):
         # https://firefox-source-docs.mozilla.org/testing/geckodriver/geckodriver/TraceLogs.html
         log_path = os.path.join(os.getcwd(), 'geckodriver.log')
         if os.path.exists(log_path):
-            dest_path = os.path.join(log_dir, '{}_geckodriver.log'.format(prefix))
+            dest_path = os.path.join(log_dir, f'{prefix}_geckodriver.log')
             copyfile(log_path, dest_path)
         return
 
@@ -179,15 +178,15 @@ def save_driver_logs(driver, prefix):
         try:
             log = driver.get_log(log_type)
             file_name = os.path.join(
-                log_dir, '{}_{}.log'.format(prefix, log_type)
+                log_dir, f'{prefix}_{log_type}.log'
             )
             with open(file_name, 'w') as output_file:
                 for line in log:
                     output_file.write("{}{}".format(dumps(line), '\n'))
         except:  # pylint: disable=bare-except
             msg = (
-                u"Could not save browser log of type '{log_type}'. "
-                u"It may be that the browser does not support it."
+                "Could not save browser log of type '{log_type}'. "
+                "It may be that the browser does not support it."
             ).format(log_type=log_type)
 
             LOGGER.warning(msg, exc_info=True)
@@ -286,9 +285,9 @@ def browser(tags=None, proxy=None, other_caps=None):
 
             return True, browser_class(*browser_args, **browser_kwargs)
 
-        except (socket.error, WebDriverException) as err:
+        except (OSError, WebDriverException) as err:
             msg = str(err)
-            LOGGER.debug(u'Failed to instantiate browser: %s', msg)
+            LOGGER.debug('Failed to instantiate browser: %s', msg)
             return False, None
 
     browser_instance = Promise(
@@ -315,22 +314,25 @@ def _firefox_profile():
     profile_dir = os.environ.get(FIREFOX_PROFILE_ENV_VAR)
 
     if profile_dir:
-        LOGGER.info(u"Using firefox profile: %s", profile_dir)
+        LOGGER.info("Using firefox profile: %s", profile_dir)
         try:
             firefox_profile = webdriver.FirefoxProfile(profile_dir)
         except OSError as err:
             if err.errno == errno.ENOENT:
                 raise BrowserConfigError(
-                    u"Firefox profile directory {env_var}={profile_dir} does not exist".format(
-                        env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
+                    "Firefox profile directory {env_var}={profile_dir} does not exist".format(
+                        env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir)
+                ) from err
             if err.errno == errno.EACCES:
                 raise BrowserConfigError(
-                    u"Firefox profile directory {env_var}={profile_dir} has incorrect permissions. It must be \
-                    readable and executable.".format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir))
+                    "Firefox profile directory {env_var}={profile_dir} has incorrect permissions. It must be \
+                    readable and executable.".format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir)
+                ) from err
             # Some other OSError:
             raise BrowserConfigError(
-                u"Problem with firefox profile directory {env_var}={profile_dir}: {msg}"
-                .format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir, msg=str(err)))
+                "Problem with firefox profile directory {env_var}={profile_dir}: {msg}"
+                .format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir, msg=str(err))
+            ) from err
     else:
         LOGGER.info("Using default firefox profile")
         firefox_profile = webdriver.FirefoxProfile()
@@ -376,14 +378,14 @@ def _local_browser_class(browser_name):
     """
 
     # Log name of local browser
-    LOGGER.info(u"Using local browser: %s [Default is firefox]", browser_name)
+    LOGGER.info("Using local browser: %s [Default is firefox]", browser_name)
 
     # Get class of local browser based on name
     browser_class = BROWSERS.get(browser_name)
     headless = os.environ.get('BOKCHOY_HEADLESS', 'false').lower() == 'true'
     if browser_class is None:
         raise BrowserConfigError(
-            u"Invalid browser name {name}.  Options are: {options}".format(
+            "Invalid browser name {name}.  Options are: {options}".format(
                 name=browser_name, options=", ".join(list(BROWSERS.keys()))))
     if browser_name == 'firefox':
         # Remove geckodriver log data from previous test cases
@@ -453,14 +455,14 @@ def _remote_browser_class(env_vars, tags=None):
     caps = _capabilities_dict(envs, tags)
 
     if 'accessKey' in caps:
-        LOGGER.info(u"Using SauceLabs: %s %s %s", caps['platform'], caps['browserName'], caps['version'])
+        LOGGER.info("Using SauceLabs: %s %s %s", caps['platform'], caps['browserName'], caps['version'])
     else:
-        LOGGER.info(u"Using Remote Browser: %s", caps['browserName'])
+        LOGGER.info("Using Remote Browser: %s", caps['browserName'])
 
     # Create and return a new Browser
     # We assume that the WebDriver end-point is running locally (e.g. using
     # SauceConnect)
-    url = u"http://{0}:{1}/wd/hub".format(
+    url = "http://{}:{}/wd/hub".format(
         envs['SELENIUM_HOST'], envs['SELENIUM_PORT'])
 
     browser_args = []
@@ -532,13 +534,13 @@ def _required_envs(env_vars):
     missing = [key for key, val in list(envs.items()) if val is None]
     if missing:
         msg = (
-            u"These environment variables must be set: " + u", ".join(missing)
+            "These environment variables must be set: " + ", ".join(missing)
         )
         raise BrowserConfigError(msg)
 
     # Check that we support this browser
     if envs['SELENIUM_BROWSER'] not in BROWSERS:
-        msg = u"Unsuppported browser: {0}".format(envs['SELENIUM_BROWSER'])
+        msg = "Unsuppported browser: {}".format(envs['SELENIUM_BROWSER'])
         raise BrowserConfigError(msg)
 
     return envs

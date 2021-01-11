@@ -4,7 +4,7 @@ Test accessibility auditing.
 
 import os
 
-from mock import patch
+from unittest.mock import patch
 
 from bok_choy.web_app_test import WebAppTest
 from bok_choy.a11y.a11y_audit import AccessibilityError, A11yAuditConfigError
@@ -16,14 +16,14 @@ class GoogleAxsAccessibilityTestMixin:
     Test cases for axs ruleset accessibility audit integration.
     """
     # Audit rule name is badAriaAttributeValue
-    ax_aria_04_errors = u'{}{}{}{}'.format(
+    ax_aria_04_errors = '{}{}{}{}'.format(
         'Error: AX_ARIA_04 ',
         '(ARIA state and property values must be valid) failed on the following ',
         'element:\n',
         '#AX_ARIA_04_bad')
 
     # Audit rule name is badAriaRole
-    ax_aria_01_errors = u'{}{}{}{}{}{}'.format(
+    ax_aria_01_errors = '{}{}{}{}{}{}'.format(
         'Error: AX_ARIA_01 ',
         '(Elements with ARIA roles must use a valid, non-abstract ARIA role) failed on the following ',
         'elements (1 - 2 of 2):\n',
@@ -244,7 +244,7 @@ class GoogleAxsAccessibilityPhantomJsTest(WebAppTest, GoogleAxsAccessibilityTest
     """
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'phantomjs'})
     def setUp(self):
-        super(GoogleAxsAccessibilityPhantomJsTest, self).setUp()
+        super().setUp()
 
 
 @patch.dict(os.environ, {'BOKCHOY_A11Y_RULESET': 'google_axs'})
@@ -254,7 +254,7 @@ class GoogleAxsAccessibilityFirefoxTest(WebAppTest, GoogleAxsAccessibilityTestMi
     """
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'firefox'})
     def setUp(self):
-        super(GoogleAxsAccessibilityFirefoxTest, self).setUp()
+        super().setUp()
 
 
 class AxeCoreTestMixin:
@@ -365,7 +365,7 @@ class AxeCoreAccessibilityPhantomJsTest(WebAppTest, AxeCoreTestMixin):
     """
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'phantomjs'})
     def setUp(self):
-        super(AxeCoreAccessibilityPhantomJsTest, self).setUp()
+        super().setUp()
         self.page = AccessibilityPage(self.browser)
 
 
@@ -376,7 +376,7 @@ class AxeCoreAccessibilityFirefoxTest(WebAppTest, AxeCoreTestMixin):
     """
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'firefox'})
     def setUp(self):
-        super(AxeCoreAccessibilityFirefoxTest, self).setUp()
+        super().setUp()
         self.page = AccessibilityPage(self.browser)
 
 
@@ -387,7 +387,7 @@ class TestVerifyAccessibilityFlagTest(WebAppTest):
     """
     @patch.dict(os.environ, {'SELENIUM_BROWSER': 'phantomjs'})
     def setUp(self):
-        super(TestVerifyAccessibilityFlagTest, self).setUp()
+        super().setUp()
 
     @patch.dict(os.environ, {'VERIFY_ACCESSIBILITY': 'True'})
     def test_axs_audit_check_on_visit(self):
