@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os
 import sys
 import edx_theme
@@ -33,7 +31,7 @@ rst_epilog = """
 master_doc = 'index'
 
 # General information about the project.
-project = u'bok-choy'
+project = 'bok-choy'
 copyright = edx_theme.COPYRIGHT
 author = edx_theme.AUTHOR
 
@@ -73,7 +71,7 @@ latex_elements = {}
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'bok-choy.tex', u'bok-choy Documentation',
+  ('index', 'bok-choy.tex', 'bok-choy Documentation',
    author, 'manual'),
 ]
 
@@ -83,7 +81,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'bok-choy', u'bok-choy Documentation',
+    ('index', 'bok-choy', 'bok-choy Documentation',
      [author], 1)
 ]
 
@@ -94,7 +92,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'bok-choy', u'bok-choy Documentation',
+  ('index', 'bok-choy', 'bok-choy Documentation',
    author, 'bok-choy', 'One line description of project.',
    'Miscellaneous'),
 ]

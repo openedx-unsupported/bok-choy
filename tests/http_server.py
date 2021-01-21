@@ -36,7 +36,7 @@ class DelayedRequestHandler(SimpleHTTPRequestHandler):
 
         # Prepend "tests/site" to the path because that
         # is where the test files should be served from.
-        self.path = "tests/site{}".format(self.path)
+        self.path = f"tests/site{self.path}"
 
         return SimpleHTTPRequestHandler.do_GET(self)
 

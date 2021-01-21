@@ -11,7 +11,7 @@ class TestGitHub(WebAppTest):
         """
         Instantiate the page object.
         """
-        super(TestGitHub, self).setUp()
+        super().setUp()
         self.github_search_page = GitHubSearchPage(self.browser)
         self.github_results_page = GitHubSearchResultsPage(self.browser)
 

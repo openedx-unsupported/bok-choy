@@ -11,7 +11,7 @@ class FocusedTest(WebAppTest):
     Test query `is_focused` method and `focused` property.
     """
     def setUp(self):
-        super(FocusedTest, self).setUp()
+        super().setUp()
         self.page = FocusedPage(self.browser).visit()
 
     def test_focused(self):

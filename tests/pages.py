@@ -24,7 +24,7 @@ class SitePage(PageObject):
 
     @property
     def url(self):
-        return "http://localhost:{0}/{1}".format(self.SERVER_PORT, self.name + ".html")
+        return "http://localhost:{}/{}".format(self.SERVER_PORT, self.name + ".html")
 
     @property
     def output(self):
@@ -77,13 +77,13 @@ class SelectPage(SitePage):
         """
         Select the car with ``car_value`` in the drop-down list.
         """
-        self.q(css=u'select[name="cars"] option[value="{}"]'.format(car_value)).first.click()
+        self.q(css=f'select[name="cars"] option[value="{car_value}"]').first.click()
 
     def is_car_selected(self, car):
         """
         Return ``True`` if the given ``car`` is selected, ``False`` otherwise.
         """
-        return self.q(css=u'select[name="cars"] option[value="{}"]'.format(car)).selected
+        return self.q(css=f'select[name="cars"] option[value="{car}"]').selected
 
 
 class CheckboxPage(SitePage):
@@ -96,7 +96,7 @@ class CheckboxPage(SitePage):
         """
         Toggle the box for the pill with `pill_name` (red or blue).
         """
-        self.q(css=u"#fixture input#{}".format(pill_name)).first.click()
+        self.q(css=f"#fixture input#{pill_name}").first.click()
 
 
 class AlertPage(SitePage):
@@ -252,13 +252,13 @@ class VisiblePage(SitePage):
         """
         Return a boolean indicating whether the given item is visible.
         """
-        return self.q(css="div.{}".format(name)).first.visible
+        return self.q(css=f"div.{name}").first.visible
 
     def is_invisible(self, name):
         """
         Return a boolean indicating whether the given element is present, but not visible.
         """
-        return self.q(css="div.{}".format(name)).first.invisible
+        return self.q(css=f"div.{name}").first.invisible
 
 
 @js_defined('test_var1', 'test_var2')
@@ -318,7 +318,7 @@ class RequireJSPage(SitePage):
         Wait for scripts to finish and then return the contents of the
         ``#output`` div on the page.
         """
-        return super(RequireJSPage, self).output
+        return super().output
 
 
 class AjaxNoJQueryPage(SitePage):

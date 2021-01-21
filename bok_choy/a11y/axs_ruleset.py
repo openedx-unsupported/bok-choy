@@ -22,7 +22,7 @@ class AxsAuditConfig(A11yAuditConfig):
     running an `AxsAudit`.
     """
     def __init__(self, *args, **kwargs):
-        super(AxsAuditConfig, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.rules_file = None
         self.scope, self.rules_to_run, self.rules_to_ignore = None, None, None
         self.rules_file = os.path.join(
@@ -89,8 +89,8 @@ class AxsAuditConfig(A11yAuditConfig):
                 page.a11y_audit.config.set_scope()
         """
         if include:
-            self.scope = u"document.querySelector(\"{}\")".format(
-                u', '.join(include)
+            self.scope = "document.querySelector(\"{}\")".format(
+                ', '.join(include)
             )
         else:
             self.scope = "null"
@@ -159,7 +159,7 @@ class AxsAudit(A11yAudit):
         # run all rules.
         rules = config.rules_to_run
         if rules:
-            rules_config = u"auditConfig.auditRulesToRun = {rules};".format(
+            rules_config = "auditConfig.auditRulesToRun = {rules};".format(
                 rules=rules)
         else:
             rules_config = ""
@@ -167,12 +167,12 @@ class AxsAudit(A11yAudit):
         ignored_rules = config.rules_to_ignore
         if ignored_rules:
             rules_config += (
-                u"\nauditConfig.auditRulesToIgnore = {rules};".format(
+                "\nauditConfig.auditRulesToIgnore = {rules};".format(
                     rules=ignored_rules
                 )
             )
 
-        script = dedent(u"""
+        script = dedent("""
             {rules_js}
             var auditConfig = new axs.AuditConfiguration();
             {rules_config}
@@ -218,7 +218,7 @@ class AxsAudit(A11yAudit):
         """
         errors = AxsAudit.get_errors(audit)
         if errors:
-            msg = u"URL '{}' has {} errors:\n{}".format(
+            msg = "URL '{}' has {} errors:\n{}".format(
                 url,
                 len(errors),
                 ', '.join(errors)

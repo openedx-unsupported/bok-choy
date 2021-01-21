@@ -11,7 +11,7 @@ class TestGitHub(WebAppTest):
         """
         Instantiate the page object.
         """
-        super(TestGitHub, self).setUp()
+        super().setUp()
         self.github_search_page = GitHubSearchPage(self.browser)
 
     def test_page_existence(self):

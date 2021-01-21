@@ -41,7 +41,7 @@ def no_error(func):
         try:
             return_val = func(*args, **kwargs)
         except WebDriverException:
-            LOGGER.warning(u'Exception ignored during retry loop:', exc_info=True)
+            LOGGER.warning('Exception ignored during retry loop:', exc_info=True)
             return False, None
         else:
             return True, return_val
@@ -69,7 +69,7 @@ class Query(Sequence):
             Query
         """
         if desc is None:
-            desc = u'Query({})'.format(getattr(seed_fn, '__name__', ''))
+            desc = 'Query({})'.format(getattr(seed_fn, '__name__', ''))
 
         self.seed_fn = seed_fn
         self.transforms = []
@@ -95,7 +95,7 @@ class Query(Sequence):
         clone.transforms = list(clone.transforms)
         for key, value in kwargs.items():
             if not hasattr(clone, key):
-                raise TypeError(u'replace() got an unexpected keyword argument {!r}'.format(key))
+                raise TypeError(f'replace() got an unexpected keyword argument {key!r}')
 
             setattr(clone, key, value)
         return clone
@@ -116,7 +116,7 @@ class Query(Sequence):
             Query
         """
         if desc is None:
-            desc = u'transform({})'.format(getattr(transform, '__name__', ''))
+            desc = 'transform({})'.format(getattr(transform, '__name__', ''))
 
         return self.replace(
             transforms=self.transforms + [transform],
@@ -139,7 +139,7 @@ class Query(Sequence):
         """
         if desc is None:
             desc = getattr(map_fn, '__name__', '')
-        desc = u'map({})'.format(desc)
+        desc = f'map({desc})'
 
         return self.transform(lambda xs: (map_fn(x) for x in xs), desc=desc)
 
@@ -178,8 +178,8 @@ class Query(Sequence):
             if filter_fn is not None:
                 desc = getattr(filter_fn, '__name__', '')
             elif kwargs:
-                desc = u", ".join([u"{}={!r}".format(key, value) for key, value in kwargs.items()])
-        desc = u"filter({})".format(desc)
+                desc = ", ".join([f"{key}={value!r}" for key, value in kwargs.items()])
+        desc = f"filter({desc})"
 
         if kwargs:
             def filter_fn(elem):  # pylint: disable=function-redefined, missing-docstring
@@ -217,7 +217,7 @@ class Query(Sequence):
         """
         return Promise(
             no_error(self._execute),
-            u"Executing {!r}".format(self),
+            f"Executing {self!r}",
             try_limit=try_limit,
             try_interval=try_interval,
             timeout=timeout,
@@ -307,7 +307,7 @@ class Query(Sequence):
         return self.transform(_transform, 'nth')
 
     def __repr__(self):
-        return u".".join([self.desc] + self.desc_stack)
+        return ".".join([self.desc] + self.desc_stack)
 
 
 class BrowserQuery(Query):
@@ -340,14 +340,14 @@ class BrowserQuery(Query):
         query_name, query_value = list(kwargs.items())[0]
 
         if query_name not in QUERY_TYPES:
-            raise TypeError(u'{} is not a supported query type for BrowserQuery()'.format(query_name))
+            raise TypeError(f'{query_name} is not a supported query type for BrowserQuery()')
 
         def query_fn():  # pylint: disable=missing-docstring
             return getattr(browser, QUERY_TYPES[query_name])(query_value)
 
-        super(BrowserQuery, self).__init__(
+        super().__init__(
             query_fn,
-            desc=u"BrowserQuery({}={!r})".format(query_name, query_value),
+            desc=f"BrowserQuery({query_name}={query_value!r})",
         )
         self.browser = browser
 
@@ -370,7 +370,7 @@ class BrowserQuery(Query):
         Returns:
             A list of attribute values for `attribute_name`.
         """
-        desc = u'attrs({!r})'.format(attribute_name)
+        desc = f'attrs({attribute_name!r})'
         return self.map(lambda el: el.get_attribute(attribute_name), desc).results
 
     @property
@@ -502,4 +502,4 @@ class BrowserQuery(Query):
             elem.clear()
             elem.send_keys(text)
 
-        self.map(_fill, u'fill({!r})'.format(text)).execute()
+        self.map(_fill, f'fill({text!r})').execute()

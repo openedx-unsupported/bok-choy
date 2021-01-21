@@ -2,19 +2,20 @@
 Tests browser instantiation, selection, etc
 """
 
-import tempfile
-import shutil
 import os
+import shutil
 import socket
+import tempfile
 from unittest import TestCase
-import pytest
+from unittest.mock import patch
 
-from mock import patch
+import pytest
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 
 import bok_choy.browser
 from bok_choy.promise import BrokenPromise
+
 from .pages import ButtonPage, JavaScriptPage
 
 
@@ -262,7 +263,7 @@ class TestSaveFiles:
         # Check that no files were created.
         log_types = ['browser', 'driver', 'client', 'server']
         for log_type in log_types:
-            expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
+            expected_file = os.path.join(tempdir_path, f'js_page_{log_type}.log')
             assert not os.path.exists(expected_file)
 
     @pytest.mark.skipif(os.environ.get('SELENIUM_BROWSER', 'firefox') == "firefox",
@@ -280,7 +281,7 @@ class TestSaveFiles:
         # Note that the 'client' and 'server' log files will be empty.
         log_types = browser.log_types
         for log_type in log_types:
-            expected_file = os.path.join(tempdir_path, 'js_page_{}.log'.format(log_type))
+            expected_file = os.path.join(tempdir_path, f'js_page_{log_type}.log')
             assert os.path.isfile(expected_file)
 
     @pytest.mark.skipif(os.environ.get('SELENIUM_BROWSER', 'firefox') == "firefox",
@@ -298,9 +299,9 @@ class TestSaveFiles:
         # Check that no files were created.
         log_types = browser.log_types
         for log_type in log_types:
-            expected_file = os.path.join(tempdir_path, u'js_page_{}.log'.format(log_type))
+            expected_file = os.path.join(tempdir_path, f'js_page_{log_type}.log')
             assert not os.path.exists(expected_file)
-            assert u"Could not save browser log of type '{}'.".format(log_type) in caplog.text
+            assert f"Could not save browser log of type '{log_type}'." in caplog.text
 
     def test_save_source(self):
         browser = self.browser

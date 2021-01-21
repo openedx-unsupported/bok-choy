@@ -121,14 +121,14 @@ def _wait_for_js(self):
     if hasattr(self, '_js_vars') and self._js_vars:
         EmptyPromise(
             lambda: _are_js_vars_defined(self.browser, self._js_vars),
-            u"JavaScript variables defined: {0}".format(", ".join(self._js_vars))
+            "JavaScript variables defined: {}".format(", ".join(self._js_vars))
         ).fulfill()
 
     # Wait for RequireJS dependencies to load
     if hasattr(self, '_requirejs_deps') and self._requirejs_deps:
         EmptyPromise(
             lambda: _are_requirejs_deps_loaded(self.browser, self._requirejs_deps),
-            u"RequireJS dependencies loaded: {0}".format(", ".join(self._requirejs_deps)),
+            "RequireJS dependencies loaded: {}".format(", ".join(self._requirejs_deps)),
             try_limit=5
         ).fulfill()
 
@@ -142,13 +142,13 @@ def _are_js_vars_defined(browser, js_vars):
     """
     # This script will evaluate to True iff all of
     # the required vars are defined.
-    script = u" && ".join([
-        u"!(typeof {0} === 'undefined')".format(var)
+    script = " && ".join([
+        f"!(typeof {var} === 'undefined')"
         for var in js_vars
     ])
 
     try:
-        return browser.execute_script(u"return {}".format(script))
+        return browser.execute_script(f"return {script}")
     except WebDriverException as exc:
         if "is not defined" in exc.msg or "is undefined" in exc.msg:
             return False
@@ -173,7 +173,7 @@ def _are_requirejs_deps_loaded(browser, deps):
     # We install a RequireJS module with the dependencies we want
     # to ensure are loaded.  When our module loads, we return
     # control to the test suite.
-    script = dedent(u"""
+    script = dedent("""
         // Retrieve the callback function used to return control to the test suite
         var callback = arguments[arguments.length - 1];
 

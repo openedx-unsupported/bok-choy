@@ -11,7 +11,7 @@ class AlertTest(WebAppTest):
     Test handling of alerts.
     """
     def setUp(self):
-        super(AlertTest, self).setUp()
+        super().setUp()
         self.alert = AlertPage(self.browser)
         self.alert.visit()
 

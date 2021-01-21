@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import re
 from bok_choy.page_object import PageObject
 
@@ -14,7 +13,7 @@ class GitHubSearchResultsPage(PageObject):
     def is_browser_on_page(self):
         # This should be something like: u'Search · foo bar · GitHub'
         title = self.browser.title
-        matches = re.match(u'^Search .+ GitHub$', title)
+        matches = re.match('^Search .+ GitHub$', title)
         return matches is not None
 
 

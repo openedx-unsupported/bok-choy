@@ -11,7 +11,7 @@ class VisibleTest(WebAppTest):
     Test element visibility.
     """
     def setUp(self):
-        super(VisibleTest, self).setUp()
+        super().setUp()
         self.page = VisiblePage(self.browser).visit()
 
     def test_visible(self):

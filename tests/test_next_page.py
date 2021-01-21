@@ -13,7 +13,7 @@ class NextPageTest(WebAppTest):
     """
 
     def setUp(self):
-        super(NextPageTest, self).setUp()
+        super().setUp()
         self.next_page = NextPage(self.browser)
 
     def test_wait_for_next_page(self):
