@@ -29,5 +29,5 @@ jobs:
       - name: Publish to PyPi
         uses: pypa/gh-action-pypi-publish@master
         with:
-          user: edx
+          user: __token__
           password: ${{ secrets.PYPI_UPLOAD_TOKEN }}
