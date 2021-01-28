@@ -53,21 +53,26 @@ six==1.15.0
     #   bleach
     #   edx-sphinx-theme
     #   readme-renderer
-    #   sphinx
 snowballstemmer==2.1.0
     # via sphinx
-sphinx==1.8.4
+sphinx==3.4.3
     # via
-    #   -c requirements/constraints.txt
     #   -r requirements/doc.in
     #   edx-sphinx-theme
-sphinxcontrib-serializinghtml==1.1.4
-    # via sphinxcontrib-websupport
-sphinxcontrib-websupport==1.2.4
+sphinxcontrib-applehelp==1.0.2
     # via sphinx
-urllib3==1.24.3
+sphinxcontrib-devhelp==1.0.2
+    # via sphinx
+sphinxcontrib-htmlhelp==1.0.3
+    # via sphinx
+sphinxcontrib-jsmath==1.0.1
+    # via sphinx
+sphinxcontrib-qthelp==1.0.3
+    # via sphinx
+sphinxcontrib-serializinghtml==1.1.4
+    # via sphinx
+urllib3==1.26.2
     # via
-    #   -c requirements/constraints.txt
     #   -r requirements/base.txt
     #   requests
     #   selenium

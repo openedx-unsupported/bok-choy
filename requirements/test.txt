@@ -85,9 +85,8 @@ toml==0.10.2
     # via
     #   pylint
     #   pytest
-urllib3==1.24.3
+urllib3==1.26.2
     # via
-    #   -c requirements/constraints.txt
     #   -r requirements/base.txt
     #   selenium
 wrapt==1.12.1

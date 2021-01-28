@@ -5,9 +5,9 @@ bok-choy
     :target: https://pypi.python.org/pypi/bok_choy/
     :alt: PyPI
 
-.. image:: https://travis-ci.org/edx/bok-choy.svg?branch=master
-    :target: https://travis-ci.org/edx/bok-choy
-    :alt: Travis
+.. image:: https://github.com/edx/bok-choy/workflows/Python%20CI/badge.svg?branch=master
+    :target: https://github.com/edx/bok-choy/actions?query=workflow%3A%22Python+CI%22
+    :alt: Github CI
 
 .. image:: http://codecov.io/github/edx/bok-choy/coverage.svg?branch=master
     :target: http://codecov.io/github/edx/bok-choy?branch=master

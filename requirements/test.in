@@ -5,7 +5,6 @@
 -r base.txt               # Core bok-choy dependencies
 
 edx_lint                            # pylint plug-ins for additional code quality checks
-futures ; python_version == "2.7"   # via isort
 mock                                # For mocking functionality in assorted tests
 packaging                           # For version number parsing and comparisons
 pycodestyle                         # For checking compliance with PEP 8 coding style guidelines

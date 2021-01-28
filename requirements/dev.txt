@@ -191,9 +191,8 @@ tox==3.21.2
     #   -r requirements/travis.txt
     #   tox-battery
     #   tox-travis
-urllib3==1.24.3
+urllib3==1.26.2
     # via
-    #   -c requirements/constraints.txt
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   requests

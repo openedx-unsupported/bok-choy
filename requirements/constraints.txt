@@ -11,10 +11,3 @@
 
 # This file contains all common constraints for edx-repos
 -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
-
-
-# requests only supports urllib 1.24: https://github.com/kennethreitz/requests/issues/5067
-urllib3<1.25
-
-# pip-compile fails to find dependencies in 1.8.5 https://github.com/jazzband/pip-tools/issues/810
-sphinx<1.8.5

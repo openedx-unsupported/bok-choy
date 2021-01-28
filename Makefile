@@ -44,6 +44,7 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	$(BROWSER) build/sphinx/html/index.html
 
 requirements: ## install development environment requirements
+	pip install requirements/pip.txt
 	pip install -r requirements/pip-tools.txt
 	pip-sync requirements/dev.txt requirements/private.*
 
@@ -56,6 +57,7 @@ test-all: ## run tests on every supported Python version
 upgrade: export CUSTOM_COMPILE_COMMAND=make upgrade
 upgrade: ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
 	pip install -r requirements/pip-tools.txt
+	pip-compile --upgrade --allow-unsafe --rebuild -o requirements/pip.txt requirements/pip.in
 	pip-compile --rebuild --upgrade -o requirements/pip-tools.txt requirements/pip-tools.in
 	pip-compile --rebuild --upgrade -o requirements/base.txt requirements/base.in
 	pip-compile --rebuild --upgrade -o requirements/doc.txt requirements/doc.in
