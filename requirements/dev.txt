@@ -38,11 +38,16 @@ click==7.1.2
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
     #   click-log
+    #   code-annotations
     #   edx-lint
     #   pip-tools
+code-annotations==1.0.2
+    # via
+    #   -r requirements/needle.txt
+    #   edx-lint
 codecov==2.1.11
     # via -r requirements/travis.txt
-coverage==5.3.1
+coverage==5.4
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -52,9 +57,15 @@ distlib==0.3.1
     # via
     #   -r requirements/travis.txt
     #   virtualenv
-edx-lint==1.6
+django==2.2.17
+    # via
+    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
+    #   -r requirements/needle.txt
+    #   code-annotations
+    #   edx-lint
+edx-lint==3.0.2
     # via -r requirements/needle.txt
-execnet==1.7.1
+execnet==1.8.0
     # via
     #   -r requirements/needle.txt
     #   pytest-xdist
@@ -75,12 +86,20 @@ isort==5.7.0
     # via
     #   -r requirements/needle.txt
     #   pylint
+jinja2==2.11.2
+    # via
+    #   -r requirements/needle.txt
+    #   code-annotations
 lazy-object-proxy==1.4.3
     # via
     #   -r requirements/needle.txt
     #   astroid
 lazy==1.4
     # via -r requirements/needle.txt
+markupsafe==1.1.1
+    # via
+    #   -r requirements/needle.txt
+    #   jinja2
 mccabe==0.6.1
     # via
     #   -r requirements/needle.txt
@@ -99,6 +118,10 @@ packaging==20.8
     #   -r requirements/travis.txt
     #   pytest
     #   tox
+pbr==5.5.1
+    # via
+    #   -r requirements/needle.txt
+    #   stevedore
 pillow==8.1.0
     # via
     #   -r requirements/needle.txt
@@ -124,7 +147,7 @@ pylint-celery==0.3
     # via
     #   -r requirements/needle.txt
     #   edx-lint
-pylint-django==2.3.0
+pylint-django==2.4.2
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -153,12 +176,24 @@ pytest-forked==1.3.0
     #   pytest-xdist
 pytest-xdist==2.2.0
     # via -r requirements/needle.txt
-pytest==6.2.1
+pytest==6.2.2
     # via
     #   -r requirements/needle.txt
     #   pytest-cov
     #   pytest-forked
     #   pytest-xdist
+python-slugify==4.0.1
+    # via
+    #   -r requirements/needle.txt
+    #   code-annotations
+pytz==2020.5
+    # via
+    #   -r requirements/needle.txt
+    #   django
+pyyaml==5.4.1
+    # via
+    #   -r requirements/needle.txt
+    #   code-annotations
 requests==2.25.1
     # via
     #   -r requirements/travis.txt
@@ -175,6 +210,18 @@ six==1.15.0
     #   edx-lint
     #   tox
     #   virtualenv
+sqlparse==0.4.1
+    # via
+    #   -r requirements/needle.txt
+    #   django
+stevedore==3.3.0
+    # via
+    #   -r requirements/needle.txt
+    #   code-annotations
+text-unidecode==1.3
+    # via
+    #   -r requirements/needle.txt
+    #   python-slugify
 toml==0.10.2
     # via
     #   -r requirements/needle.txt
@@ -186,12 +233,12 @@ tox-battery==0.6.1
     # via -r requirements/travis.txt
 tox-travis==0.12
     # via -r requirements/travis.txt
-tox==3.21.2
+tox==3.21.3
     # via
     #   -r requirements/travis.txt
     #   tox-battery
     #   tox-travis
-urllib3==1.26.2
+urllib3==1.26.3
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt

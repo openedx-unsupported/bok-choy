@@ -8,7 +8,7 @@ alabaster==0.7.12
     # via sphinx
 babel==2.9.0
     # via sphinx
-bleach==3.2.2
+bleach==3.2.3
     # via readme-renderer
 certifi==2020.12.5
     # via requests
@@ -71,7 +71,7 @@ sphinxcontrib-qthelp==1.0.3
     # via sphinx
 sphinxcontrib-serializinghtml==1.1.4
     # via sphinx
-urllib3==1.26.2
+urllib3==1.26.3
     # via
     #   -r requirements/base.txt
     #   requests
