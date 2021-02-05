@@ -19,16 +19,16 @@ click==7.1.2
     #   click-log
     #   code-annotations
     #   edx-lint
-code-annotations==1.0.2
+code-annotations==1.1.0
     # via edx-lint
 coverage==5.4
     # via pytest-cov
-django==2.2.17
+django==2.2.18
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   code-annotations
     #   edx-lint
-edx-lint==3.0.2
+edx-lint==4.0.1
     # via -r requirements/test.in
 execnet==1.8.0
     # via pytest-xdist
@@ -36,7 +36,7 @@ iniconfig==1.1.1
     # via pytest
 isort==5.7.0
     # via pylint
-jinja2==2.11.2
+jinja2==2.11.3
     # via code-annotations
 lazy-object-proxy==1.4.3
     # via astroid
@@ -48,7 +48,7 @@ mccabe==0.6.1
     # via pylint
 mock==4.0.3
     # via -r requirements/test.in
-packaging==20.8
+packaging==20.9
     # via
     #   -r requirements/test.in
     #   pytest
@@ -91,7 +91,7 @@ pytest==6.2.2
     #   pytest-xdist
 python-slugify==4.0.1
     # via code-annotations
-pytz==2020.5
+pytz==2021.1
     # via django
 pyyaml==5.4.1
     # via code-annotations
