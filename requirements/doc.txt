@@ -18,7 +18,7 @@ docutils==0.16
     # via
     #   readme-renderer
     #   sphinx
-edx-sphinx-theme==1.6.1
+edx-sphinx-theme==2.0.0
     # via -r requirements/doc.in
 idna==2.10
     # via requests
