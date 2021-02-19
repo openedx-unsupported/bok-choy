@@ -34,7 +34,7 @@ packaging==20.9
     # via
     #   bleach
     #   sphinx
-pygments==2.7.4
+pygments==2.8.0
     # via
     #   readme-renderer
     #   sphinx
@@ -55,7 +55,7 @@ six==1.15.0
     #   readme-renderer
 snowballstemmer==2.1.0
     # via sphinx
-sphinx==3.4.3
+sphinx==3.5.1
     # via
     #   -r requirements/doc.in
     #   edx-sphinx-theme

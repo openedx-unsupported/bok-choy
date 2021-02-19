@@ -42,7 +42,7 @@ tox-battery==0.6.1
     # via -r requirements/travis.in
 tox-travis==0.12
     # via -r requirements/travis.in
-tox==3.21.4
+tox==3.22.0
     # via
     #   -r requirements/travis.in
     #   tox-battery
