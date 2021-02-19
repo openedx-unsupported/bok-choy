@@ -156,7 +156,7 @@ pylint-plugin-utils==0.6
     #   -r requirements/needle.txt
     #   pylint-celery
     #   pylint-django
-pylint==2.6.0
+pylint==2.6.2
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -233,7 +233,7 @@ tox-battery==0.6.1
     # via -r requirements/travis.txt
 tox-travis==0.12
     # via -r requirements/travis.txt
-tox==3.21.4
+tox==3.22.0
     # via
     #   -r requirements/travis.txt
     #   tox-battery
