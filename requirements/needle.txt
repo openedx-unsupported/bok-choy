@@ -8,7 +8,7 @@ apipkg==1.5
     # via
     #   -r requirements/test.txt
     #   execnet
-astroid==2.4.2
+astroid==2.5
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -35,13 +35,13 @@ coverage==5.4
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-django==2.2.18
+django==2.2.19
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/test.txt
     #   code-annotations
     #   edx-lint
-edx-lint==4.0.1
+edx-lint==4.1.0
     # via -r requirements/test.txt
 execnet==1.8.0
     # via
@@ -59,7 +59,7 @@ jinja2==2.11.3
     # via
     #   -r requirements/test.txt
     #   code-annotations
-lazy-object-proxy==1.4.3
+lazy-object-proxy==1.5.2
     # via
     #   -r requirements/test.txt
     #   astroid
@@ -113,7 +113,7 @@ pylint-plugin-utils==0.6
     #   -r requirements/test.txt
     #   pylint-celery
     #   pylint-django
-pylint==2.6.2
+pylint==2.7.1
     # via
     #   -r requirements/test.txt
     #   edx-lint
@@ -157,7 +157,6 @@ selenium==3.141.0
 six==1.15.0
     # via
     #   -r requirements/test.txt
-    #   astroid
     #   edx-lint
 sqlparse==0.4.1
     # via
