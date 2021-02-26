@@ -44,7 +44,7 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	$(BROWSER) build/sphinx/html/index.html
 
 requirements: ## install development environment requirements
-	pip install requirements/pip.txt
+	pip install -r requirements/pip.txt
 	pip install -r requirements/pip-tools.txt
 	pip-sync requirements/dev.txt requirements/private.*
 
