@@ -512,10 +512,10 @@ def _use_remote_browser(required_vars):
     environment variables indicating they want to connect to SauceLabs
     or a remote browser.
     """
-    return all([
+    return all(
         key in os.environ
         for key in required_vars
-    ])
+    )
 
 
 def _required_envs(env_vars):
