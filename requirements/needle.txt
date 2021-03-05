@@ -8,7 +8,7 @@ apipkg==1.5
     # via
     #   -r requirements/test.txt
     #   execnet
-astroid==2.5
+astroid==2.5.1
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -31,7 +31,7 @@ code-annotations==1.1.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
-coverage==5.4
+coverage==5.5
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -87,7 +87,7 @@ pbr==5.5.1
     # via
     #   -r requirements/test.txt
     #   stevedore
-pillow==8.1.0
+pillow==8.1.1
     # via needle
 pluggy==0.13.1
     # via
@@ -113,7 +113,7 @@ pylint-plugin-utils==0.6
     #   -r requirements/test.txt
     #   pylint-celery
     #   pylint-django
-pylint==2.7.1
+pylint==2.7.2
     # via
     #   -r requirements/test.txt
     #   edx-lint
