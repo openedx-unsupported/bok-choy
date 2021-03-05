@@ -6,7 +6,7 @@
 #
 apipkg==1.5
     # via execnet
-astroid==2.5
+astroid==2.5.1
     # via
     #   pylint
     #   pylint-celery
@@ -21,7 +21,7 @@ click==7.1.2
     #   edx-lint
 code-annotations==1.1.0
     # via edx-lint
-coverage==5.4
+coverage==5.5
     # via pytest-cov
 django==2.2.19
     # via
@@ -70,7 +70,7 @@ pylint-plugin-utils==0.6
     # via
     #   pylint-celery
     #   pylint-django
-pylint==2.7.1
+pylint==2.7.2
     # via
     #   edx-lint
     #   pylint-celery

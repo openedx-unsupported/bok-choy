@@ -12,7 +12,7 @@ appdirs==1.4.4
     # via
     #   -r requirements/travis.txt
     #   virtualenv
-astroid==2.5
+astroid==2.5.1
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -47,7 +47,7 @@ code-annotations==1.1.0
     #   edx-lint
 codecov==2.1.11
     # via -r requirements/travis.txt
-coverage==5.4
+coverage==5.5
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -122,7 +122,7 @@ pbr==5.5.1
     # via
     #   -r requirements/needle.txt
     #   stevedore
-pillow==8.1.0
+pillow==8.1.1
     # via
     #   -r requirements/needle.txt
     #   needle
@@ -156,7 +156,7 @@ pylint-plugin-utils==0.6
     #   -r requirements/needle.txt
     #   pylint-celery
     #   pylint-django
-pylint==2.7.1
+pylint==2.7.2
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -232,7 +232,7 @@ tox-battery==0.6.1
     # via -r requirements/travis.txt
 tox-travis==0.12
     # via -r requirements/travis.txt
-tox==3.22.0
+tox==3.23.0
     # via
     #   -r requirements/travis.txt
     #   tox-battery
