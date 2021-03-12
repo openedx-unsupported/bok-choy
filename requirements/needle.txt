@@ -87,7 +87,7 @@ pbr==5.5.1
     # via
     #   -r requirements/test.txt
     #   stevedore
-pillow==8.1.1
+pillow==8.1.2
     # via needle
 pluggy==0.13.1
     # via
