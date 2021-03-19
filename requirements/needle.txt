@@ -41,7 +41,7 @@ django==2.2.19
     #   -r requirements/test.txt
     #   code-annotations
     #   edx-lint
-edx-lint==4.1.0
+edx-lint==4.1.1
     # via -r requirements/test.txt
 execnet==1.8.0
     # via
@@ -98,7 +98,7 @@ py==1.10.0
     #   -r requirements/test.txt
     #   pytest
     #   pytest-forked
-pycodestyle==2.6.0
+pycodestyle==2.7.0
     # via -r requirements/test.txt
 pylint-celery==0.3
     # via
@@ -175,7 +175,7 @@ toml==0.10.2
     #   -r requirements/test.txt
     #   pylint
     #   pytest
-urllib3==1.26.3
+urllib3==1.26.4
     # via
     #   -r requirements/test.txt
     #   selenium
