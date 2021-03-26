@@ -63,7 +63,7 @@ django==2.2.19
     #   -r requirements/needle.txt
     #   code-annotations
     #   edx-lint
-edx-lint==4.1.1
+edx-lint==5.0.0
     # via -r requirements/needle.txt
 execnet==1.8.0
     # via
@@ -82,7 +82,7 @@ iniconfig==1.1.1
     # via
     #   -r requirements/needle.txt
     #   pytest
-isort==5.7.0
+isort==5.8.0
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -90,7 +90,7 @@ jinja2==2.11.3
     # via
     #   -r requirements/needle.txt
     #   code-annotations
-lazy-object-proxy==1.5.2
+lazy-object-proxy==1.6.0
     # via
     #   -r requirements/needle.txt
     #   astroid
