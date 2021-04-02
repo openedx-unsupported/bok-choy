@@ -12,7 +12,7 @@ appdirs==1.4.4
     # via
     #   -r requirements/travis.txt
     #   virtualenv
-astroid==2.5.1
+astroid==2.5.2
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -41,7 +41,7 @@ click==7.1.2
     #   code-annotations
     #   edx-lint
     #   pip-tools
-code-annotations==1.1.0
+code-annotations==1.1.1
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -126,7 +126,7 @@ pep517==0.10.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-pillow==8.1.2
+pillow==8.2.0
     # via
     #   -r requirements/needle.txt
     #   needle
@@ -160,7 +160,7 @@ pylint-plugin-utils==0.6
     #   -r requirements/needle.txt
     #   pylint-celery
     #   pylint-django
-pylint==2.7.2
+pylint==2.7.4
     # via
     #   -r requirements/needle.txt
     #   edx-lint
