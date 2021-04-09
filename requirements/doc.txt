@@ -16,6 +16,7 @@ chardet==4.0.0
     # via requests
 docutils==0.16
     # via
+    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   readme-renderer
     #   sphinx
 edx-sphinx-theme==2.1.0
