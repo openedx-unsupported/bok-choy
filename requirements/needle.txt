@@ -8,7 +8,7 @@ apipkg==1.5
     # via
     #   -r requirements/test.txt
     #   execnet
-astroid==2.5.2
+astroid==2.5.3
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -104,7 +104,7 @@ pylint-celery==0.3
     # via
     #   -r requirements/test.txt
     #   edx-lint
-pylint-django==2.4.2
+pylint-django==2.4.3
     # via
     #   -r requirements/test.txt
     #   edx-lint
