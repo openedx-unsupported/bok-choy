@@ -30,12 +30,14 @@ jinja2==2.11.3
 lazy==1.4
     # via -r requirements/base.txt
 markupsafe==1.1.1
-    # via jinja2
+    # via
+    #   jinja2
+    #   sphinx
 packaging==20.9
     # via
     #   bleach
     #   sphinx
-pygments==2.8.1
+pygments==2.9.0
     # via
     #   readme-renderer
     #   sphinx
@@ -49,14 +51,14 @@ requests==2.25.1
     # via sphinx
 selenium==3.141.0
     # via -r requirements/base.txt
-six==1.15.0
+six==1.16.0
     # via
     #   bleach
     #   edx-sphinx-theme
     #   readme-renderer
 snowballstemmer==2.1.0
     # via sphinx
-sphinx==3.5.4
+sphinx==4.0.1
     # via
     #   -r requirements/doc.in
     #   edx-sphinx-theme
