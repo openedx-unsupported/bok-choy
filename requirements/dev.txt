@@ -35,6 +35,7 @@ click-log==0.3.2
     #   edx-lint
 click==7.1.2
     # via
+    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
     #   click-log
@@ -47,7 +48,7 @@ code-annotations==1.1.1
     #   edx-lint
 codecov==2.1.11
     # via -r requirements/travis.txt
-coverage==5.5
+coverage[toml]==5.5
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -57,7 +58,7 @@ distlib==0.3.1
     # via
     #   -r requirements/travis.txt
     #   virtualenv
-django==2.2.20
+django==2.2.23
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/needle.txt
@@ -86,7 +87,7 @@ isort==5.8.0
     # via
     #   -r requirements/needle.txt
     #   pylint
-jinja2==2.11.3
+jinja2==3.0.0
     # via
     #   -r requirements/needle.txt
     #   code-annotations
@@ -96,7 +97,7 @@ lazy-object-proxy==1.6.0
     #   astroid
 lazy==1.4
     # via -r requirements/needle.txt
-markupsafe==1.1.1
+markupsafe==2.0.0
     # via
     #   -r requirements/needle.txt
     #   jinja2
@@ -172,7 +173,7 @@ pyparsing==2.4.7
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   packaging
-pytest-cov==2.11.1
+pytest-cov==2.12.0
     # via -r requirements/needle.txt
 pytest-forked==1.3.0
     # via
@@ -230,6 +231,7 @@ toml==0.10.2
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
     #   -r requirements/travis.txt
+    #   coverage
     #   pep517
     #   pylint
     #   pytest
