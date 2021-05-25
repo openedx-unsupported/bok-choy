@@ -33,16 +33,15 @@ click-log==0.3.2
     # via
     #   -r requirements/needle.txt
     #   edx-lint
-click==7.1.2
+click==8.0.1
     # via
-    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
     #   click-log
     #   code-annotations
     #   edx-lint
     #   pip-tools
-code-annotations==1.1.1
+code-annotations==1.1.2
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -62,7 +61,6 @@ django==2.2.23
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/needle.txt
-    #   code-annotations
     #   edx-lint
 edx-lint==5.0.0
     # via -r requirements/needle.txt
@@ -87,7 +85,7 @@ isort==5.8.0
     # via
     #   -r requirements/needle.txt
     #   pylint
-jinja2==3.0.0
+jinja2==3.0.1
     # via
     #   -r requirements/needle.txt
     #   code-annotations
@@ -97,7 +95,7 @@ lazy-object-proxy==1.6.0
     #   astroid
 lazy==1.4
     # via -r requirements/needle.txt
-markupsafe==2.0.0
+markupsafe==2.0.1
     # via
     #   -r requirements/needle.txt
     #   jinja2
@@ -251,7 +249,7 @@ urllib3==1.26.4
     #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.4.6
+virtualenv==20.4.7
     # via
     #   -r requirements/travis.txt
     #   tox
