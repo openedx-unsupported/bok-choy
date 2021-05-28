@@ -243,7 +243,7 @@ tox==3.23.1
     #   -r requirements/travis.txt
     #   tox-battery
     #   tox-travis
-urllib3==1.26.4
+urllib3==1.26.5
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
