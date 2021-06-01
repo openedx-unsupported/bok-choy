@@ -21,7 +21,7 @@ attrs==21.2.0
     # via
     #   -r requirements/needle.txt
     #   pytest
-certifi==2020.12.5
+certifi==2021.5.30
     # via
     #   -r requirements/travis.txt
     #   requests
@@ -53,7 +53,7 @@ coverage[toml]==5.5
     #   -r requirements/travis.txt
     #   codecov
     #   pytest-cov
-distlib==0.3.1
+distlib==0.3.2
     # via
     #   -r requirements/travis.txt
     #   virtualenv
@@ -64,7 +64,7 @@ django==2.2.23
     #   edx-lint
 edx-lint==5.0.0
     # via -r requirements/needle.txt
-execnet==1.8.0
+execnet==1.8.1
     # via
     #   -r requirements/needle.txt
     #   pytest-xdist
@@ -159,7 +159,7 @@ pylint-plugin-utils==0.6
     #   -r requirements/needle.txt
     #   pylint-celery
     #   pylint-django
-pylint==2.8.2
+pylint==2.8.3
     # via
     #   -r requirements/needle.txt
     #   edx-lint
