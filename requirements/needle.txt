@@ -42,7 +42,7 @@ django==2.2.23
     #   edx-lint
 edx-lint==5.0.0
     # via -r requirements/test.txt
-execnet==1.8.0
+execnet==1.8.1
     # via
     #   -r requirements/test.txt
     #   pytest-xdist
@@ -112,7 +112,7 @@ pylint-plugin-utils==0.6
     #   -r requirements/test.txt
     #   pylint-celery
     #   pylint-django
-pylint==2.8.2
+pylint==2.8.3
     # via
     #   -r requirements/test.txt
     #   edx-lint
