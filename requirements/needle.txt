@@ -4,10 +4,6 @@
 #
 #    make upgrade
 #
-apipkg==1.5
-    # via
-    #   -r requirements/test.txt
-    #   execnet
 astroid==2.5.6
     # via
     #   -r requirements/test.txt
@@ -42,7 +38,7 @@ django==2.2.24
     #   edx-lint
 edx-lint==5.0.0
     # via -r requirements/test.txt
-execnet==1.8.1
+execnet==1.9.0
     # via
     #   -r requirements/test.txt
     #   pytest-xdist
