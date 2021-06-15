@@ -4,8 +4,6 @@
 #
 #    make upgrade
 #
-apipkg==1.5
-    # via execnet
 astroid==2.5.6
     # via
     #   pylint
@@ -29,7 +27,7 @@ django==2.2.24
     #   edx-lint
 edx-lint==5.0.0
     # via -r requirements/test.in
-execnet==1.8.1
+execnet==1.9.0
     # via pytest-xdist
 iniconfig==1.1.1
     # via pytest
