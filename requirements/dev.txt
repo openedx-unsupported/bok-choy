@@ -125,7 +125,7 @@ pillow==8.2.0
     # via
     #   -r requirements/needle.txt
     #   needle
-pip-tools==6.1.0
+pip-tools==6.2.0
     # via -r requirements/pip-tools.txt
 pluggy==0.13.1
     # via
@@ -239,7 +239,7 @@ tox==3.23.1
     #   -r requirements/travis.txt
     #   tox-battery
     #   tox-travis
-urllib3==1.26.5
+urllib3==1.26.6
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -249,6 +249,10 @@ virtualenv==20.4.7
     # via
     #   -r requirements/travis.txt
     #   tox
+wheel==0.36.2
+    # via
+    #   -r requirements/pip-tools.txt
+    #   pip-tools
 wrapt==1.12.1
     # via
     #   -r requirements/needle.txt
@@ -256,3 +260,4 @@ wrapt==1.12.1
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
+# setuptools

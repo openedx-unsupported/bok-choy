@@ -107,7 +107,7 @@ toml==0.10.2
     #   pylint
     #   pytest
     #   pytest-cov
-urllib3==1.26.5
+urllib3==1.26.6
     # via
     #   -r requirements/base.txt
     #   selenium
