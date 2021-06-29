@@ -47,7 +47,7 @@ tox==3.23.1
     #   -r requirements/travis.in
     #   tox-battery
     #   tox-travis
-urllib3==1.26.5
+urllib3==1.26.6
     # via requests
 virtualenv==20.4.7
     # via tox
