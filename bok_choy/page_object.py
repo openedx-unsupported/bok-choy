@@ -4,7 +4,7 @@ See https://github.com/SeleniumHQ/selenium/wiki/PageObjects
 and http://www.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern
 """
 
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABCMeta, abstractmethod
 from collections import defaultdict
 from functools import wraps
 from contextlib import contextmanager
@@ -262,7 +262,8 @@ class PageObject(metaclass=_PageObjectMetaclass):
         """
         return False
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def url(self):
         """
         Return the URL of the page.  This may be dynamic,

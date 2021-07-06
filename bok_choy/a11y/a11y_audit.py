@@ -3,7 +3,7 @@ Interface for running accessibility audits on a PageObject.
 """
 
 import os
-from abc import abstractmethod, abstractproperty, ABCMeta
+from abc import abstractmethod, ABCMeta
 
 
 class AccessibilityError(Exception):
@@ -167,7 +167,8 @@ class A11yAudit(metaclass=ABCMeta):
         if audit_results:
             self.report_errors(audit_results, self.url)
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def default_config(self):
         """
         Return an instance of a subclass of A11yAuditConfig.
