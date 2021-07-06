@@ -262,7 +262,8 @@ class PageObject(metaclass=_PageObjectMetaclass):
         """
         return False
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def url(self):
         """
         Return the URL of the page.  This may be dynamic,

@@ -167,7 +167,8 @@ class A11yAudit(metaclass=ABCMeta):
         if audit_results:
             self.report_errors(audit_results, self.url)
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def default_config(self):
         """
         Return an instance of a subclass of A11yAuditConfig.
