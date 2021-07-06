@@ -3,7 +3,7 @@ Interface for running accessibility audits on a PageObject.
 """
 
 import os
-from abc import abstractmethod, abstractproperty, ABCMeta
+from abc import abstractmethod, ABCMeta
 
 
 class AccessibilityError(Exception):
