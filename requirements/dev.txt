@@ -77,7 +77,7 @@ iniconfig==1.1.1
     # via
     #   -r requirements/needle.txt
     #   pytest
-isort==5.9.1
+isort==5.9.2
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -121,7 +121,7 @@ pep517==0.10.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-pillow==8.3.0
+pillow==8.3.1
     # via
     #   -r requirements/needle.txt
     #   needle

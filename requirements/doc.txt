@@ -55,7 +55,7 @@ six==1.16.0
     #   readme-renderer
 snowballstemmer==2.1.0
     # via sphinx
-sphinx==4.0.3
+sphinx==4.1.0
     # via
     #   -r requirements/doc.in
     #   edx-sphinx-theme
