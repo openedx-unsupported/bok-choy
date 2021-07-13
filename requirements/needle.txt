@@ -46,7 +46,7 @@ iniconfig==1.1.1
     # via
     #   -r requirements/test.txt
     #   pytest
-isort==5.9.1
+isort==5.9.2
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -82,7 +82,7 @@ pbr==5.6.0
     # via
     #   -r requirements/test.txt
     #   stevedore
-pillow==8.3.0
+pillow==8.3.1
     # via needle
 pluggy==0.13.1
     # via
