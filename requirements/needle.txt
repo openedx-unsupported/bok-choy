@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.6.2
+astroid==2.6.4
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -179,3 +179,6 @@ wrapt==1.12.1
     # via
     #   -r requirements/test.txt
     #   astroid
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

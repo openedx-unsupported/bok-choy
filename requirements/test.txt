@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.6.2
+astroid==2.6.4
     # via
     #   pylint
     #   pylint-celery
@@ -113,3 +113,6 @@ urllib3==1.26.6
     #   selenium
 wrapt==1.12.1
     # via astroid
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
