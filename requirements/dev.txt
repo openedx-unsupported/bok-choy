@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.6.4
+astroid==2.6.5
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -127,7 +127,7 @@ pillow==8.3.1
     #   needle
 pip-tools==6.2.0
     # via -r requirements/pip-tools.txt
-platformdirs==2.0.2
+platformdirs==2.1.0
     # via
     #   -r requirements/travis.txt
     #   virtualenv
@@ -146,7 +146,7 @@ py==1.10.0
     #   tox
 pycodestyle==2.7.0
     # via -r requirements/needle.txt
-pylint==2.9.3
+pylint==2.9.5
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -232,7 +232,7 @@ toml==0.10.2
     #   pytest
     #   pytest-cov
     #   tox
-tomli==1.0.4
+tomli==1.1.0
     # via
     #   -r requirements/pip-tools.txt
     #   pep517
