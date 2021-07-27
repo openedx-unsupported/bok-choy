@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.6.4
+astroid==2.6.5
     # via
     #   pylint
     #   pylint-celery
@@ -59,7 +59,7 @@ py==1.10.0
     #   pytest-forked
 pycodestyle==2.7.0
     # via -r requirements/test.in
-pylint==2.9.3
+pylint==2.9.5
     # via
     #   edx-lint
     #   pylint-celery
