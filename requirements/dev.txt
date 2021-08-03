@@ -21,7 +21,7 @@ certifi==2021.5.30
     # via
     #   -r requirements/travis.txt
     #   requests
-charset-normalizer==2.0.3
+charset-normalizer==2.0.4
     # via
     #   -r requirements/travis.txt
     #   requests
@@ -37,11 +37,11 @@ click-log==0.3.2
     # via
     #   -r requirements/needle.txt
     #   edx-lint
-code-annotations==1.1.2
+code-annotations==1.2.0
     # via
     #   -r requirements/needle.txt
     #   edx-lint
-codecov==2.1.11
+codecov==2.1.12
     # via -r requirements/travis.txt
 coverage==5.5
     # via
@@ -77,7 +77,7 @@ iniconfig==1.1.1
     # via
     #   -r requirements/needle.txt
     #   pytest
-isort==5.9.2
+isort==5.9.3
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -127,7 +127,7 @@ pillow==8.3.1
     #   needle
 pip-tools==6.2.0
     # via -r requirements/pip-tools.txt
-platformdirs==2.1.0
+platformdirs==2.2.0
     # via
     #   -r requirements/travis.txt
     #   virtualenv
@@ -146,7 +146,7 @@ py==1.10.0
     #   tox
 pycodestyle==2.7.0
     # via -r requirements/needle.txt
-pylint==2.9.5
+pylint==2.9.6
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -232,11 +232,11 @@ toml==0.10.2
     #   pytest
     #   pytest-cov
     #   tox
-tomli==1.1.0
+tomli==1.2.0
     # via
     #   -r requirements/pip-tools.txt
     #   pep517
-tox==3.24.0
+tox==3.24.1
     # via
     #   -r requirements/travis.txt
     #   tox-battery
@@ -251,7 +251,7 @@ urllib3==1.26.6
     #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.6.0
+virtualenv==20.7.0
     # via
     #   -r requirements/travis.txt
     #   tox
