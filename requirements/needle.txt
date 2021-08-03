@@ -23,7 +23,7 @@ click-log==0.3.2
     # via
     #   -r requirements/test.txt
     #   edx-lint
-code-annotations==1.1.2
+code-annotations==1.2.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
@@ -46,7 +46,7 @@ iniconfig==1.1.1
     # via
     #   -r requirements/test.txt
     #   pytest
-isort==5.9.2
+isort==5.9.3
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -95,7 +95,7 @@ py==1.10.0
     #   pytest-forked
 pycodestyle==2.7.0
     # via -r requirements/test.txt
-pylint==2.9.5
+pylint==2.9.6
     # via
     #   -r requirements/test.txt
     #   edx-lint
