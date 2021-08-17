@@ -34,7 +34,7 @@ packaging==21.0
     # via
     #   bleach
     #   sphinx
-pygments==2.9.0
+pygments==2.10.0
     # via
     #   readme-renderer
     #   sphinx

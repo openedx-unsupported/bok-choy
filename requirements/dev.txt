@@ -251,7 +251,7 @@ urllib3==1.26.6
     #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.7.1
+virtualenv==20.7.2
     # via
     #   -r requirements/travis.txt
     #   tox
