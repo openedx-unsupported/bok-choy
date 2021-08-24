@@ -450,7 +450,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
             ).fulfill()
         except BrokenPromise:
             LOGGER.warning(
-                u'document.readyState does not become complete for following url: {}'.format(self.url),
+                'document.readyState does not become complete for following url: {}'.format(self.url),
                 exc_info=True
             )
             # If document.readyState does not become complete after a specific time relax the

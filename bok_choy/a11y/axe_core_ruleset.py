@@ -195,7 +195,7 @@ class AxeCoreAuditConfig(A11yAuditConfig):
         if not custom_file:
             return
 
-        with open(custom_file) as additional_rules:
+        with open(custom_file, encoding="utf8") as additional_rules:
             custom_rules = additional_rules.read()
 
         if "var customRules" not in custom_rules:
