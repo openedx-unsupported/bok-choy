@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.6.6
+astroid==2.7.2
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -129,7 +129,9 @@ pip-tools==6.2.0
     # via -r requirements/pip-tools.txt
 platformdirs==2.2.0
     # via
+    #   -r requirements/needle.txt
     #   -r requirements/travis.txt
+    #   pylint
     #   virtualenv
 pluggy==0.13.1
     # via
@@ -146,7 +148,7 @@ py==1.10.0
     #   tox
 pycodestyle==2.7.0
     # via -r requirements/needle.txt
-pylint==2.9.6
+pylint==2.10.2
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -216,7 +218,7 @@ sqlparse==0.4.1
     # via
     #   -r requirements/needle.txt
     #   django
-stevedore==3.3.0
+stevedore==3.4.0
     # via
     #   -r requirements/needle.txt
     #   code-annotations
@@ -236,7 +238,7 @@ tomli==1.2.1
     # via
     #   -r requirements/pip-tools.txt
     #   pep517
-tox==3.24.1
+tox==3.24.3
     # via
     #   -r requirements/travis.txt
     #   tox-battery

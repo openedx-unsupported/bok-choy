@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.6.6
+astroid==2.7.2
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -84,6 +84,10 @@ pbr==5.6.0
     #   stevedore
 pillow==8.3.1
     # via needle
+platformdirs==2.2.0
+    # via
+    #   -r requirements/test.txt
+    #   pylint
 pluggy==0.13.1
     # via
     #   -r requirements/test.txt
@@ -95,7 +99,7 @@ py==1.10.0
     #   pytest-forked
 pycodestyle==2.7.0
     # via -r requirements/test.txt
-pylint==2.9.6
+pylint==2.10.2
     # via
     #   -r requirements/test.txt
     #   edx-lint
@@ -157,7 +161,7 @@ sqlparse==0.4.1
     # via
     #   -r requirements/test.txt
     #   django
-stevedore==3.3.0
+stevedore==3.4.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
