@@ -180,7 +180,7 @@ def save_driver_logs(driver, prefix):
             file_name = os.path.join(
                 log_dir, f'{prefix}_{log_type}.log'
             )
-            with open(file_name, 'w') as output_file:
+            with open(file_name, 'w', encoding="utf8") as output_file:
                 for line in log:
                     output_file.write("{}{}".format(dumps(line), '\n'))
         except:  # pylint: disable=bare-except
