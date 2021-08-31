@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.7.2
+astroid==2.7.3
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -84,12 +84,13 @@ pbr==5.6.0
     #   stevedore
 pillow==8.3.1
     # via needle
-platformdirs==2.2.0
+platformdirs==2.3.0
     # via
     #   -r requirements/test.txt
     #   pylint
 pluggy==0.13.1
     # via
+    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/test.txt
     #   pytest
 py==1.10.0
@@ -123,7 +124,7 @@ pyparsing==2.4.7
     # via
     #   -r requirements/test.txt
     #   packaging
-pytest==6.2.4
+pytest==6.2.5
     # via
     #   -r requirements/test.txt
     #   pytest-cov

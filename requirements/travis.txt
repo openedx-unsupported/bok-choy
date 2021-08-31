@@ -24,10 +24,12 @@ idna==3.2
     # via requests
 packaging==21.0
     # via tox
-platformdirs==2.2.0
+platformdirs==2.3.0
     # via virtualenv
 pluggy==0.13.1
-    # via tox
+    # via
+    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
+    #   tox
 py==1.10.0
     # via tox
 pyparsing==2.4.7
