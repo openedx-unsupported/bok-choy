@@ -2,6 +2,7 @@ import unittest
 from bok_choy.web_app_test import WebAppTest
 from pages import GitHubSearchPage, GitHubSearchResultsPage
 
+
 class TestGitHub(WebAppTest):
     """
     Tests for the GitHub site.
