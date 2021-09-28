@@ -37,7 +37,7 @@ def no_error(func):
     Returns:
         Decorated function
     """
-    def _inner(*args, **kwargs):  # pylint: disable=missing-docstring
+    def _inner(*args, **kwargs):
         try:
             return_val = func(*args, **kwargs)
         except WebDriverException:
@@ -54,7 +54,7 @@ class Query(Sequence):
     General mechanism for selecting and transforming values.
     """
 
-    def __init__(self, seed_fn, desc=None):  # pylint: disable=super-init-not-called
+    def __init__(self, seed_fn, desc=None):
         """
         Configure the `Query`.
 
@@ -182,7 +182,7 @@ class Query(Sequence):
         desc = f"filter({desc})"
 
         if kwargs:
-            def filter_fn(elem):  # pylint: disable=function-redefined, missing-docstring
+            def filter_fn(elem):  # pylint: disable=function-redefined
                 return all(
                     getattr(elem, filter_key) == filter_value
                     for filter_key, filter_value
@@ -269,7 +269,7 @@ class Query(Sequence):
         Returns:
             Query
         """
-        def _transform(xs):  # pylint: disable=missing-docstring, invalid-name
+        def _transform(xs):  # pylint: disable=invalid-name
             try:
                 return [next(iter(xs))]
             except StopIteration:
@@ -296,7 +296,7 @@ class Query(Sequence):
         Returns:
             Query
         """
-        def _transform(xs):  # pylint: disable=missing-docstring, invalid-name
+        def _transform(xs):  # pylint: disable=invalid-name
             try:
                 return [next(islice(iter(xs), index, None))]
 
@@ -342,7 +342,7 @@ class BrowserQuery(Query):
         if query_name not in QUERY_TYPES:
             raise TypeError(f'{query_name} is not a supported query type for BrowserQuery()')
 
-        def query_fn():  # pylint: disable=missing-docstring
+        def query_fn():
             return getattr(browser, QUERY_TYPES[query_name])(query_value)
 
         super().__init__(
@@ -498,7 +498,7 @@ class BrowserQuery(Query):
         Returns:
             None
         """
-        def _fill(elem):  # pylint: disable=missing-docstring
+        def _fill(elem):
             elem.clear()
             elem.send_keys(text)
 

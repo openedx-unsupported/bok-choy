@@ -12,7 +12,7 @@ from .http_server import main as start_test_server
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 
-def pytest_configure(config):  # pylint: disable=unused-argument
+def pytest_configure(config):
     """Set some environment variables to default values if absent"""
     if 'SCREENSHOT_DIR' not in os.environ:
         os.environ['SCREENSHOT_DIR'] = REPO_ROOT

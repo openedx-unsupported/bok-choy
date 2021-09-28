@@ -73,7 +73,7 @@ def no_selenium_errors(func):
     Returns:
         Decorated function
     """
-    def _inner(*args, **kwargs):  # pylint: disable=missing-docstring
+    def _inner(*args, **kwargs):
         try:
             return_val = func(*args, **kwargs)
         except WebDriverException:
@@ -113,7 +113,7 @@ def pre_verify(method):
         Decorated method
     """
     @wraps(method)
-    def wrapper(self, *args, **kwargs):  # pylint: disable=missing-docstring
+    def wrapper(self, *args, **kwargs):
         self._verify_page()  # pylint: disable=protected-access
         return method(self, *args, **kwargs)
     return wrapper
@@ -129,7 +129,7 @@ class _PageObjectMetaclass(ABCMeta):
     """
     ALWAYS_UNGUARDED = ['url', 'is_browser_on_page']
 
-    def __new__(mcs, cls_name, cls_bases, cls_attrs, **kwargs):  # pylint: disable=arguments-differ,unused-argument
+    def __new__(mcs, cls_name, cls_bases, cls_attrs, **kwargs):
         for name, attr in list(cls_attrs.items()):
             # Skip methods marked as unguarded
             if getattr(attr, '_unguarded', False) or name in mcs.ALWAYS_UNGUARDED:
@@ -449,6 +449,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
                 timeout=timeout
             ).fulfill()
         except BrokenPromise:
+            # pylint: disable=logging-format-interpolation
             LOGGER.warning(
                 'document.readyState does not become complete for following url: {}'.format(self.url),
                 exc_info=True
@@ -467,7 +468,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
         ).fulfill()
 
         if self.verify_accessibility:
-            self.a11y_audit.check_for_accessibility_errors()  # pylint: disable=no-member
+            self.a11y_audit.check_for_accessibility_errors()
 
         return result
 

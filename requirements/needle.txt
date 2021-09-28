@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.7.2
+astroid==2.8.0
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -31,12 +31,7 @@ coverage==5.5
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-django==2.2.24
-    # via
-    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
-    #   -r requirements/test.txt
-    #   edx-lint
-edx-lint==5.0.0
+edx-lint==5.2.0
     # via -r requirements/test.txt
 execnet==1.9.0
     # via
@@ -82,13 +77,13 @@ pbr==5.6.0
     # via
     #   -r requirements/test.txt
     #   stevedore
-pillow==8.3.1
+pillow==8.3.2
     # via needle
-platformdirs==2.2.0
+platformdirs==2.4.0
     # via
     #   -r requirements/test.txt
     #   pylint
-pluggy==0.13.1
+pluggy==1.0.0
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -99,7 +94,7 @@ py==1.10.0
     #   pytest-forked
 pycodestyle==2.7.0
     # via -r requirements/test.txt
-pylint==2.10.2
+pylint==2.11.1
     # via
     #   -r requirements/test.txt
     #   edx-lint
@@ -123,7 +118,7 @@ pyparsing==2.4.7
     # via
     #   -r requirements/test.txt
     #   packaging
-pytest==6.2.4
+pytest==6.2.5
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -135,16 +130,12 @@ pytest-forked==1.3.0
     # via
     #   -r requirements/test.txt
     #   pytest-xdist
-pytest-xdist==2.3.0
+pytest-xdist==2.4.0
     # via -r requirements/test.txt
 python-slugify==5.0.2
     # via
     #   -r requirements/test.txt
     #   code-annotations
-pytz==2021.1
-    # via
-    #   -r requirements/test.txt
-    #   django
 pyyaml==5.4.1
     # via
     #   -r requirements/test.txt
@@ -157,10 +148,6 @@ six==1.16.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
-sqlparse==0.4.1
-    # via
-    #   -r requirements/test.txt
-    #   django
 stevedore==3.4.0
     # via
     #   -r requirements/test.txt
@@ -175,7 +162,12 @@ toml==0.10.2
     #   pylint
     #   pytest
     #   pytest-cov
-urllib3==1.26.6
+typing-extensions==3.10.0.2
+    # via
+    #   -r requirements/test.txt
+    #   astroid
+    #   pylint
+urllib3==1.26.7
     # via
     #   -r requirements/test.txt
     #   selenium

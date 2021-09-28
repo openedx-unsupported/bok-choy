@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.7.2
+astroid==2.8.0
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -21,7 +21,7 @@ certifi==2021.5.30
     # via
     #   -r requirements/travis.txt
     #   requests
-charset-normalizer==2.0.4
+charset-normalizer==2.0.6
     # via
     #   -r requirements/travis.txt
     #   requests
@@ -49,22 +49,17 @@ coverage==5.5
     #   -r requirements/travis.txt
     #   codecov
     #   pytest-cov
-distlib==0.3.2
+distlib==0.3.3
     # via
     #   -r requirements/travis.txt
     #   virtualenv
-django==2.2.24
-    # via
-    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
-    #   -r requirements/needle.txt
-    #   edx-lint
-edx-lint==5.0.0
+edx-lint==5.2.0
     # via -r requirements/needle.txt
 execnet==1.9.0
     # via
     #   -r requirements/needle.txt
     #   pytest-xdist
-filelock==3.0.12
+filelock==3.1.0
     # via
     #   -r requirements/travis.txt
     #   tox
@@ -121,19 +116,19 @@ pep517==0.11.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-pillow==8.3.1
+pillow==8.3.2
     # via
     #   -r requirements/needle.txt
     #   needle
-pip-tools==6.2.0
+pip-tools==6.3.0
     # via -r requirements/pip-tools.txt
-platformdirs==2.2.0
+platformdirs==2.4.0
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   pylint
     #   virtualenv
-pluggy==0.13.1
+pluggy==1.0.0
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -148,7 +143,7 @@ py==1.10.0
     #   tox
 pycodestyle==2.7.0
     # via -r requirements/needle.txt
-pylint==2.10.2
+pylint==2.11.1
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -173,7 +168,7 @@ pyparsing==2.4.7
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   packaging
-pytest==6.2.4
+pytest==6.2.5
     # via
     #   -r requirements/needle.txt
     #   pytest-cov
@@ -185,16 +180,12 @@ pytest-forked==1.3.0
     # via
     #   -r requirements/needle.txt
     #   pytest-xdist
-pytest-xdist==2.3.0
+pytest-xdist==2.4.0
     # via -r requirements/needle.txt
 python-slugify==5.0.2
     # via
     #   -r requirements/needle.txt
     #   code-annotations
-pytz==2021.1
-    # via
-    #   -r requirements/needle.txt
-    #   django
 pyyaml==5.4.1
     # via
     #   -r requirements/needle.txt
@@ -214,10 +205,6 @@ six==1.16.0
     #   edx-lint
     #   tox
     #   virtualenv
-sqlparse==0.4.1
-    # via
-    #   -r requirements/needle.txt
-    #   django
 stevedore==3.4.0
     # via
     #   -r requirements/needle.txt
@@ -238,7 +225,7 @@ tomli==1.2.1
     # via
     #   -r requirements/pip-tools.txt
     #   pep517
-tox==3.24.3
+tox==3.24.4
     # via
     #   -r requirements/travis.txt
     #   tox-battery
@@ -247,13 +234,18 @@ tox-battery==0.6.1
     # via -r requirements/travis.txt
 tox-travis==0.12
     # via -r requirements/travis.txt
-urllib3==1.26.6
+typing-extensions==3.10.0.2
+    # via
+    #   -r requirements/needle.txt
+    #   astroid
+    #   pylint
+urllib3==1.26.7
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.7.2
+virtualenv==20.8.1
     # via
     #   -r requirements/travis.txt
     #   tox
