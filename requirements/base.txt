@@ -8,5 +8,5 @@ lazy==1.4
     # via -r requirements/base.in
 selenium==3.141.0
     # via -r requirements/base.in
-urllib3==1.26.6
+urllib3==1.26.7
     # via selenium
