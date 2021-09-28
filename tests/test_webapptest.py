@@ -1,9 +1,6 @@
 """
 Tests for the WebAppTest class.
 """
-# pylint: disable=attribute-defined-outside-init
-
-
 import os
 from unittest import expectedFailure
 
@@ -18,6 +15,11 @@ class ScreenshotAssertTest(WebAppTest):
     """
     Test the integration with needle and its screenshot assertion capability.
     """
+    def __init__(self, *args, **kwargs):
+        self.baseline_directory = None
+
+        super().__init__(*args, **kwargs)
+
     def test_needle_screenshot_success(self):
         """
         Test the integration with needle to capture and assert on a screenshot of an element.

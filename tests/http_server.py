@@ -6,7 +6,7 @@ query parameter in a GET request.
 
 import os
 from time import sleep
-from urllib.parse import urlparse, parse_qs  # pylint: disable=wrong-import-order
+from urllib.parse import urlparse, parse_qs
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 
@@ -18,7 +18,7 @@ class DelayedRequestHandler(SimpleHTTPRequestHandler):
         SimpleHTTPRequestHandler.__init__(self, *args, **kwargs)
         self.path = None
 
-    def do_GET(self):  # pylint: disable=invalid-name
+    def do_GET(self):
         """
         Check parameters to see if a delay was specified.
         If so then wait and then serve the GET request.

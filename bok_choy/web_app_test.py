@@ -151,7 +151,7 @@ class WebAppTest(BaseTestCase, metaclass=ABCMeta):
         Returns:
             39-char UUID string
         """
-        return str(uuid4().int)  # pylint: disable=no-member
+        return str(uuid4().int)
 
     def _save_artifacts(self):
         """

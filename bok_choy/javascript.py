@@ -54,7 +54,7 @@ def wait_for_js(function):
     """
 
     @functools.wraps(function)
-    def wrapper(*args, **kwargs):  # pylint: disable=missing-docstring
+    def wrapper(*args, **kwargs):
 
         # If not a method, then just call the function
         if len(args) < 1:
@@ -83,7 +83,7 @@ def _decorator(store_name, store_values):
     2) Defines a new class list variable, `store_name` and adds
         `store_values` to the list.
     """
-    def decorator(clz):  # pylint: disable=missing-docstring
+    def decorator(clz):
 
         # Add a `wait_for_js` method to the class
         if not hasattr(clz, 'wait_for_js'):
