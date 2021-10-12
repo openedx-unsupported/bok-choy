@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.0
+astroid==2.8.2
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -13,7 +13,7 @@ attrs==21.2.0
     # via
     #   -r requirements/test.txt
     #   pytest
-click==8.0.1
+click==8.0.3
     # via
     #   -r requirements/test.txt
     #   click-log
@@ -27,7 +27,7 @@ code-annotations==1.2.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
-coverage[toml]==6.0
+coverage[toml]==6.0.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -92,7 +92,7 @@ py==1.10.0
     #   -r requirements/test.txt
     #   pytest
     #   pytest-forked
-pycodestyle==2.7.0
+pycodestyle==2.8.0
     # via -r requirements/test.txt
 pylint==2.11.1
     # via
