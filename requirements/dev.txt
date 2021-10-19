@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.2
+astroid==2.8.3
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -59,12 +59,12 @@ execnet==1.9.0
     # via
     #   -r requirements/needle.txt
     #   pytest-xdist
-filelock==3.3.0
+filelock==3.3.1
     # via
     #   -r requirements/travis.txt
     #   tox
     #   virtualenv
-idna==3.2
+idna==3.3
     # via
     #   -r requirements/travis.txt
     #   requests
@@ -112,15 +112,15 @@ pbr==5.6.0
     # via
     #   -r requirements/needle.txt
     #   stevedore
-pep517==0.11.0
+pep517==0.12.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-pillow==8.3.2
+pillow==8.4.0
     # via
     #   -r requirements/needle.txt
     #   needle
-pip-tools==6.3.1
+pip-tools==6.4.0
     # via -r requirements/pip-tools.txt
 platformdirs==2.4.0
     # via
@@ -186,7 +186,7 @@ python-slugify==5.0.2
     # via
     #   -r requirements/needle.txt
     #   code-annotations
-pyyaml==5.4.1
+pyyaml==6.0
     # via
     #   -r requirements/needle.txt
     #   code-annotations
@@ -205,7 +205,7 @@ six==1.16.0
     #   edx-lint
     #   tox
     #   virtualenv
-stevedore==3.4.0
+stevedore==3.5.0
     # via
     #   -r requirements/needle.txt
     #   code-annotations
@@ -254,7 +254,7 @@ wheel==0.37.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-wrapt==1.12.1
+wrapt==1.13.2
     # via
     #   -r requirements/needle.txt
     #   astroid
