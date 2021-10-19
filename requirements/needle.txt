@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.2
+astroid==2.8.3
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -77,7 +77,7 @@ pbr==5.6.0
     # via
     #   -r requirements/test.txt
     #   stevedore
-pillow==8.3.2
+pillow==8.4.0
     # via needle
 platformdirs==2.4.0
     # via
@@ -136,7 +136,7 @@ python-slugify==5.0.2
     # via
     #   -r requirements/test.txt
     #   code-annotations
-pyyaml==5.4.1
+pyyaml==6.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -148,7 +148,7 @@ six==1.16.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
-stevedore==3.4.0
+stevedore==3.5.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -174,7 +174,7 @@ urllib3==1.26.7
     # via
     #   -r requirements/test.txt
     #   selenium
-wrapt==1.12.1
+wrapt==1.13.2
     # via
     #   -r requirements/test.txt
     #   astroid

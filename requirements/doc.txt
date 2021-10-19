@@ -20,7 +20,7 @@ docutils==0.17.1
     #   sphinx
 edx-sphinx-theme==3.0.0
     # via -r requirements/doc.in
-idna==3.2
+idna==3.3
     # via requests
 imagesize==1.2.0
     # via sphinx

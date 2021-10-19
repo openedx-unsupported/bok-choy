@@ -16,11 +16,11 @@ coverage==6.0.2
     # via codecov
 distlib==0.3.3
     # via virtualenv
-filelock==3.3.0
+filelock==3.3.1
     # via
     #   tox
     #   virtualenv
-idna==3.2
+idna==3.3
     # via requests
 packaging==21.0
     # via tox
