@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.3
+astroid==2.8.4
     # via
     #   pylint
     #   pylint-celery
@@ -71,7 +71,7 @@ pylint-plugin-utils==0.6
     # via
     #   pylint-celery
     #   pylint-django
-pyparsing==2.4.7
+pyparsing==3.0.1
     # via packaging
 pytest==6.2.5
     # via
@@ -100,7 +100,7 @@ toml==0.10.2
     # via
     #   pylint
     #   pytest
-tomli==1.2.1
+tomli==1.2.2
     # via coverage
 typing-extensions==3.10.0.2
     # via

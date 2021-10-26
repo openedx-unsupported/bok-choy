@@ -30,7 +30,7 @@ pluggy==1.0.0
     # via tox
 py==1.10.0
     # via tox
-pyparsing==2.4.7
+pyparsing==3.0.1
     # via packaging
 requests==2.26.0
     # via codecov
@@ -51,5 +51,5 @@ tox-travis==0.12
     # via -r requirements/travis.in
 urllib3==1.26.7
     # via requests
-virtualenv==20.8.1
+virtualenv==20.9.0
     # via tox

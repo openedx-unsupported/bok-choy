@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.3
+astroid==2.8.4
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -163,7 +163,7 @@ pylint-plugin-utils==0.6
     #   -r requirements/needle.txt
     #   pylint-celery
     #   pylint-django
-pyparsing==2.4.7
+pyparsing==3.0.1
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -220,7 +220,7 @@ toml==0.10.2
     #   pylint
     #   pytest
     #   tox
-tomli==1.2.1
+tomli==1.2.2
     # via
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
@@ -246,7 +246,7 @@ urllib3==1.26.7
     #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.8.1
+virtualenv==20.9.0
     # via
     #   -r requirements/travis.txt
     #   tox
