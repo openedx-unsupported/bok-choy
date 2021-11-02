@@ -19,9 +19,9 @@ click-log==0.3.2
     # via edx-lint
 code-annotations==1.2.0
     # via edx-lint
-coverage[toml]==6.0.2
+coverage[toml]==6.1.1
     # via pytest-cov
-edx-lint==5.2.0
+edx-lint==5.2.1
     # via -r requirements/test.in
 execnet==1.9.0
     # via pytest-xdist
@@ -41,7 +41,7 @@ mccabe==0.6.1
     # via pylint
 mock==4.0.3
     # via -r requirements/test.in
-packaging==21.0
+packaging==21.2
     # via
     #   -r requirements/test.in
     #   pytest
@@ -71,7 +71,7 @@ pylint-plugin-utils==0.6
     # via
     #   pylint-celery
     #   pylint-django
-pyparsing==3.0.1
+pyparsing==2.4.7
     # via packaging
 pytest==6.2.5
     # via
@@ -110,7 +110,7 @@ urllib3==1.26.7
     # via
     #   -r requirements/base.txt
     #   selenium
-wrapt==1.13.2
+wrapt==1.13.3
     # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:
