@@ -43,7 +43,7 @@ code-annotations==1.2.0
     #   edx-lint
 codecov==2.1.12
     # via -r requirements/travis.txt
-coverage[toml]==6.0.2
+coverage[toml]==6.1.1
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -53,13 +53,13 @@ distlib==0.3.3
     # via
     #   -r requirements/travis.txt
     #   virtualenv
-edx-lint==5.2.0
+edx-lint==5.2.1
     # via -r requirements/needle.txt
 execnet==1.9.0
     # via
     #   -r requirements/needle.txt
     #   pytest-xdist
-filelock==3.3.1
+filelock==3.3.2
     # via
     #   -r requirements/travis.txt
     #   tox
@@ -102,7 +102,7 @@ nose==1.3.7
     # via
     #   -r requirements/needle.txt
     #   needle
-packaging==21.0
+packaging==21.2
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -163,7 +163,7 @@ pylint-plugin-utils==0.6
     #   -r requirements/needle.txt
     #   pylint-celery
     #   pylint-django
-pyparsing==3.0.1
+pyparsing==2.4.7
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -254,7 +254,7 @@ wheel==0.37.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-wrapt==1.13.2
+wrapt==1.13.3
     # via
     #   -r requirements/needle.txt
     #   astroid
