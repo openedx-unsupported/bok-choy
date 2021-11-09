@@ -27,7 +27,7 @@ execnet==1.9.0
     # via pytest-xdist
 iniconfig==1.1.1
     # via pytest
-isort==5.9.3
+isort==5.10.0
     # via pylint
 jinja2==3.0.2
     # via code-annotations
@@ -45,13 +45,13 @@ packaging==21.2
     # via
     #   -r requirements/test.in
     #   pytest
-pbr==5.6.0
+pbr==5.7.0
     # via stevedore
 platformdirs==2.4.0
     # via pylint
 pluggy==1.0.0
     # via pytest
-py==1.10.0
+py==1.11.0
     # via
     #   pytest
     #   pytest-forked

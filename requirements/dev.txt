@@ -13,7 +13,7 @@ attrs==21.2.0
     # via
     #   -r requirements/needle.txt
     #   pytest
-backports.entry-points-selectable==1.1.0
+backports.entry-points-selectable==1.1.1
     # via
     #   -r requirements/travis.txt
     #   virtualenv
@@ -72,7 +72,7 @@ iniconfig==1.1.1
     # via
     #   -r requirements/needle.txt
     #   pytest
-isort==5.9.3
+isort==5.10.0
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -108,7 +108,7 @@ packaging==21.2
     #   -r requirements/travis.txt
     #   pytest
     #   tox
-pbr==5.6.0
+pbr==5.7.0
     # via
     #   -r requirements/needle.txt
     #   stevedore
@@ -134,7 +134,7 @@ pluggy==1.0.0
     #   -r requirements/travis.txt
     #   pytest
     #   tox
-py==1.10.0
+py==1.11.0
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -246,7 +246,7 @@ urllib3==1.26.7
     #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.9.0
+virtualenv==20.10.0
     # via
     #   -r requirements/travis.txt
     #   tox
