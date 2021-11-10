@@ -3,10 +3,10 @@
 
 import codecs
 import os
+import re
 import sys
 from setuptools import setup
 
-VERSION = '2.0.1'
 DESCRIPTION = 'UI-level acceptance test framework'
 
 
@@ -47,6 +47,24 @@ if sys.argv[-1] == 'tag':
 
 with codecs.open('README.rst', 'r', 'utf-8') as f:
     LONG_DESCRIPTION = f.read()
+
+
+def get_version(*file_paths):
+    """
+    Extract the version string from the file at the given relative path fragments.
+    """
+    filename = os.path.join(os.path.dirname(__file__), *file_paths)
+    with open(filename, encoding='utf-8') as opened_file:
+        version_file = opened_file.read()
+        version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
+                                  version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError('Unable to find version string.')
+
+
+VERSION = get_version("bok_choy", "__init__.py")
+
 
 setup(
     name='bok_choy',
