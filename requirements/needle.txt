@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.4
+astroid==2.8.5
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -27,7 +27,7 @@ code-annotations==1.2.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
-coverage[toml]==6.1.1
+coverage[toml]==6.1.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -41,11 +41,11 @@ iniconfig==1.1.1
     # via
     #   -r requirements/test.txt
     #   pytest
-isort==5.10.0
+isort==5.10.1
     # via
     #   -r requirements/test.txt
     #   pylint
-jinja2==3.0.2
+jinja2==3.0.3
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -165,7 +165,7 @@ tomli==1.2.2
     # via
     #   -r requirements/test.txt
     #   coverage
-typing-extensions==3.10.0.2
+typing-extensions==4.0.0
     # via
     #   -r requirements/test.txt
     #   astroid

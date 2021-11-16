@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.4
+astroid==2.8.5
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -43,7 +43,7 @@ code-annotations==1.2.0
     #   edx-lint
 codecov==2.1.12
     # via -r requirements/travis.txt
-coverage[toml]==6.1.1
+coverage[toml]==6.1.2
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -72,11 +72,11 @@ iniconfig==1.1.1
     # via
     #   -r requirements/needle.txt
     #   pytest
-isort==5.10.0
+isort==5.10.1
     # via
     #   -r requirements/needle.txt
     #   pylint
-jinja2==3.0.2
+jinja2==3.0.3
     # via
     #   -r requirements/needle.txt
     #   code-annotations
@@ -235,7 +235,7 @@ tox-battery==0.6.1
     # via -r requirements/travis.txt
 tox-travis==0.12
     # via -r requirements/travis.txt
-typing-extensions==3.10.0.2
+typing-extensions==4.0.0
     # via
     #   -r requirements/needle.txt
     #   astroid

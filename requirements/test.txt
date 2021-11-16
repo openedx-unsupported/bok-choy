@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.4
+astroid==2.8.5
     # via
     #   pylint
     #   pylint-celery
@@ -19,7 +19,7 @@ click-log==0.3.2
     # via edx-lint
 code-annotations==1.2.0
     # via edx-lint
-coverage[toml]==6.1.1
+coverage[toml]==6.1.2
     # via pytest-cov
 edx-lint==5.2.1
     # via -r requirements/test.in
@@ -27,9 +27,9 @@ execnet==1.9.0
     # via pytest-xdist
 iniconfig==1.1.1
     # via pytest
-isort==5.10.0
+isort==5.10.1
     # via pylint
-jinja2==3.0.2
+jinja2==3.0.3
     # via code-annotations
 lazy==1.4
     # via -r requirements/base.txt
@@ -102,7 +102,7 @@ toml==0.10.2
     #   pytest
 tomli==1.2.2
     # via coverage
-typing-extensions==3.10.0.2
+typing-extensions==4.0.0
     # via
     #   astroid
     #   pylint
