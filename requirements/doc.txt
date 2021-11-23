@@ -30,7 +30,7 @@ lazy==1.4
     # via -r requirements/base.txt
 markupsafe==2.0.1
     # via jinja2
-packaging==21.2
+packaging==21.3
     # via
     #   bleach
     #   sphinx
@@ -38,7 +38,7 @@ pygments==2.10.0
     # via
     #   readme-renderer
     #   sphinx
-pyparsing==2.4.7
+pyparsing==3.0.6
     # via packaging
 pytz==2021.3
     # via babel
@@ -52,7 +52,7 @@ six==1.16.0
     # via
     #   bleach
     #   edx-sphinx-theme
-snowballstemmer==2.1.0
+snowballstemmer==2.2.0
     # via sphinx
 sphinx==4.3.0
     # via

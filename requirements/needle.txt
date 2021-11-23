@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.5
+astroid==2.8.6
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -69,11 +69,11 @@ needle==0.5.0
     # via -r requirements/needle.in
 nose==1.3.7
     # via needle
-packaging==21.2
+packaging==21.3
     # via
     #   -r requirements/test.txt
     #   pytest
-pbr==5.7.0
+pbr==5.8.0
     # via
     #   -r requirements/test.txt
     #   stevedore
@@ -114,7 +114,7 @@ pylint-plugin-utils==0.6
     #   -r requirements/test.txt
     #   pylint-celery
     #   pylint-django
-pyparsing==2.4.7
+pyparsing==3.0.6
     # via
     #   -r requirements/test.txt
     #   packaging

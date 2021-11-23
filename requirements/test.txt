@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.5
+astroid==2.8.6
     # via
     #   pylint
     #   pylint-celery
@@ -41,11 +41,11 @@ mccabe==0.6.1
     # via pylint
 mock==4.0.3
     # via -r requirements/test.in
-packaging==21.2
+packaging==21.3
     # via
     #   -r requirements/test.in
     #   pytest
-pbr==5.7.0
+pbr==5.8.0
     # via stevedore
 platformdirs==2.4.0
     # via pylint
@@ -71,7 +71,7 @@ pylint-plugin-utils==0.6
     # via
     #   pylint-celery
     #   pylint-django
-pyparsing==2.4.7
+pyparsing==3.0.6
     # via packaging
 pytest==6.2.5
     # via
