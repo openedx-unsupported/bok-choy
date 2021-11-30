@@ -8,11 +8,11 @@ backports.entry-points-selectable==1.1.1
     # via virtualenv
 certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.7
+charset-normalizer==2.0.8
     # via requests
 codecov==2.1.12
     # via -r requirements/travis.in
-coverage==6.1.2
+coverage==6.2
     # via codecov
 distlib==0.3.3
     # via virtualenv
