@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.6
+astroid==2.9.0
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -21,7 +21,7 @@ certifi==2021.10.8
     # via
     #   -r requirements/travis.txt
     #   requests
-charset-normalizer==2.0.7
+charset-normalizer==2.0.8
     # via
     #   -r requirements/travis.txt
     #   requests
@@ -43,7 +43,7 @@ code-annotations==1.2.0
     #   edx-lint
 codecov==2.1.12
     # via -r requirements/travis.txt
-coverage[toml]==6.1.2
+coverage[toml]==6.2
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -143,7 +143,7 @@ py==1.11.0
     #   tox
 pycodestyle==2.8.0
     # via -r requirements/needle.txt
-pylint==2.11.1
+pylint==2.12.1
     # via
     #   -r requirements/needle.txt
     #   edx-lint

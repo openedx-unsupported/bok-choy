@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.8.6
+astroid==2.9.0
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -27,7 +27,7 @@ code-annotations==1.2.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
-coverage[toml]==6.1.2
+coverage[toml]==6.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -94,7 +94,7 @@ py==1.11.0
     #   pytest-forked
 pycodestyle==2.8.0
     # via -r requirements/test.txt
-pylint==2.11.1
+pylint==2.12.1
     # via
     #   -r requirements/test.txt
     #   edx-lint
