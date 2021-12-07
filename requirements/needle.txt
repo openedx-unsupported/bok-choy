@@ -94,7 +94,7 @@ py==1.11.0
     #   pytest-forked
 pycodestyle==2.8.0
     # via -r requirements/test.txt
-pylint==2.12.1
+pylint==2.12.2
     # via
     #   -r requirements/test.txt
     #   edx-lint
@@ -165,7 +165,7 @@ tomli==1.2.2
     # via
     #   -r requirements/test.txt
     #   coverage
-typing-extensions==4.0.0
+typing-extensions==4.0.1
     # via
     #   -r requirements/test.txt
     #   astroid

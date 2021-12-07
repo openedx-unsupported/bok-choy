@@ -21,7 +21,7 @@ certifi==2021.10.8
     # via
     #   -r requirements/travis.txt
     #   requests
-charset-normalizer==2.0.8
+charset-normalizer==2.0.9
     # via
     #   -r requirements/travis.txt
     #   requests
@@ -143,7 +143,7 @@ py==1.11.0
     #   tox
 pycodestyle==2.8.0
     # via -r requirements/needle.txt
-pylint==2.12.1
+pylint==2.12.2
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -235,7 +235,7 @@ tox-battery==0.6.1
     # via -r requirements/travis.txt
 tox-travis==0.12
     # via -r requirements/travis.txt
-typing-extensions==4.0.0
+typing-extensions==4.0.1
     # via
     #   -r requirements/needle.txt
     #   astroid
