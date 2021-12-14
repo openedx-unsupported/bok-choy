@@ -80,9 +80,9 @@ pytest==6.2.5
     #   pytest-xdist
 pytest-cov==3.0.0
     # via -r requirements/test.in
-pytest-forked==1.3.0
+pytest-forked==1.4.0
     # via pytest-xdist
-pytest-xdist==2.4.0
+pytest-xdist==2.5.0
     # via -r requirements/test.in
 python-slugify==5.0.2
     # via code-annotations
@@ -100,7 +100,7 @@ toml==0.10.2
     # via
     #   pylint
     #   pytest
-tomli==1.2.2
+tomli==2.0.0
     # via coverage
 typing-extensions==4.0.1
     # via
