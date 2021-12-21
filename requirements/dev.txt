@@ -82,7 +82,7 @@ jinja2==3.0.3
     #   code-annotations
 lazy==1.4
     # via -r requirements/needle.txt
-lazy-object-proxy==1.6.0
+lazy-object-proxy==1.7.1
     # via
     #   -r requirements/needle.txt
     #   astroid

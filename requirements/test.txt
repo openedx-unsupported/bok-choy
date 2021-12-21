@@ -33,7 +33,7 @@ jinja2==3.0.3
     # via code-annotations
 lazy==1.4
     # via -r requirements/base.txt
-lazy-object-proxy==1.6.0
+lazy-object-proxy==1.7.1
     # via astroid
 markupsafe==2.0.1
     # via jinja2
