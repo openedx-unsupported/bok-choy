@@ -9,7 +9,7 @@ astroid==2.9.0
     #   -r requirements/test.txt
     #   pylint
     #   pylint-celery
-attrs==21.2.0
+attrs==21.3.0
     # via
     #   -r requirements/test.txt
     #   pytest
