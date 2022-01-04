@@ -4,11 +4,11 @@
 #
 #    make upgrade
 #
-astroid==2.9.0
+astroid==2.9.2
     # via
     #   pylint
     #   pylint-celery
-attrs==21.3.0
+attrs==21.4.0
     # via pytest
 click==8.0.3
     # via
@@ -65,9 +65,9 @@ pylint==2.12.2
     #   pylint-plugin-utils
 pylint-celery==0.3
     # via edx-lint
-pylint-django==2.4.4
+pylint-django==2.5.0
     # via edx-lint
-pylint-plugin-utils==0.6
+pylint-plugin-utils==0.7
     # via
     #   pylint-celery
     #   pylint-django
