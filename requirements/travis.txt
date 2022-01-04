@@ -4,8 +4,6 @@
 #
 #    make upgrade
 #
-backports.entry-points-selectable==1.1.1
-    # via virtualenv
 certifi==2021.10.8
     # via requests
 charset-normalizer==2.0.9
@@ -32,7 +30,7 @@ py==1.11.0
     # via tox
 pyparsing==3.0.6
     # via packaging
-requests==2.26.0
+requests==2.27.0
     # via codecov
 six==1.16.0
     # via
@@ -40,7 +38,7 @@ six==1.16.0
     #   virtualenv
 toml==0.10.2
     # via tox
-tox==3.24.4
+tox==3.24.5
     # via
     #   -r requirements/travis.in
     #   tox-battery
@@ -51,5 +49,5 @@ tox-travis==0.12
     # via -r requirements/travis.in
 urllib3==1.26.7
     # via requests
-virtualenv==20.10.0
+virtualenv==20.13.0
     # via tox
