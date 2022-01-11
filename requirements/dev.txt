@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.9.2
+astroid==2.9.3
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -17,7 +17,7 @@ certifi==2021.10.8
     # via
     #   -r requirements/travis.txt
     #   requests
-charset-normalizer==2.0.9
+charset-normalizer==2.0.10
     # via
     #   -r requirements/travis.txt
     #   requests
@@ -186,7 +186,7 @@ pyyaml==6.0
     # via
     #   -r requirements/needle.txt
     #   code-annotations
-requests==2.27.0
+requests==2.27.1
     # via
     #   -r requirements/travis.txt
     #   codecov
@@ -236,7 +236,7 @@ typing-extensions==4.0.1
     #   -r requirements/needle.txt
     #   astroid
     #   pylint
-urllib3==1.26.7
+urllib3==1.26.8
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt

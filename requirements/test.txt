@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.9.2
+astroid==2.9.3
     # via
     #   pylint
     #   pylint-celery
@@ -106,7 +106,7 @@ typing-extensions==4.0.1
     # via
     #   astroid
     #   pylint
-urllib3==1.26.7
+urllib3==1.26.8
     # via
     #   -r requirements/base.txt
     #   selenium
