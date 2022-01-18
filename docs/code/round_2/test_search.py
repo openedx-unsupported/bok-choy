@@ -24,7 +24,7 @@ class TestGitHub(WebAppTest):
         """
         Make sure that you can search for something.
         """
-        self.github_search_page.visit().search_for_terms('user:edx repo:edx-platform')
+        self.github_search_page.visit().search_for_terms('user:openedx repo:edx-platform')
 
 
 if __name__ == '__main__':
