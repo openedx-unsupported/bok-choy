@@ -159,7 +159,7 @@ pylint-plugin-utils==0.7
     #   -r requirements/needle.txt
     #   pylint-celery
     #   pylint-django
-pyparsing==3.0.6
+pyparsing==3.0.7
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
