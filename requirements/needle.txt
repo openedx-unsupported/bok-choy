@@ -27,7 +27,7 @@ code-annotations==1.2.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
-coverage[toml]==6.2
+coverage[toml]==6.3
     # via
     #   -r requirements/test.txt
     #   pytest-cov
