@@ -33,13 +33,13 @@ click-log==0.3.2
     # via
     #   -r requirements/needle.txt
     #   edx-lint
-code-annotations==1.2.0
+code-annotations==1.3.0
     # via
     #   -r requirements/needle.txt
     #   edx-lint
 codecov==2.1.12
     # via -r requirements/travis.txt
-coverage[toml]==6.3
+coverage[toml]==6.3.1
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -104,7 +104,7 @@ packaging==21.3
     #   -r requirements/travis.txt
     #   pytest
     #   tox
-pbr==5.8.0
+pbr==5.8.1
     # via
     #   -r requirements/needle.txt
     #   stevedore
@@ -112,11 +112,11 @@ pep517==0.12.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-pillow==9.0.0
+pillow==9.0.1
     # via
     #   -r requirements/needle.txt
     #   needle
-pip-tools==6.4.0
+pip-tools==6.5.0
     # via -r requirements/pip-tools.txt
 platformdirs==2.4.1
     # via
@@ -164,7 +164,7 @@ pyparsing==3.0.7
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   packaging
-pytest==6.2.5
+pytest==7.0.0
     # via
     #   -r requirements/needle.txt
     #   pytest-cov
@@ -214,7 +214,6 @@ toml==0.10.2
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   pylint
-    #   pytest
     #   tox
 tomli==2.0.0
     # via
@@ -222,6 +221,7 @@ tomli==2.0.0
     #   -r requirements/pip-tools.txt
     #   coverage
     #   pep517
+    #   pytest
 tox==3.24.5
     # via
     #   -r requirements/travis.txt
@@ -242,7 +242,7 @@ urllib3==1.26.8
     #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.13.0
+virtualenv==20.13.1
     # via
     #   -r requirements/travis.txt
     #   tox
