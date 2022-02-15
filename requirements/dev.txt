@@ -17,7 +17,7 @@ certifi==2021.10.8
     # via
     #   -r requirements/travis.txt
     #   requests
-charset-normalizer==2.0.11
+charset-normalizer==2.0.12
     # via
     #   -r requirements/travis.txt
     #   requests
@@ -116,9 +116,9 @@ pillow==9.0.1
     # via
     #   -r requirements/needle.txt
     #   needle
-pip-tools==6.5.0
+pip-tools==6.5.1
     # via -r requirements/pip-tools.txt
-platformdirs==2.4.1
+platformdirs==2.5.0
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -164,7 +164,7 @@ pyparsing==3.0.7
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   packaging
-pytest==7.0.0
+pytest==7.0.1
     # via
     #   -r requirements/needle.txt
     #   pytest-cov
@@ -215,7 +215,7 @@ toml==0.10.2
     #   -r requirements/travis.txt
     #   pylint
     #   tox
-tomli==2.0.0
+tomli==2.0.1
     # via
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
@@ -231,7 +231,7 @@ tox-battery==0.6.1
     # via -r requirements/travis.txt
 tox-travis==0.12
     # via -r requirements/travis.txt
-typing-extensions==4.0.1
+typing-extensions==4.1.1
     # via
     #   -r requirements/needle.txt
     #   astroid

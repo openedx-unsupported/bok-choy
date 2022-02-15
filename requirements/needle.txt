@@ -79,7 +79,7 @@ pbr==5.8.1
     #   stevedore
 pillow==9.0.1
     # via needle
-platformdirs==2.4.1
+platformdirs==2.5.0
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -118,7 +118,7 @@ pyparsing==3.0.7
     # via
     #   -r requirements/test.txt
     #   packaging
-pytest==7.0.0
+pytest==7.0.1
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -160,12 +160,12 @@ toml==0.10.2
     # via
     #   -r requirements/test.txt
     #   pylint
-tomli==2.0.0
+tomli==2.0.1
     # via
     #   -r requirements/test.txt
     #   coverage
     #   pytest
-typing-extensions==4.0.1
+typing-extensions==4.1.1
     # via
     #   -r requirements/test.txt
     #   astroid
