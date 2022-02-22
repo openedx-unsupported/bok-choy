@@ -10,11 +10,11 @@ charset-normalizer==2.0.12
     # via requests
 codecov==2.1.12
     # via -r requirements/travis.in
-coverage==6.3.1
+coverage==6.3.2
     # via codecov
 distlib==0.3.4
     # via virtualenv
-filelock==3.4.2
+filelock==3.6.0
     # via
     #   tox
     #   virtualenv
@@ -22,7 +22,7 @@ idna==3.3
     # via requests
 packaging==21.3
     # via tox
-platformdirs==2.5.0
+platformdirs==2.5.1
     # via virtualenv
 pluggy==1.0.0
     # via tox
