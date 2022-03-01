@@ -178,7 +178,7 @@ pytest-forked==1.4.0
     #   pytest-xdist
 pytest-xdist==2.5.0
     # via -r requirements/needle.txt
-python-slugify==6.0.1
+python-slugify==6.1.1
     # via
     #   -r requirements/needle.txt
     #   code-annotations
@@ -242,7 +242,7 @@ urllib3==1.26.8
     #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.13.1
+virtualenv==20.13.2
     # via
     #   -r requirements/travis.txt
     #   tox

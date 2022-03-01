@@ -132,7 +132,7 @@ pytest-forked==1.4.0
     #   pytest-xdist
 pytest-xdist==2.5.0
     # via -r requirements/test.txt
-python-slugify==6.0.1
+python-slugify==6.1.1
     # via
     #   -r requirements/test.txt
     #   code-annotations
