@@ -29,7 +29,7 @@ click==8.0.4
     #   code-annotations
     #   edx-lint
     #   pip-tools
-click-log==0.3.2
+click-log==0.4.0
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -164,7 +164,7 @@ pyparsing==3.0.7
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   packaging
-pytest==7.0.1
+pytest==7.1.0
     # via
     #   -r requirements/needle.txt
     #   pytest-cov
