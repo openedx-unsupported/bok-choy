@@ -55,7 +55,7 @@ lazy-object-proxy==1.7.1
     # via
     #   -r requirements/test.txt
     #   astroid
-markupsafe==2.1.0
+markupsafe==2.1.1
     # via
     #   -r requirements/test.txt
     #   jinja2
@@ -118,7 +118,7 @@ pyparsing==3.0.7
     # via
     #   -r requirements/test.txt
     #   packaging
-pytest==7.1.0
+pytest==7.1.1
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -170,7 +170,7 @@ typing-extensions==4.1.1
     #   -r requirements/test.txt
     #   astroid
     #   pylint
-urllib3==1.26.8
+urllib3==1.26.9
     # via
     #   -r requirements/test.txt
     #   selenium
