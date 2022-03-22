@@ -30,7 +30,7 @@ jinja2==3.0.3
     # via sphinx
 lazy==1.4
     # via -r requirements/base.txt
-markupsafe==2.1.0
+markupsafe==2.1.1
     # via jinja2
 packaging==21.3
     # via
@@ -42,7 +42,7 @@ pygments==2.11.2
     #   sphinx
 pyparsing==3.0.7
     # via packaging
-pytz==2021.3
+pytz==2022.1
     # via babel
 readme-renderer==34.0
     # via -r requirements/doc.in
@@ -72,7 +72,7 @@ sphinxcontrib-qthelp==1.0.3
     # via sphinx
 sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
-urllib3==1.26.8
+urllib3==1.26.9
     # via
     #   -r requirements/base.txt
     #   requests

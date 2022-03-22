@@ -82,7 +82,7 @@ lazy-object-proxy==1.7.1
     # via
     #   -r requirements/needle.txt
     #   astroid
-markupsafe==2.1.0
+markupsafe==2.1.1
     # via
     #   -r requirements/needle.txt
     #   jinja2
@@ -164,7 +164,7 @@ pyparsing==3.0.7
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   packaging
-pytest==7.1.0
+pytest==7.1.1
     # via
     #   -r requirements/needle.txt
     #   pytest-cov
@@ -236,13 +236,13 @@ typing-extensions==4.1.1
     #   -r requirements/needle.txt
     #   astroid
     #   pylint
-urllib3==1.26.8
+urllib3==1.26.9
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.13.3
+virtualenv==20.13.4
     # via
     #   -r requirements/travis.txt
     #   tox
