@@ -133,11 +133,7 @@ def save_screenshot(driver, name):
         driver.save_screenshot(image_name)
 
     else:
-        msg = (
-            "Browser does not support screenshots. "
-            "Could not save screenshot '{name}'"
-        ).format(name=name)
-
+        msg = f"Browser does not support screenshots. Could not save screenshot '{name}'"
         LOGGER.warning(msg)
 
 
@@ -185,9 +181,8 @@ def save_driver_logs(driver, prefix):
                     output_file.write("{}{}".format(dumps(line), '\n'))
         except:  # pylint: disable=bare-except
             msg = (
-                "Could not save browser log of type '{log_type}'. "
-                "It may be that the browser does not support it."
-            ).format(log_type=log_type)
+                f"Could not save browser log of type '{log_type}'. It may be that the browser does not support it."
+            )
 
             LOGGER.warning(msg, exc_info=True)
 
@@ -320,18 +315,16 @@ def _firefox_profile():
         except OSError as err:
             if err.errno == errno.ENOENT:
                 raise BrowserConfigError(
-                    "Firefox profile directory {env_var}={profile_dir} does not exist".format(
-                        env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir)
+                    f"Firefox profile directory {FIREFOX_PROFILE_ENV_VAR}={profile_dir} does not exist"
                 ) from err
             if err.errno == errno.EACCES:
                 raise BrowserConfigError(
-                    "Firefox profile directory {env_var}={profile_dir} has incorrect permissions. It must be \
-                    readable and executable.".format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir)
+                    f"Firefox profile directory {FIREFOX_PROFILE_ENV_VAR}={profile_dir} has incorrect permissions. "
+                    f"It must be readable and executable."
                 ) from err
             # Some other OSError:
             raise BrowserConfigError(
-                "Problem with firefox profile directory {env_var}={profile_dir}: {msg}"
-                .format(env_var=FIREFOX_PROFILE_ENV_VAR, profile_dir=profile_dir, msg=str(err))
+                f"Problem with firefox profile directory {FIREFOX_PROFILE_ENV_VAR}={profile_dir}: {str(err)}"
             ) from err
     else:
         LOGGER.info("Using default firefox profile")
@@ -385,8 +378,9 @@ def _local_browser_class(browser_name):
     headless = os.environ.get('BOKCHOY_HEADLESS', 'false').lower() == 'true'
     if browser_class is None:
         raise BrowserConfigError(
-            "Invalid browser name {name}.  Options are: {options}".format(
-                name=browser_name, options=", ".join(list(BROWSERS.keys()))))
+            f"Invalid browser name {browser_name}.  Options are: {', '.join(list(BROWSERS.keys()))}"
+        )
+
     if browser_name == 'firefox':
         # Remove geckodriver log data from previous test cases
         log_path = os.path.join(os.getcwd(), 'geckodriver.log')
@@ -462,8 +456,7 @@ def _remote_browser_class(env_vars, tags=None):
     # Create and return a new Browser
     # We assume that the WebDriver end-point is running locally (e.g. using
     # SauceConnect)
-    url = "http://{}:{}/wd/hub".format(
-        envs['SELENIUM_HOST'], envs['SELENIUM_PORT'])
+    url = f"http://{envs['SELENIUM_HOST']}:{envs['SELENIUM_PORT']}/wd/hub"
 
     browser_args = []
     browser_kwargs = {
@@ -540,7 +533,7 @@ def _required_envs(env_vars):
 
     # Check that we support this browser
     if envs['SELENIUM_BROWSER'] not in BROWSERS:
-        msg = "Unsuppported browser: {}".format(envs['SELENIUM_BROWSER'])
+        msg = f"Unsuppported browser: {envs['SELENIUM_BROWSER']}"
         raise BrowserConfigError(msg)
 
     return envs

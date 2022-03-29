@@ -324,9 +324,10 @@ class PageObject(metaclass=_PageObjectMetaclass):
             self.browser.get(self.url)
         except (WebDriverException, socket.gaierror) as err:
             LOGGER.warning("Unexpected page load exception:", exc_info=True)
-            raise PageLoadError("Could not load page '{!r}' at URL '{}'".format(
-                self, self.url
-            )) from err
+            raise PageLoadError(
+                "Could not load page '{!r}' at URL '{}'".format(  # pylint: disable=consider-using-f-string
+                    self, self.url)
+            ) from err
 
         # Give the browser enough time to get to the page, then return the page object
         # so that the caller can chain the call with an action:
@@ -337,9 +338,11 @@ class PageObject(metaclass=_PageObjectMetaclass):
         try:
             return self.wait_for_page()
         except BrokenPromise as err:
-            raise PageLoadError("Timed out waiting to load page '{!r}' at URL '{}'".format(
-                self, self.url
-            )) from err
+            raise PageLoadError(
+                "Timed out waiting to load page '{!r}' at URL '{}'".format(  # pylint: disable=consider-using-f-string
+                    self, self.url
+                )
+            ) from err
 
     @classmethod
     @unguarded
@@ -384,7 +387,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
         if not, raise a `WrongPageError`.
         """
         if not self.is_browser_on_page():
-            msg = "Not on the correct page to use '{!r}' at URL '{}'".format(
+            msg = "Not on the correct page to use '{!r}' at URL '{}'".format(  # pylint: disable=consider-using-f-string
                 self, self.url
             )
             raise WrongPageError(msg)
@@ -408,9 +411,8 @@ class PageObject(metaclass=_PageObjectMetaclass):
             if all_hits_count > safe_hits_count:
                 potential_hits = re.findall('<[^<]+<xss', html_source)
                 raise XSSExposureError(
-                    "{} XSS issue(s) found on page. Potential places are {}".format(
-                        all_hits_count - safe_hits_count, potential_hits
-                    )
+                    f"{all_hits_count - safe_hits_count} XSS issue(s) found on page. "
+                    f"Potential places are {potential_hits}"
                 )
 
     @unguarded
@@ -451,7 +453,8 @@ class PageObject(metaclass=_PageObjectMetaclass):
         except BrokenPromise:
             # pylint: disable=logging-format-interpolation
             LOGGER.warning(
-                'document.readyState does not become complete for following url: {}'.format(self.url),
+                'document.readyState does not become complete '  # pylint: disable=consider-using-f-string
+                'for following url: {}'.format(self.url),
                 exc_info=True
             )
             # If document.readyState does not become complete after a specific time relax the
@@ -515,10 +518,10 @@ class PageObject(metaclass=_PageObjectMetaclass):
         """
 
         # Before executing the `with` block, stub the confirm/alert functions
-        script = dedent("""
-            window.confirm = function() {{ return {0}; }};
+        script = dedent(f"""
+            window.confirm = function() {{ return {"true" if confirm else "false"}; }};
             window.alert = function() {{ return; }};
-        """.format("true" if confirm else "false")).strip()
+        """).strip()
         self.browser.execute_script(script)
 
         # Execute the `with` block
@@ -572,7 +575,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
         ).fulfill()
 
     @unguarded
-    def wait_for(self, promise_check_func, description, result=False, timeout=60):
+    def wait_for(self, promise_check_func, description, result=False, timeout=60):  # pylint: disable=no-self-use
         """
         Calls the method provided as an argument until the Promise satisfied or BrokenPromise.
         Retries if a WebDriverException is encountered (until the timeout is reached).
@@ -699,4 +702,4 @@ class PageObject(metaclass=_PageObjectMetaclass):
 
         # Obtain coordinates and use those for JavaScript call
         loc = self.q(css=element_selector).first.results[0].location
-        self.browser.execute_script("window.scrollTo({x},{y})".format(x=loc['x'], y=loc['y']))
+        self.browser.execute_script(f"window.scrollTo({loc['x']},{loc['y']})")
