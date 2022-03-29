@@ -35,6 +35,7 @@ class Promise:
     or timeout / try limits are reached.
     """
 
+    # pylint: disable=too-many-arguments
     def __init__(self, check_func, description, try_limit=None, try_interval=0.5, timeout=30):
         """
         Configure the `Promise`.
@@ -149,7 +150,7 @@ class Promise:
         return self._num_tries < self._try_limit
 
 
-class EmptyPromise(Promise):
+class EmptyPromise(Promise):  # pylint: disable=too-few-public-methods
     """
     A promise that has no result value.
     """

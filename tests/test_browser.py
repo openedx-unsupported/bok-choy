@@ -238,7 +238,7 @@ class TestSaveFiles:
         bok_choy.browser.save_screenshot(browser, 'empty')
         assert 'The SCREENSHOT_DIR environment variable was not set; not saving a screenshot' in caplog.text
 
-    def test_save_screenshot_unsupported(self, caplog):
+    def test_save_screenshot_unsupported(self, caplog):  # pylint: disable=no-self-use
         browser = 'Some driver without save_screenshot()'
         bok_choy.browser.save_screenshot(browser, 'button_page')
         assert 'Browser does not support screenshots.' in caplog.text

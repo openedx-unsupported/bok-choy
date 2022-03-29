@@ -24,7 +24,7 @@ class SitePage(PageObject):
 
     @property
     def url(self):
-        return "http://localhost:{}/{}".format(self.SERVER_PORT, self.name + ".html")
+        return f"http://localhost:{self.SERVER_PORT}/{self.name + '.html'}"
 
     @property
     def output(self):
@@ -219,7 +219,7 @@ class NextPage(SitePage):
     def is_browser_on_page(self):
         return self.q(css='#next').is_present()
 
-    def load_next(self, page, delay_sec):
+    def load_next(self, page, delay_sec):  # pylint: disable=no-self-use
         """
         Load the page named `page_name` after waiting for `delay_sec`.
         """

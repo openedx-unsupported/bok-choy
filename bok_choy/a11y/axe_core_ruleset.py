@@ -11,7 +11,6 @@ from textwrap import dedent, fill
 from .a11y_audit import A11yAudit, A11yAuditConfig, AccessibilityError, A11yAuditConfigError
 from ..promise import Promise
 
-
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -350,14 +349,14 @@ class AxeCoreAudit(A11yAudit):
 
         lines = []
         for error_type in errors:
-            lines.append("Severity: {}".format(error_type.get("impact")))
-            lines.append("Rule ID: {}".format(error_type.get("id")))
-            lines.append("Help URL: {}\n".format(error_type.get('helpUrl')))
+            lines.append(f"Severity: {error_type.get('impact')}")
+            lines.append(f"Rule ID: {error_type.get('id')}")
+            lines.append(f"Help URL: {error_type.get('helpUrl')}\n")
 
             for node in error_type['nodes']:
-                msg = "Message: {}".format(_get_message(node))
-                html = "Html: {}".format(node.get('html').encode('utf-8'))
-                target = "Target: {}".format(node.get('target'))
+                msg = f"Message: {_get_message(node)}"
+                html = f"Html: {node.get('html').encode('utf-8')}"
+                target = f"Target: {node.get('target')}"
                 fill_opts = {
                     'width': 100,
                     'initial_indent': '\t',
@@ -382,9 +381,5 @@ class AxeCoreAudit(A11yAudit):
         """
         errors = AxeCoreAudit.get_errors(audit)
         if errors["total"] > 0:
-            msg = "URL '{}' has {} errors:\n\n{}".format(
-                url,
-                errors["total"],
-                AxeCoreAudit.format_errors(errors["errors"])
-            )
+            msg = f"URL '{url}' has {errors['total']} errors:\n\n{AxeCoreAudit.format_errors(errors['errors'])}"
             raise AccessibilityError(msg)

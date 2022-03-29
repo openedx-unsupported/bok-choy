@@ -10,7 +10,7 @@ from itertools import islice
 from selenium.common.exceptions import WebDriverException
 from bok_choy.promise import Promise
 
-
+# pylint: disable=duplicate-code, useless-suppression
 LOGGER = logging.getLogger(__name__)
 
 # Mapping of query type to Selenium webdriver query method names
@@ -69,7 +69,7 @@ class Query(Sequence):
             Query
         """
         if desc is None:
-            desc = 'Query({})'.format(getattr(seed_fn, '__name__', ''))
+            desc = f"Query({getattr(seed_fn, '__name__', '')})"
 
         self.seed_fn = seed_fn
         self.transforms = []
@@ -116,7 +116,7 @@ class Query(Sequence):
             Query
         """
         if desc is None:
-            desc = 'transform({})'.format(getattr(transform, '__name__', ''))
+            desc = f"transform({getattr(transform, '__name__', '')})"
 
         return self.replace(
             transforms=self.transforms + [transform],

@@ -89,9 +89,7 @@ class AxsAuditConfig(A11yAuditConfig):
                 page.a11y_audit.config.set_scope()
         """
         if include:
-            self.scope = "document.querySelector(\"{}\")".format(
-                ', '.join(include)
-            )
+            self.scope = f"document.querySelector(\"{', '.join(include)}\")"
         else:
             self.scope = "null"
 
@@ -159,28 +157,23 @@ class AxsAudit(A11yAudit):
         # run all rules.
         rules = config.rules_to_run
         if rules:
-            rules_config = "auditConfig.auditRulesToRun = {rules};".format(
-                rules=rules)
+            rules_config = f"auditConfig.auditRulesToRun = {rules};"
         else:
             rules_config = ""
 
         ignored_rules = config.rules_to_ignore
         if ignored_rules:
-            rules_config += (
-                "\nauditConfig.auditRulesToIgnore = {rules};".format(
-                    rules=ignored_rules
-                )
-            )
+            rules_config += f"\nauditConfig.auditRulesToIgnore = {ignored_rules};"
 
-        script = dedent("""
+        script = dedent(f"""
             {rules_js}
             var auditConfig = new axs.AuditConfiguration();
             {rules_config}
-            auditConfig.scope = {scope};
+            auditConfig.scope = {config.scope};
             var run_results = axs.Audit.run(auditConfig);
             var audit_results = axs.Audit.auditResults(run_results)
             return audit_results;
-        """.format(rules_js=rules_js, rules_config=rules_config, scope=config.scope))
+            """)
 
         result = browser.execute_script(script)
 
@@ -218,9 +211,5 @@ class AxsAudit(A11yAudit):
         """
         errors = AxsAudit.get_errors(audit)
         if errors:
-            msg = "URL '{}' has {} errors:\n{}".format(
-                url,
-                len(errors),
-                ', '.join(errors)
-            )
+            msg = f"URL '{url}' has {len(errors)} errors:\n{', '.join(errors)}"
             raise AccessibilityError(msg)

@@ -1,2 +1,6 @@
 [MASTER]
 load-plugins = edx_lint.pylint
+
+[MESSAGES CONTROL]
+disable =
+	arguments-differ,

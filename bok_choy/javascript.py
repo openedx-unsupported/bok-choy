@@ -121,14 +121,14 @@ def _wait_for_js(self):
     if hasattr(self, '_js_vars') and self._js_vars:
         EmptyPromise(
             lambda: _are_js_vars_defined(self.browser, self._js_vars),
-            "JavaScript variables defined: {}".format(", ".join(self._js_vars))
+            f"JavaScript variables defined: {', '.join(self._js_vars)}"
         ).fulfill()
 
     # Wait for RequireJS dependencies to load
     if hasattr(self, '_requirejs_deps') and self._requirejs_deps:
         EmptyPromise(
             lambda: _are_requirejs_deps_loaded(self.browser, self._requirejs_deps),
-            "RequireJS dependencies loaded: {}".format(", ".join(self._requirejs_deps)),
+            f"RequireJS dependencies loaded: {', '.join(self._requirejs_deps)}",
             try_limit=5
         ).fulfill()
 
