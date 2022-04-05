@@ -10,7 +10,7 @@ astroid==2.11.2
     #   pylint-celery
 attrs==21.4.0
     # via pytest
-click==8.1.0
+click==8.1.2
     # via
     #   click-log
     #   code-annotations
@@ -59,7 +59,7 @@ py==1.11.0
     #   pytest-forked
 pycodestyle==2.8.0
     # via -r requirements/test.in
-pylint==2.13.2
+pylint==2.13.4
     # via
     #   edx-lint
     #   pylint-celery

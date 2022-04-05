@@ -21,7 +21,7 @@ charset-normalizer==2.0.12
     # via
     #   -r requirements/travis.txt
     #   requests
-click==8.1.0
+click==8.1.2
     # via
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
@@ -116,7 +116,7 @@ pep517==0.12.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-pillow==9.0.1
+pillow==9.1.0
     # via
     #   -r requirements/needle.txt
     #   needle
@@ -143,7 +143,7 @@ py==1.11.0
     #   tox
 pycodestyle==2.8.0
     # via -r requirements/needle.txt
-pylint==2.13.2
+pylint==2.13.4
     # via
     #   -r requirements/needle.txt
     #   edx-lint
