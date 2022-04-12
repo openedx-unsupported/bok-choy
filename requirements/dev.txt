@@ -120,7 +120,7 @@ pillow==9.1.0
     # via
     #   -r requirements/needle.txt
     #   needle
-pip-tools==6.5.1
+pip-tools==6.6.0
     # via -r requirements/pip-tools.txt
 platformdirs==2.5.1
     # via
@@ -143,7 +143,7 @@ py==1.11.0
     #   tox
 pycodestyle==2.8.0
     # via -r requirements/needle.txt
-pylint==2.13.4
+pylint==2.13.5
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -163,7 +163,7 @@ pylint-plugin-utils==0.7
     #   -r requirements/needle.txt
     #   pylint-celery
     #   pylint-django
-pyparsing==3.0.7
+pyparsing==3.0.8
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
@@ -225,7 +225,7 @@ tomli==2.0.1
     #   pep517
     #   pylint
     #   pytest
-tox==3.24.5
+tox==3.25.0
     # via
     #   -r requirements/travis.txt
     #   tox-battery
@@ -245,7 +245,7 @@ urllib3==1.26.9
     #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.14.0
+virtualenv==20.14.1
     # via
     #   -r requirements/travis.txt
     #   tox

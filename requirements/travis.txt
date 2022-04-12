@@ -28,7 +28,7 @@ pluggy==1.0.0
     # via tox
 py==1.11.0
     # via tox
-pyparsing==3.0.7
+pyparsing==3.0.8
     # via packaging
 requests==2.27.1
     # via codecov
@@ -38,7 +38,7 @@ six==1.16.0
     #   virtualenv
 toml==0.10.2
     # via tox
-tox==3.24.5
+tox==3.25.0
     # via
     #   -r requirements/travis.in
     #   tox-battery
@@ -49,5 +49,5 @@ tox-travis==0.12
     # via -r requirements/travis.in
 urllib3==1.26.9
     # via requests
-virtualenv==20.14.0
+virtualenv==20.14.1
     # via tox
