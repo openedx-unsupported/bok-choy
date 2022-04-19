@@ -83,7 +83,7 @@ pbr==5.8.1
     #   stevedore
 pillow==9.1.0
     # via needle
-platformdirs==2.5.1
+platformdirs==2.5.2
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -166,7 +166,7 @@ tomli==2.0.1
     #   coverage
     #   pylint
     #   pytest
-typing-extensions==4.1.1
+typing-extensions==4.2.0
     # via
     #   -r requirements/test.txt
     #   astroid
