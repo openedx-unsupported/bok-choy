@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.11.2
+astroid==2.11.3
     # via
     #   pylint
     #   pylint-celery
@@ -59,7 +59,7 @@ py==1.11.0
     #   pytest-forked
 pycodestyle==2.8.0
     # via -r requirements/test.in
-pylint==2.13.5
+pylint==2.13.7
     # via
     #   edx-lint
     #   pylint-celery
@@ -75,7 +75,7 @@ pylint-plugin-utils==0.7
     #   pylint-django
 pyparsing==3.0.8
     # via packaging
-pytest==7.1.1
+pytest==7.1.2
     # via
     #   pytest-cov
     #   pytest-forked
