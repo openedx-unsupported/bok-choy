@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.11.4
+astroid==2.11.5
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -77,7 +77,7 @@ packaging==21.3
     # via
     #   -r requirements/test.txt
     #   pytest
-pbr==5.8.1
+pbr==5.9.0
     # via
     #   -r requirements/test.txt
     #   stevedore
