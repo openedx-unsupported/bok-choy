@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.11.4
+astroid==2.11.5
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -108,7 +108,7 @@ packaging==21.3
     #   -r requirements/travis.txt
     #   pytest
     #   tox
-pbr==5.8.1
+pbr==5.9.0
     # via
     #   -r requirements/needle.txt
     #   stevedore
