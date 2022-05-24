@@ -4,13 +4,13 @@
 #
 #    make upgrade
 #
-certifi==2021.10.8
+certifi==2022.5.18.1
     # via requests
 charset-normalizer==2.0.12
     # via requests
 codecov==2.1.12
     # via -r requirements/travis.in
-coverage==6.3.3
+coverage==6.4
     # via codecov
 distlib==0.3.4
     # via virtualenv
