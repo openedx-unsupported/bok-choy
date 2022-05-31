@@ -177,5 +177,5 @@ class EmptyPromise(Promise):  # pylint: disable=too-few-public-methods
         Returns:
             EmptyPromise
         """
-        full_check_func = lambda: (check_func(), None)
+        full_check_func = lambda: (check_func(), None)      # pylint: disable=unnecessary-lambda-assignment
         super().__init__(full_check_func, description, **kwargs)

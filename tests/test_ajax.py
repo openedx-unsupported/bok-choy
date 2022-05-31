@@ -38,7 +38,7 @@ class AjaxTest(WebAppTest):
 
         self.assertEqual(
             'Promise not satisfied: Finished waiting for ajax requests.',
-            exc.exception.__str__())
+            str(exc.exception))
 
 
 class AjaxNoJQueryTest(WebAppTest):
@@ -60,4 +60,4 @@ class AjaxNoJQueryTest(WebAppTest):
 
         self.assertEqual(
             'Promise not satisfied: Finished waiting for ajax requests.',
-            exc.exception.__str__())
+            str(exc.exception))
