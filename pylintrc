@@ -262,12 +262,10 @@ disable =
 
 [REPORTS]
 output-format = text
-files-output = no
 reports = no
 score = no
 
 [BASIC]
-bad-functions = map,filter,apply,input
 module-rgx = (([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$
 const-rgx = (([A-Z_][A-Z0-9_]*)|(__.*__)|log|urlpatterns)$
 class-rgx = [A-Z_][a-zA-Z0-9]+$
@@ -287,7 +285,6 @@ docstring-min-length = 5
 max-line-length = 120
 ignore-long-lines = ^\s*(# )?((<?https?://\S+>?)|(\.\. \w+: .*))$
 single-line-if-stmt = no
-no-space-check = trailing-comma,dict-separator
 max-module-lines = 1000
 indent-string = '    '
 
