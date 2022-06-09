@@ -575,7 +575,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
         ).fulfill()
 
     @unguarded
-    def wait_for(self, promise_check_func, description, result=False, timeout=60):  # pylint: disable=no-self-use
+    def wait_for(self, promise_check_func, description, result=False, timeout=60):
         """
         Calls the method provided as an argument until the Promise satisfied or BrokenPromise.
         Retries if a WebDriverException is encountered (until the timeout is reached).
