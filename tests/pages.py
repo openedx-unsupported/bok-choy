@@ -219,7 +219,7 @@ class NextPage(SitePage):
     def is_browser_on_page(self):
         return self.q(css='#next').is_present()
 
-    def load_next(self, page, delay_sec):  # pylint: disable=no-self-use
+    def load_next(self, page, delay_sec):
         """
         Load the page named `page_name` after waiting for `delay_sec`.
         """
