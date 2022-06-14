@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.11.5
+astroid==2.11.6
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -53,7 +53,7 @@ distlib==0.3.4
     # via
     #   -r requirements/travis.txt
     #   virtualenv
-edx-lint==5.2.3
+edx-lint==5.2.4
     # via -r requirements/needle.txt
 execnet==1.9.0
     # via
@@ -190,7 +190,7 @@ pyyaml==6.0
     # via
     #   -r requirements/needle.txt
     #   code-annotations
-requests==2.27.1
+requests==2.28.0
     # via
     #   -r requirements/travis.txt
     #   codecov
