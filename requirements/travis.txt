@@ -49,5 +49,5 @@ tox-travis==0.12
     # via -r requirements/travis.in
 urllib3==1.26.9
     # via requests
-virtualenv==20.14.1
+virtualenv==20.15.0
     # via tox
