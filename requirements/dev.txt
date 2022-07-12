@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.11.6
+astroid==2.11.7
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -233,7 +233,7 @@ tomli==2.0.1
     #   pep517
     #   pylint
     #   pytest
-tomlkit==0.11.0
+tomlkit==0.11.1
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -251,7 +251,7 @@ typing-extensions==4.3.0
     #   -r requirements/needle.txt
     #   astroid
     #   pylint
-urllib3==1.26.9
+urllib3==1.26.10
     # via
     #   -r requirements/needle.txt
     #   -r requirements/travis.txt
