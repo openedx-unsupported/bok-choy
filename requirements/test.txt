@@ -109,7 +109,7 @@ typing-extensions==4.3.0
     # via
     #   astroid
     #   pylint
-urllib3==1.26.10
+urllib3==1.26.11
     # via
     #   -r requirements/base.txt
     #   selenium

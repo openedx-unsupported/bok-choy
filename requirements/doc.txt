@@ -14,7 +14,7 @@ certifi==2022.6.15
     # via requests
 charset-normalizer==2.1.0
     # via requests
-docutils==0.18.1
+docutils==0.19
     # via
     #   readme-renderer
     #   sphinx
@@ -54,7 +54,7 @@ six==1.16.0
     #   edx-sphinx-theme
 snowballstemmer==2.2.0
     # via sphinx
-sphinx==5.0.2
+sphinx==5.1.0
     # via
     #   -r requirements/doc.in
     #   edx-sphinx-theme
@@ -70,7 +70,7 @@ sphinxcontrib-qthelp==1.0.3
     # via sphinx
 sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
-urllib3==1.26.10
+urllib3==1.26.11
     # via
     #   -r requirements/base.txt
     #   requests
