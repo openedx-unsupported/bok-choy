@@ -8,7 +8,7 @@ astroid==2.11.7
     # via
     #   pylint
     #   pylint-celery
-attrs==21.4.0
+attrs==22.1.0
     # via pytest
 click==8.1.3
     # via
@@ -57,7 +57,7 @@ py==1.11.0
     # via
     #   pytest
     #   pytest-forked
-pycodestyle==2.8.0
+pycodestyle==2.9.0
     # via -r requirements/test.in
 pylint==2.14.5
     # via
