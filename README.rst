@@ -72,7 +72,7 @@ To run the test suite for bok-choy itself:
   works with the latest selenium Python package (3.11.0)
 * Install `phantomjs <http://phantomjs.org/download.html>`_
 * Create a virtualenv which uses Python 3.8
-* With that virtualenv activated, run ``pip install -r requirements/travis.txt`` to
+* With that virtualenv activated, run ``pip install -r requirements/ci.txt`` to
   install the `tox <http://tox.testrun.org/>`_ testing tool and its
   dependencies
 * Run ``tox -e py38``.  If you want to run the tests in

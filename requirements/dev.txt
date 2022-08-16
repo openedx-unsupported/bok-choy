@@ -19,11 +19,11 @@ build==0.8.0
     #   pip-tools
 certifi==2022.6.15
     # via
-    #   -r requirements/travis.txt
+    #   -r requirements/ci.txt
     #   requests
 charset-normalizer==2.1.0
     # via
-    #   -r requirements/travis.txt
+    #   -r requirements/ci.txt
     #   requests
 click==8.1.3
     # via
@@ -42,11 +42,11 @@ code-annotations==1.3.0
     #   -r requirements/needle.txt
     #   edx-lint
 codecov==2.1.12
-    # via -r requirements/travis.txt
-coverage[toml]==6.4.2
+    # via -r requirements/ci.txt
+coverage[toml]==6.4.3
     # via
+    #   -r requirements/ci.txt
     #   -r requirements/needle.txt
-    #   -r requirements/travis.txt
     #   codecov
     #   pytest-cov
 dill==0.3.5.1
@@ -55,7 +55,7 @@ dill==0.3.5.1
     #   pylint
 distlib==0.3.5
     # via
-    #   -r requirements/travis.txt
+    #   -r requirements/ci.txt
     #   virtualenv
 edx-lint==5.2.4
     # via -r requirements/needle.txt
@@ -63,14 +63,14 @@ execnet==1.9.0
     # via
     #   -r requirements/needle.txt
     #   pytest-xdist
-filelock==3.7.1
+filelock==3.8.0
     # via
-    #   -r requirements/travis.txt
+    #   -r requirements/ci.txt
     #   tox
     #   virtualenv
 idna==3.3
     # via
-    #   -r requirements/travis.txt
+    #   -r requirements/ci.txt
     #   requests
 iniconfig==1.1.1
     # via
@@ -108,13 +108,13 @@ nose==1.3.7
     #   needle
 packaging==21.3
     # via
+    #   -r requirements/ci.txt
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
-    #   -r requirements/travis.txt
     #   build
     #   pytest
     #   tox
-pbr==5.9.0
+pbr==5.10.0
     # via
     #   -r requirements/needle.txt
     #   stevedore
@@ -130,24 +130,24 @@ pip-tools==6.8.0
     # via -r requirements/pip-tools.txt
 platformdirs==2.5.2
     # via
+    #   -r requirements/ci.txt
     #   -r requirements/needle.txt
-    #   -r requirements/travis.txt
     #   pylint
     #   virtualenv
 pluggy==1.0.0
     # via
+    #   -r requirements/ci.txt
     #   -r requirements/needle.txt
-    #   -r requirements/travis.txt
     #   pytest
     #   tox
 py==1.11.0
     # via
+    #   -r requirements/ci.txt
     #   -r requirements/needle.txt
-    #   -r requirements/travis.txt
     #   pytest
     #   pytest-forked
     #   tox
-pycodestyle==2.9.0
+pycodestyle==2.9.1
     # via -r requirements/needle.txt
 pylint==2.14.5
     # via
@@ -171,9 +171,9 @@ pylint-plugin-utils==0.7
     #   pylint-django
 pyparsing==3.0.9
     # via
+    #   -r requirements/ci.txt
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
-    #   -r requirements/travis.txt
     #   packaging
 pytest==7.1.2
     # via
@@ -199,7 +199,7 @@ pyyaml==6.0
     #   code-annotations
 requests==2.28.1
     # via
-    #   -r requirements/travis.txt
+    #   -r requirements/ci.txt
     #   codecov
 selenium==3.141.0
     # via
@@ -207,8 +207,8 @@ selenium==3.141.0
     #   needle
 six==1.16.0
     # via
+    #   -r requirements/ci.txt
     #   -r requirements/needle.txt
-    #   -r requirements/travis.txt
     #   edx-lint
     #   tox
 stevedore==4.0.0
@@ -221,7 +221,7 @@ text-unidecode==1.3
     #   python-slugify
 toml==0.10.2
     # via
-    #   -r requirements/travis.txt
+    #   -r requirements/ci.txt
     #   tox
 tomli==2.0.1
     # via
@@ -232,19 +232,19 @@ tomli==2.0.1
     #   pep517
     #   pylint
     #   pytest
-tomlkit==0.11.1
+tomlkit==0.11.4
     # via
     #   -r requirements/needle.txt
     #   pylint
 tox==3.25.1
     # via
-    #   -r requirements/travis.txt
+    #   -r requirements/ci.txt
     #   tox-battery
     #   tox-travis
 tox-battery==0.6.1
-    # via -r requirements/travis.txt
+    # via -r requirements/ci.txt
 tox-travis==0.12
-    # via -r requirements/travis.txt
+    # via -r requirements/ci.txt
 typing-extensions==4.3.0
     # via
     #   -r requirements/needle.txt
@@ -252,13 +252,13 @@ typing-extensions==4.3.0
     #   pylint
 urllib3==1.26.11
     # via
+    #   -r requirements/ci.txt
     #   -r requirements/needle.txt
-    #   -r requirements/travis.txt
     #   requests
     #   selenium
-virtualenv==20.16.2
+virtualenv==20.16.3
     # via
-    #   -r requirements/travis.txt
+    #   -r requirements/ci.txt
     #   tox
 wheel==0.37.1
     # via
