@@ -65,5 +65,5 @@ upgrade: ## update the requirements/*.txt files with the latest packages satisfy
 	pip-compile --rebuild --upgrade -o requirements/doc.txt requirements/doc.in
 	pip-compile --rebuild --upgrade -o requirements/test.txt requirements/test.in
 	pip-compile --rebuild --upgrade -o requirements/needle.txt requirements/needle.in
-	pip-compile --rebuild --upgrade -o requirements/travis.txt requirements/travis.in
+	pip-compile --rebuild --upgrade -o requirements/ci.txt requirements/ci.in
 	pip-compile --rebuild --upgrade -o requirements/dev.txt requirements/dev.in

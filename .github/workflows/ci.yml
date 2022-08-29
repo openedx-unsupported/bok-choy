@@ -35,7 +35,7 @@ jobs:
       run: pip install -r requirements/pip.txt
 
     - name: Install Dependencies
-      run: pip install -r requirements/travis.txt
+      run: pip install -r requirements/ci.txt
 
     - uses: browser-actions/setup-geckodriver@latest
     - name: Run Tests
