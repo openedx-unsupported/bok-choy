@@ -42,7 +42,7 @@ pyparsing==3.0.9
     # via packaging
 pytz==2022.2.1
     # via babel
-readme-renderer==37.0
+readme-renderer==37.1
     # via -r requirements/doc.in
 requests==2.28.1
     # via sphinx
