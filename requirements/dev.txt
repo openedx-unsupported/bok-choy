@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.12.5
+astroid==2.12.6
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -175,7 +175,7 @@ pyparsing==3.0.9
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
     #   packaging
-pytest==7.1.2
+pytest==7.1.3
     # via
     #   -r requirements/needle.txt
     #   pytest-cov
@@ -256,7 +256,7 @@ urllib3==1.26.12
     #   -r requirements/needle.txt
     #   requests
     #   selenium
-virtualenv==20.16.3
+virtualenv==20.16.4
     # via
     #   -r requirements/ci.txt
     #   tox

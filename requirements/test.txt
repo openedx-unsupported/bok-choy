@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.12.5
+astroid==2.12.6
     # via
     #   pylint
     #   pylint-celery
@@ -75,7 +75,7 @@ pylint-plugin-utils==0.7
     #   pylint-django
 pyparsing==3.0.9
     # via packaging
-pytest==7.1.2
+pytest==7.1.3
     # via
     #   pytest-cov
     #   pytest-forked
