@@ -27,7 +27,7 @@ To use xvfb, you'll start it up via a ``before_script`` section in your ``.travi
 
 For more details, see this code example_ and the Travis_ docs.
 
-.. _example: https://github.com/edx/xblock-sdk/blob/c7ec2327c0847dc35f57686945490e97e5cd66a5/.travis.yml#L28-L31
+.. _example: https://github.com/openedx/xblock-sdk/blob/c7ec2327c0847dc35f57686945490e97e5cd66a5/.travis.yml#L28-L31
 .. _Travis: https://docs.travis-ci.com/user/gui-and-headless-browsers/
 
 Testing via tox

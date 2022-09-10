@@ -185,7 +185,7 @@ class AxeCoreAuditConfig(A11yAuditConfig):
             https://github.com/dequelabs/axe-core/blob/master/doc/developer-guide.md
 
         An example of a custom rules file can be found at
-        https://github.com/edx/bok-choy/tree/master/tests/a11y_custom_rules.js
+        https://github.com/openedx/bok-choy/tree/master/tests/a11y_custom_rules.js
         """
         custom_file = custom_ruleset_file or os.environ.get(
             "BOKCHOY_A11Y_CUSTOM_RULES_FILE"

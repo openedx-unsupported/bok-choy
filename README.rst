@@ -5,8 +5,8 @@ bok-choy
     :target: https://pypi.python.org/pypi/bok_choy/
     :alt: PyPI
 
-.. image:: https://github.com/edx/bok-choy/workflows/Python%20CI/badge.svg?branch=master
-    :target: https://github.com/edx/bok-choy/actions?query=workflow%3A%22Python+CI%22
+.. image:: https://github.com/openedx/bok-choy/workflows/Python%20CI/badge.svg?branch=master
+    :target: https://github.com/openedx/bok-choy/actions?query=workflow%3A%22Python+CI%22
     :alt: Github CI
 
 .. image:: http://codecov.io/github/edx/bok-choy/coverage.svg?branch=master
@@ -22,7 +22,7 @@ bok-choy
     :alt: Supported Python versions
 
 .. image:: https://img.shields.io/github/license/edx/bok-choy.svg
-    :target: https://github.com/edx/bok-choy/blob/master/LICENSE.txt
+    :target: https://github.com/openedx/bok-choy/blob/master/LICENSE.txt
     :alt: License
 
 UI-level acceptance test framework.  `Full documentation available on ReadTheDocs`__.
