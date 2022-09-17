@@ -110,7 +110,7 @@ setup(
     version=VERSION,
     author='edX',
     author_email='oscm@edx.org',
-    url='http://github.com/edx/bok-choy',
+    url='http://github.com/openedx/bok-choy',
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     license='Apache 2.0',

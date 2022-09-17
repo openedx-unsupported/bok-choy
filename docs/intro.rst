@@ -1,7 +1,7 @@
 Introduction
 ============
 
-`Bok Choy <https://github.com/edx/bok-choy>`__ is a UI-level acceptance test framework for writing robust
+`Bok Choy <https://github.com/openedx/bok-choy>`__ is a UI-level acceptance test framework for writing robust
 `Selenium <http://docs.seleniumhq.org/>`__ tests in `Python <https://www.python.org/>`__.
 
 

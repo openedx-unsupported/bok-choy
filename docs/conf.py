@@ -22,7 +22,7 @@ source_suffix = '.rst'
 
 # Substitutions for all pages
 rst_epilog = """
-.. _Bok Choy: https://github.com/edx/bok-choy
+.. _Bok Choy: https://github.com/openedx/bok-choy
 .. _Selenium: http://www.seleniumhq.org
 .. _Python: http://python.org
 """
