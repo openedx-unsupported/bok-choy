@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-lazy==1.4
+lazy==1.5
     # via -r requirements/base.in
 selenium==3.141.0
     # via -r requirements/base.in
