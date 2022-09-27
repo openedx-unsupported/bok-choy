@@ -17,7 +17,7 @@ build==0.8.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-certifi==2022.9.14
+certifi==2022.9.24
     # via
     #   -r requirements/ci.txt
     #   requests
