@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.12.10
+astroid==2.12.11
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -98,7 +98,7 @@ py==1.11.0
     #   pytest-forked
 pycodestyle==2.9.1
     # via -r requirements/test.txt
-pylint==2.15.3
+pylint==2.15.4
     # via
     #   -r requirements/test.txt
     #   edx-lint
@@ -170,7 +170,7 @@ tomlkit==0.11.5
     # via
     #   -r requirements/test.txt
     #   pylint
-typing-extensions==4.3.0
+typing-extensions==4.4.0
     # via
     #   -r requirements/test.txt
     #   astroid
