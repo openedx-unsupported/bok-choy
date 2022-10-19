@@ -211,7 +211,7 @@ six==1.16.0
     #   -r requirements/needle.txt
     #   edx-lint
     #   tox
-stevedore==4.0.0
+stevedore==4.0.1
     # via
     #   -r requirements/needle.txt
     #   code-annotations
