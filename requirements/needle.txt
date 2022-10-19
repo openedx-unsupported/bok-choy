@@ -152,7 +152,7 @@ six==1.16.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
-stevedore==4.0.0
+stevedore==4.0.1
     # via
     #   -r requirements/test.txt
     #   code-annotations
