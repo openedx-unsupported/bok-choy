@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.12.11
+astroid==2.12.12
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -49,7 +49,7 @@ coverage[toml]==6.5.0
     #   -r requirements/needle.txt
     #   codecov
     #   pytest-cov
-dill==0.3.5.1
+dill==0.3.6
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -59,6 +59,10 @@ distlib==0.3.6
     #   virtualenv
 edx-lint==5.3.0
     # via -r requirements/needle.txt
+exceptiongroup==1.0.0rc9
+    # via
+    #   -r requirements/needle.txt
+    #   pytest
 execnet==1.9.0
     # via
     #   -r requirements/needle.txt
@@ -114,7 +118,7 @@ packaging==21.3
     #   build
     #   pytest
     #   tox
-pbr==5.10.0
+pbr==5.11.0
     # via
     #   -r requirements/needle.txt
     #   stevedore
@@ -144,12 +148,11 @@ py==1.11.0
     # via
     #   -r requirements/ci.txt
     #   -r requirements/needle.txt
-    #   pytest
     #   pytest-forked
     #   tox
 pycodestyle==2.9.1
     # via -r requirements/needle.txt
-pylint==2.15.4
+pylint==2.15.5
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -175,7 +178,7 @@ pyparsing==3.0.9
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
     #   packaging
-pytest==7.1.3
+pytest==7.2.0
     # via
     #   -r requirements/needle.txt
     #   pytest-cov
@@ -211,7 +214,7 @@ six==1.16.0
     #   -r requirements/needle.txt
     #   edx-lint
     #   tox
-stevedore==4.0.1
+stevedore==4.1.0
     # via
     #   -r requirements/needle.txt
     #   code-annotations

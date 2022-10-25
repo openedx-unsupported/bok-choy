@@ -77,5 +77,5 @@ urllib3==1.26.12
     #   selenium
 webencodings==0.5.1
     # via bleach
-zipp==3.9.0
+zipp==3.10.0
     # via importlib-metadata
