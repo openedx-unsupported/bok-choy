@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.12.12
+astroid==2.12.13
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -37,7 +37,7 @@ dill==0.3.6
     #   pylint
 edx-lint==5.3.0
     # via -r requirements/test.txt
-exceptiongroup==1.0.1
+exceptiongroup==1.0.4
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -87,7 +87,7 @@ pbr==5.11.0
     #   stevedore
 pillow==9.3.0
     # via needle
-platformdirs==2.5.3
+platformdirs==2.5.4
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -95,9 +95,9 @@ pluggy==1.0.0
     # via
     #   -r requirements/test.txt
     #   pytest
-pycodestyle==2.9.1
+pycodestyle==2.10.0
     # via -r requirements/test.txt
-pylint==2.15.5
+pylint==2.15.6
     # via
     #   -r requirements/test.txt
     #   edx-lint
@@ -130,7 +130,7 @@ pytest-cov==4.0.0
     # via -r requirements/test.txt
 pytest-xdist==3.0.2
     # via -r requirements/test.txt
-python-slugify==6.1.2
+python-slugify==7.0.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -146,7 +146,7 @@ six==1.16.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
-stevedore==4.1.0
+stevedore==4.1.1
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -169,7 +169,7 @@ typing-extensions==4.4.0
     #   -r requirements/test.txt
     #   astroid
     #   pylint
-urllib3==1.26.12
+urllib3==1.26.13
     # via
     #   -r requirements/test.txt
     #   selenium
