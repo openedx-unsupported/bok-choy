@@ -24,7 +24,7 @@ idna==3.4
     # via requests
 imagesize==1.4.1
     # via sphinx
-importlib-metadata==5.0.0
+importlib-metadata==5.1.0
     # via sphinx
 jinja2==3.1.2
     # via sphinx
@@ -70,12 +70,12 @@ sphinxcontrib-qthelp==1.0.3
     # via sphinx
 sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
-urllib3==1.26.12
+urllib3==1.26.13
     # via
     #   -r requirements/base.txt
     #   requests
     #   selenium
 webencodings==0.5.1
     # via bleach
-zipp==3.10.0
+zipp==3.11.0
     # via importlib-metadata
