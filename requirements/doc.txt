@@ -24,7 +24,7 @@ idna==3.4
     # via requests
 imagesize==1.4.1
     # via sphinx
-importlib-metadata==5.1.0
+importlib-metadata==5.2.0
     # via sphinx
 jinja2==3.1.2
     # via sphinx
@@ -38,7 +38,7 @@ pygments==2.13.0
     # via
     #   readme-renderer
     #   sphinx
-pytz==2022.6
+pytz==2022.7
     # via babel
 readme-renderer==37.3
     # via -r requirements/doc.in
