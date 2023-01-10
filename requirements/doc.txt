@@ -24,7 +24,7 @@ idna==3.4
     # via requests
 imagesize==1.4.1
     # via sphinx
-importlib-metadata==5.1.0
+importlib-metadata==6.0.0
     # via sphinx
 jinja2==3.1.2
     # via sphinx
@@ -32,13 +32,13 @@ lazy==1.5
     # via -r requirements/base.txt
 markupsafe==2.1.1
     # via jinja2
-packaging==22.0
+packaging==23.0
     # via sphinx
-pygments==2.13.0
+pygments==2.14.0
     # via
     #   readme-renderer
     #   sphinx
-pytz==2022.6
+pytz==2022.7
     # via babel
 readme-renderer==37.3
     # via -r requirements/doc.in
@@ -54,9 +54,10 @@ snowballstemmer==2.2.0
     # via sphinx
 sphinx==5.3.0
     # via
+    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/doc.in
     #   edx-sphinx-theme
-sphinxcontrib-applehelp==1.0.2
+sphinxcontrib-applehelp==1.0.3
     # via sphinx
 sphinxcontrib-devhelp==1.0.2
     # via sphinx
