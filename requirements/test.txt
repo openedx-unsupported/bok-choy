@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.13.2
+astroid==2.13.3
     # via
     #   pylint
     #   pylint-celery
@@ -19,7 +19,7 @@ click-log==0.4.0
     # via edx-lint
 code-annotations==1.3.0
     # via edx-lint
-coverage[toml]==7.0.4
+coverage[toml]==7.1.0
     # via pytest-cov
 dill==0.3.6
     # via pylint
@@ -31,7 +31,7 @@ execnet==1.9.0
     # via pytest-xdist
 iniconfig==2.0.0
     # via pytest
-isort==5.11.4
+isort==5.12.0
     # via pylint
 jinja2==3.1.2
     # via code-annotations
@@ -39,7 +39,7 @@ lazy==1.5
     # via -r requirements/base.txt
 lazy-object-proxy==1.9.0
     # via astroid
-markupsafe==2.1.1
+markupsafe==2.1.2
     # via jinja2
 mccabe==0.7.0
     # via pylint
@@ -49,7 +49,7 @@ packaging==23.0
     # via
     #   -r requirements/test.in
     #   pytest
-pbr==5.11.0
+pbr==5.11.1
     # via stevedore
 platformdirs==2.6.2
     # via pylint
@@ -71,7 +71,7 @@ pylint-plugin-utils==0.7
     # via
     #   pylint-celery
     #   pylint-django
-pytest==7.2.0
+pytest==7.2.1
     # via
     #   pytest-cov
     #   pytest-xdist
@@ -79,7 +79,7 @@ pytest-cov==4.0.0
     # via -r requirements/test.in
 pytest-xdist==3.1.0
     # via -r requirements/test.in
-python-slugify==7.0.0
+python-slugify==8.0.0
     # via code-annotations
 pyyaml==6.0
     # via code-annotations
@@ -102,7 +102,7 @@ typing-extensions==4.4.0
     # via
     #   astroid
     #   pylint
-urllib3==1.26.13
+urllib3==1.26.14
     # via
     #   -r requirements/base.txt
     #   selenium
