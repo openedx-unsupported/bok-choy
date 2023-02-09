@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.13.3
+astroid==2.14.1
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -87,7 +87,7 @@ pbr==5.11.1
     #   stevedore
 pillow==9.4.0
     # via needle
-platformdirs==2.6.2
+platformdirs==3.0.0
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -97,7 +97,7 @@ pluggy==1.0.0
     #   pytest
 pycodestyle==2.10.0
     # via -r requirements/test.txt
-pylint==2.15.10
+pylint==2.16.1
     # via
     #   -r requirements/test.txt
     #   edx-lint
@@ -124,7 +124,7 @@ pytest==7.2.1
     #   pytest-xdist
 pytest-cov==4.0.0
     # via -r requirements/test.txt
-pytest-xdist==3.1.0
+pytest-xdist==3.2.0
     # via -r requirements/test.txt
 python-slugify==8.0.0
     # via
