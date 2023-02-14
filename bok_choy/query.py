@@ -43,8 +43,7 @@ def no_error(func):
         except WebDriverException:
             LOGGER.warning('Exception ignored during retry loop:', exc_info=True)
             return False, None
-        else:
-            return True, return_val
+        return True, return_val
 
     return _inner
 

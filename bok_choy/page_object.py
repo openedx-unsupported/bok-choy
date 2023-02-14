@@ -79,8 +79,7 @@ def no_selenium_errors(func):
         except WebDriverException:
             LOGGER.warning('Exception ignored during retry loop:', exc_info=True)
             return False
-        else:
-            return return_val
+        return return_val
 
     return _inner
 
@@ -378,8 +377,7 @@ class PageObject(metaclass=_PageObjectMetaclass):
         except ValueError:
             LOGGER.warning("%s uses an invalid port", url)
             return False
-        else:
-            return True
+        return True
 
     def _verify_page(self):
         """
