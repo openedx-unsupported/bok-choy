@@ -43,7 +43,7 @@ code-annotations==1.3.0
     #   edx-lint
 codecov==2.1.12
     # via -r requirements/ci.txt
-coverage[toml]==7.1.0
+coverage[toml]==7.2.1
     # via
     #   -r requirements/ci.txt
     #   -r requirements/needle.txt
@@ -179,7 +179,7 @@ pytest-cov==4.0.0
     # via -r requirements/needle.txt
 pytest-xdist==3.2.0
     # via -r requirements/needle.txt
-python-slugify==8.0.0
+python-slugify==8.0.1
     # via
     #   -r requirements/needle.txt
     #   code-annotations
@@ -253,7 +253,7 @@ wheel==0.38.4
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-wrapt==1.14.1
+wrapt==1.15.0
     # via
     #   -r requirements/needle.txt
     #   astroid
