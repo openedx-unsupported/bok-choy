@@ -19,7 +19,7 @@ click-log==0.4.0
     # via edx-lint
 code-annotations==1.3.0
     # via edx-lint
-coverage[toml]==7.1.0
+coverage[toml]==7.2.1
     # via pytest-cov
 dill==0.3.6
     # via pylint
@@ -79,7 +79,7 @@ pytest-cov==4.0.0
     # via -r requirements/test.in
 pytest-xdist==3.2.0
     # via -r requirements/test.in
-python-slugify==8.0.0
+python-slugify==8.0.1
     # via code-annotations
 pyyaml==6.0
     # via code-annotations
@@ -106,5 +106,5 @@ urllib3==1.26.14
     # via
     #   -r requirements/base.txt
     #   selenium
-wrapt==1.14.1
+wrapt==1.15.0
     # via astroid
