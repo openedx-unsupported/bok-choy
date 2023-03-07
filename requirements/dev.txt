@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.14.2
+astroid==2.15.0
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -21,7 +21,7 @@ certifi==2022.12.7
     # via
     #   -r requirements/ci.txt
     #   requests
-charset-normalizer==3.0.1
+charset-normalizer==3.1.0
     # via
     #   -r requirements/ci.txt
     #   requests
@@ -126,9 +126,9 @@ pillow==9.4.0
     # via
     #   -r requirements/needle.txt
     #   needle
-pip-tools==6.12.2
+pip-tools==6.12.3
     # via -r requirements/pip-tools.txt
-platformdirs==3.0.0
+platformdirs==3.1.0
     # via
     #   -r requirements/ci.txt
     #   -r requirements/needle.txt
@@ -146,7 +146,7 @@ py==1.11.0
     #   tox
 pycodestyle==2.10.0
     # via -r requirements/needle.txt
-pylint==2.16.2
+pylint==2.16.4
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -170,7 +170,7 @@ pyproject-hooks==1.0.0
     # via
     #   -r requirements/pip-tools.txt
     #   build
-pytest==7.2.1
+pytest==7.2.2
     # via
     #   -r requirements/needle.txt
     #   pytest-cov
@@ -245,7 +245,7 @@ urllib3==1.26.14
     #   -r requirements/needle.txt
     #   requests
     #   selenium
-virtualenv==20.19.0
+virtualenv==20.20.0
     # via
     #   -r requirements/ci.txt
     #   tox
