@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.15.0
+astroid==2.15.2
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -43,7 +43,7 @@ code-annotations==1.3.0
     #   edx-lint
 codecov==2.1.12
     # via -r requirements/ci.txt
-coverage[toml]==7.2.1
+coverage[toml]==7.2.2
     # via
     #   -r requirements/ci.txt
     #   -r requirements/needle.txt
@@ -57,7 +57,7 @@ distlib==0.3.6
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-edx-lint==5.3.2
+edx-lint==5.3.4
     # via -r requirements/needle.txt
 exceptiongroup==1.1.1
     # via
@@ -67,7 +67,7 @@ execnet==1.9.0
     # via
     #   -r requirements/needle.txt
     #   pytest-xdist
-filelock==3.9.0
+filelock==3.10.7
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -122,13 +122,13 @@ pbr==5.11.1
     # via
     #   -r requirements/needle.txt
     #   stevedore
-pillow==9.4.0
+pillow==9.5.0
     # via
     #   -r requirements/needle.txt
     #   needle
 pip-tools==6.12.3
     # via -r requirements/pip-tools.txt
-platformdirs==3.1.1
+platformdirs==3.2.0
     # via
     #   -r requirements/ci.txt
     #   -r requirements/needle.txt
@@ -146,7 +146,7 @@ py==1.11.0
     #   tox
 pycodestyle==2.10.0
     # via -r requirements/needle.txt
-pylint==2.17.0
+pylint==2.17.2
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -220,7 +220,7 @@ tomli==2.0.1
     #   pyproject-hooks
     #   pytest
     #   tox
-tomlkit==0.11.6
+tomlkit==0.11.7
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -249,7 +249,7 @@ virtualenv==20.21.0
     # via
     #   -r requirements/ci.txt
     #   tox
-wheel==0.38.4
+wheel==0.40.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
