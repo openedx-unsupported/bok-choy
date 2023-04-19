@@ -8,7 +8,7 @@ import sys
 
 from setuptools import setup
 
-DESCRIPTION = 'UI-level acceptance test framework'
+DESCRIPTION = 'Deprecated UI-level acceptance test framework'
 
 
 def load_requirements(*requirements_paths):
@@ -114,7 +114,7 @@ setup(
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     license='Apache 2.0',
-    classifiers=['Development Status :: 5 - Production/Stable',
+    classifiers=['Development Status :: 7 - Inactive',
                  'Environment :: Console',
                  'Intended Audience :: Developers',
                  'License :: OSI Approved :: Apache Software License',
