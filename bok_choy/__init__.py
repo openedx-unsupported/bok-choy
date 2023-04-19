@@ -9,4 +9,4 @@ NOISY_LOGGERS = ['selenium.webdriver.remote.remote_connection', 'paramiko.transp
 for log_name in NOISY_LOGGERS:
     logging.getLogger(log_name).setLevel(logging.WARNING)
 
-__version__ = '2.0.1'
+__version__ = '2.0.2'
