@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.15.3
+astroid==2.15.4
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -93,7 +93,7 @@ pluggy==1.0.0
     #   pytest
 pycodestyle==2.10.0
     # via -r requirements/test.txt
-pylint==2.17.2
+pylint==2.17.3
     # via
     #   -r requirements/test.txt
     #   edx-lint
