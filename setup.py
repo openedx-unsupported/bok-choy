@@ -20,22 +20,49 @@ def load_requirements(*requirements_paths):
     Returns a list of requirement strings.
     """
     # UPDATED VIA SEMGREP - if you need to remove/modify this method remove this line and add a comment specifying why.
-    # minor update to allow brackets in library names
+
+    # e.g. {"django": "Django", "confluent-kafka": "confluent_kafka[avro]"}
+    by_canonical_name = {}
+
+    def check_name_consistent(package):
+        """
+        Raise exception if package is named different ways.
+
+        This ensures that packages are named consistently so we can match
+        constraints to packages. It also ensures that if we require a package
+        with extras we don't constrain it without mentioning the extras (since
+        that too would interfere with matching constraints.)
+        """
+        canonical = package.lower().replace('_', '-').split('[')[0]
+        seen_spelling = by_canonical_name.get(canonical)
+        if seen_spelling is None:
+            by_canonical_name[canonical] = package
+        elif seen_spelling != package:
+            raise Exception(
+                f'Encountered both "{seen_spelling}" and "{package}" in requirements '
+                'and constraints files; please use just one or the other.'
+            )
 
     requirements = {}
     constraint_files = set()
 
-    # groups "my-package-name<=x.y.z,..." into ("my-package-name", "<=x.y.z,...")
-    requirement_line_regex = re.compile(r"([a-zA-Z0-9-_.\[\]]+)([<>=][^#\s]+)?")
+    # groups "pkg<=x.y.z,..." into ("pkg", "<=x.y.z,...")
+    re_package_name_base_chars = r"a-zA-Z0-9\-_."  # chars allowed in base package name
+    # Two groups: name[maybe,extras], and optionally a constraint
+    requirement_line_regex = re.compile(
+        r"([%s]+(?:\[[%s,\s]+\])?)([<>=][^#\s]+)?"
+        % (re_package_name_base_chars, re_package_name_base_chars)
+    )
 
     def add_version_constraint_or_raise(current_line, current_requirements, add_if_not_present):
         regex_match = requirement_line_regex.match(current_line)
         if regex_match:
             package = regex_match.group(1)
             version_constraints = regex_match.group(2)
+            check_name_consistent(package)
             existing_version_constraints = current_requirements.get(package, None)
-            # it's fine to add constraints to an unconstrained package, but raise an error if there are already
-            # constraints in place
+            # It's fine to add constraints to an unconstrained package,
+            # but raise an error if there are already constraints in place.
             if existing_version_constraints and existing_version_constraints != version_constraints:
                 raise BaseException(f'Multiple constraint definitions found for {package}:'
                                     f' "{existing_version_constraints}" and "{version_constraints}".'
@@ -44,7 +71,8 @@ def load_requirements(*requirements_paths):
             if add_if_not_present or package in current_requirements:
                 current_requirements[package] = version_constraints
 
-    # process .in files and store the path to any constraint files that are pulled in
+    # Read requirements from .in files and store the path to any
+    # constraint files that are pulled in.
     for path in requirements_paths:
         with open(path) as reqs:
             for line in reqs:
@@ -53,7 +81,7 @@ def load_requirements(*requirements_paths):
                 if line and line.startswith('-c') and not line.startswith('-c http'):
                     constraint_files.add(os.path.dirname(path) + '/' + line.split('#')[0].replace('-c', '').strip())
 
-    # process constraint files and add any new constraints found to existing requirements
+    # process constraint files: add constraints to existing requirements
     for constraint_file in constraint_files:
         with open(constraint_file) as reader:
             for line in reader:
