@@ -25,20 +25,20 @@ class GitHubSearchPage(PageObject):
     url = 'http://www.github.com/search'
 
     def is_browser_on_page(self):
-        return 'code search' in self.browser.title.lower()
+        return 'search' in self.browser.title.lower()
 
     def enter_search_terms(self, text):
         """
         Fill the text into the input field
         """
-        self.q(css='#search_form input[type="text"]').fill(text)
+        self.q(css='input[type="text"][aria-label="Search GitHub"]').fill(text)
 
     def search(self):
         """
         Click on the Search button and wait for the
         results page to be displayed
         """
-        self.q(css='button.btn').click()
+        self.q(css='input[type="text"][aria-label="Search GitHub"]').click()
         GitHubSearchResultsPage(self.browser).wait_for_page()
 
     def search_for_terms(self, text):
