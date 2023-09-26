@@ -4,9 +4,9 @@
 #
 #    make upgrade
 #
-lazy==1.5
+lazy==1.6
     # via -r requirements/base.in
 selenium==3.141.0
     # via -r requirements/base.in
-urllib3==1.26.15
+urllib3==2.0.5
     # via selenium
