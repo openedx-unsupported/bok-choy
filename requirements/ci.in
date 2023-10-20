@@ -4,6 +4,5 @@
 -c constraints.txt
 
 tox                       # Virtualenv management for tests
-tox-battery               # Makes tox aware of requirements file changes
 tox-travis                # Match Travis jobs to tox environments
 coverage                  # Calculate code coverage of tests.
