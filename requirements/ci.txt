@@ -28,10 +28,7 @@ tox==3.28.0
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/ci.in
-    #   tox-battery
     #   tox-travis
-tox-battery==0.6.1
-    # via -r requirements/ci.in
 tox-travis==0.13
     # via -r requirements/ci.in
 virtualenv==20.22.0
