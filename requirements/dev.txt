@@ -4,16 +4,16 @@
 #
 #    make upgrade
 #
-astroid==2.15.4
+astroid==3.0.1
     # via
     #   -r requirements/needle.txt
     #   pylint
     #   pylint-celery
-build==0.10.0
+build==1.0.3
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-click==8.1.3
+click==8.1.7
     # via
     #   -r requirements/needle.txt
     #   -r requirements/pip-tools.txt
@@ -25,43 +25,48 @@ click-log==0.4.0
     # via
     #   -r requirements/needle.txt
     #   edx-lint
-code-annotations==1.3.0
+code-annotations==1.5.0
     # via
     #   -r requirements/needle.txt
     #   edx-lint
-coverage[toml]==7.2.3
+coverage[toml]==7.3.2
     # via
     #   -r requirements/ci.txt
     #   -r requirements/needle.txt
+    #   coverage
     #   pytest-cov
-dill==0.3.6
+dill==0.3.7
     # via
     #   -r requirements/needle.txt
     #   pylint
-distlib==0.3.6
+distlib==0.3.7
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-edx-lint==5.3.4
+edx-lint==5.3.6
     # via -r requirements/needle.txt
-exceptiongroup==1.1.1
+exceptiongroup==1.2.0
     # via
     #   -r requirements/needle.txt
     #   pytest
-execnet==1.9.0
+execnet==2.0.2
     # via
     #   -r requirements/needle.txt
     #   pytest-xdist
-filelock==3.12.0
+filelock==3.13.1
     # via
     #   -r requirements/ci.txt
     #   tox
     #   virtualenv
+importlib-metadata==7.0.0
+    # via
+    #   -r requirements/pip-tools.txt
+    #   build
 iniconfig==2.0.0
     # via
     #   -r requirements/needle.txt
     #   pytest
-isort==5.12.0
+isort==5.13.1
     # via
     #   -r requirements/needle.txt
     #   pylint
@@ -69,13 +74,9 @@ jinja2==3.1.2
     # via
     #   -r requirements/needle.txt
     #   code-annotations
-lazy==1.5
+lazy==1.6
     # via -r requirements/needle.txt
-lazy-object-proxy==1.9.0
-    # via
-    #   -r requirements/needle.txt
-    #   astroid
-markupsafe==2.1.2
+markupsafe==2.1.3
     # via
     #   -r requirements/needle.txt
     #   jinja2
@@ -83,7 +84,7 @@ mccabe==0.7.0
     # via
     #   -r requirements/needle.txt
     #   pylint
-mock==5.0.2
+mock==5.1.0
     # via -r requirements/needle.txt
 needle==0.5.0
     # via -r requirements/needle.txt
@@ -91,7 +92,7 @@ nose==1.3.7
     # via
     #   -r requirements/needle.txt
     #   needle
-packaging==23.1
+packaging==23.2
     # via
     #   -r requirements/ci.txt
     #   -r requirements/needle.txt
@@ -99,23 +100,23 @@ packaging==23.1
     #   build
     #   pytest
     #   tox
-pbr==5.11.1
+pbr==6.0.0
     # via
     #   -r requirements/needle.txt
     #   stevedore
-pillow==9.5.0
+pillow==10.1.0
     # via
     #   -r requirements/needle.txt
     #   needle
-pip-tools==6.13.0
+pip-tools==7.3.0
     # via -r requirements/pip-tools.txt
-platformdirs==3.2.0
+platformdirs==4.1.0
     # via
     #   -r requirements/ci.txt
     #   -r requirements/needle.txt
     #   pylint
     #   virtualenv
-pluggy==1.0.0
+pluggy==1.3.0
     # via
     #   -r requirements/ci.txt
     #   -r requirements/needle.txt
@@ -125,9 +126,9 @@ py==1.11.0
     # via
     #   -r requirements/ci.txt
     #   tox
-pycodestyle==2.10.0
+pycodestyle==2.11.1
     # via -r requirements/needle.txt
-pylint==2.17.3
+pylint==3.0.3
     # via
     #   -r requirements/needle.txt
     #   edx-lint
@@ -138,11 +139,11 @@ pylint-celery==0.3
     # via
     #   -r requirements/needle.txt
     #   edx-lint
-pylint-django==2.5.3
+pylint-django==2.5.5
     # via
     #   -r requirements/needle.txt
     #   edx-lint
-pylint-plugin-utils==0.7
+pylint-plugin-utils==0.8.2
     # via
     #   -r requirements/needle.txt
     #   pylint-celery
@@ -151,20 +152,20 @@ pyproject-hooks==1.0.0
     # via
     #   -r requirements/pip-tools.txt
     #   build
-pytest==7.3.1
+pytest==7.4.3
     # via
     #   -r requirements/needle.txt
     #   pytest-cov
     #   pytest-xdist
-pytest-cov==4.0.0
+pytest-cov==4.1.0
     # via -r requirements/needle.txt
-pytest-xdist==3.2.1
+pytest-xdist==3.5.0
     # via -r requirements/needle.txt
 python-slugify==8.0.1
     # via
     #   -r requirements/needle.txt
     #   code-annotations
-pyyaml==6.0
+pyyaml==6.0.1
     # via
     #   -r requirements/needle.txt
     #   code-annotations
@@ -178,7 +179,7 @@ six==1.16.0
     #   -r requirements/needle.txt
     #   edx-lint
     #   tox
-stevedore==5.0.0
+stevedore==5.1.0
     # via
     #   -r requirements/needle.txt
     #   code-annotations
@@ -193,42 +194,42 @@ tomli==2.0.1
     #   -r requirements/pip-tools.txt
     #   build
     #   coverage
+    #   pip-tools
     #   pylint
     #   pyproject-hooks
     #   pytest
     #   tox
-tomlkit==0.11.7
+tomlkit==0.12.3
     # via
     #   -r requirements/needle.txt
     #   pylint
 tox==3.28.0
     # via
-    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/ci.txt
     #   tox-travis
 tox-travis==0.13
     # via -r requirements/ci.txt
-typing-extensions==4.5.0
+typing-extensions==4.9.0
     # via
     #   -r requirements/needle.txt
     #   astroid
     #   pylint
-urllib3==1.26.15
+urllib3==2.1.0
     # via
     #   -r requirements/needle.txt
     #   selenium
-virtualenv==20.22.0
+virtualenv==20.25.0
     # via
     #   -r requirements/ci.txt
     #   tox
-wheel==0.40.0
+wheel==0.42.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-wrapt==1.15.0
+zipp==3.17.0
     # via
-    #   -r requirements/needle.txt
-    #   astroid
+    #   -r requirements/pip-tools.txt
+    #   importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
