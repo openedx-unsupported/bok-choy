@@ -35,7 +35,6 @@ __ http://bok-choy.readthedocs.org/en/latest/
 As of 2022-02-18, `bok-choy is deprecated <https://github.com/openedx/public-engineering/issues/13>`_.
 All tests written using bok-choy have either been removed or are slated to be removed soon.
 Please do not write new tests using bok-choy!
-In the near future, this repository will be archived.
 
 Overview
 --------
